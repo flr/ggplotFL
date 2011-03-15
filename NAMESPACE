@@ -1,42 +1,11 @@
-useDynLib("FLAssess")
-import("FLCore")
-exportClasses("FLAssess",
-  "FLAssess.retro",
-  "FLSepVPA.control",
-#  "FLSP",
-  "FLVPA",
-  "projectControl")
-export("assess",
-  "FLSepVPA.control",
-  "projectControl",
-#  "pellatom",
-#  "PellaTom",
-#  "pellatom_calcQ",
-#  "PellaTom_calcQ",
-#  "pellatom_calcSigma",
-  "retro")
-exportMethods(
-  "+",
-  "assess",
-  "harvest",
-  "fitted",
-  "index.hat",
-  "index.hat<-",
-  "index.name",
-  "index.name<-",
-  "index.range",
-  "index.range<-",
-  "index.res",
-  "index.res<-",
-  "merge",
-  "plot",
-  "retro",
-  "project",
-  "SepVPA",
-  "stf",
-  "summary",
-  "VPA",
-#  "FLSP",
-  "FLAssess",
-  "fmle",
-  "Z")
+importFrom("ggplot2","ggplot")
+import("FLCore","FLXSA")
+export("theme_flr",
+       "decade", 
+       "moments",
+       "stdz",
+       "minMax",
+       ".theme")
+exportMethods("diags",
+              "plotDiags",
+              "EP")
