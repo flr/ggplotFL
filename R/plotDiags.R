@@ -45,7 +45,7 @@ t.<-  function(object,col="#CCFF33",group=1,stuff=facet_wrap(~age,scale="free"),
 
   plot2<-function(i,p,stuff){
       #plotFunc(obs,prd,indVar,indVar.,xttl=Xttl,yttl=Yttl,mttl="FunctionalForm",splt=c(1,1,2,3),more=TRUE)
-      p2<-p+geom_point(aes(x,y,col=col,group=group))+geom_line(aes(x,yHat,col=col,group=group)) + stuff
+      p2<-p+geom_point(aes(obs,hat,col=col,group=group))+geom_line(aes(x,yHat,col=col,group=group)) + stuff
       print(p2, vp=vplayout(xCord(i),yCord(i)))}
 
   plot3<-function(i,p,stuff){
@@ -62,14 +62,14 @@ t.<-  function(object,col="#CCFF33",group=1,stuff=facet_wrap(~age,scale="free"),
 
   plot5<-function(i,p,stuff){
       #plotResidX(resid,indVar,xttl=Xttl,yttl='Residuals',mttl="ResidualsbyIndvar",splt=c(2,2,2,3),more=TRUE)
-      p5<-p+geom_point(aes(x,rsdl,col=col,group=group))+stat_smooth(aes(x,rsdl,col=col,group=group))  +
+      p5<-p+geom_point(aes(obs,rsdl,col=col,group=group))+stat_smooth(aes(x,rsdl,col=col,group=group))  +
             scale_x_continuous(name="Index") + scale_y_continuous(name=expression(Residuals)) +
              stuff + geom_abline(intercept=0, slope=0)
       print(p5, vp=vplayout(xCord(i),yCord(i)))}
 
   plot6<-function(i,p,stuff){
       #plotResidX(resid,hat,xttl=paste(Yttl,"Hat"),yttl='Residuals',mttl="ResidualsbyHat",splt=c(1,3,2,3),more=TRUE)
-      p6<-p+geom_point(aes(yHat,rsdl,col=col,group=group))+stat_smooth(aes(yHat,rsdl,col=col,group=group))  +
+      p6<-p+geom_point(aes(hat,rsdl,col=col,group=group))+stat_smooth(aes(yHat,rsdl,col=col,group=group))  +
             scale_x_continuous(name=expression(Residuals[t])) + scale_y_continuous(name=expression(Residuals)) +
              stuff + geom_abline(intercept=0, slope=0)
       print(p6, vp=vplayout(xCord(i),yCord(i)))}
