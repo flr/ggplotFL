@@ -3,7 +3,7 @@ Title: Using ggplot2 in FLR
 Version: 0.1
 Author: Laurie T. Kell <laurie.kell@iccat.int>, Iago Mosqueira <iago.mosqueira@cefas.co.uk>
 Description: Using ggplot2 for FLR
-Depends: ggplot2, FLCore(>= 2.2), methods
+Depends: ggplot2, FLCore(>= 2.2)
 Maintainer: Laurie T. Kell <laurie.kell@iccat.int>, Iago Mosqueira <iago.mosqueira@cefas.co.uk>
 License: GPL 2.0
 lazyLoad: Yes
