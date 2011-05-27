@@ -6,9 +6,8 @@ stdz  <-function(x,na.rm=TRUE) ((x-mean(x,na.rm=na.rm))/sd(x,na.rm=na.rm))
 minMax<-function(x,na.rm=TRUE) (x-min(x,na.rm=na.rm))/diff(range(x,na.rm=na.rm))
 
 
-setGeneric('ssn', function(x, ...) standardGeneric('ssn'))
-setMethod("ssn", signature(x="FLStock"),
-    function(x) stock.n(x)*exp(-m(x)*(1.0-m.spwn(x))-harvest(x)*(1.0-harvest.spwn(x))))
+setMethod("ssn", signature(object="FLStock"),
+    function(object) stock.n(object)*exp(-m(object)*(1.0-m.spwn(object))-harvest(object)*(1.0-harvest.spwn(object))))
 
 setGeneric('EP', function(x, ...) standardGeneric('EP'))
 setMethod("EP",  signature(x="FLStock"),

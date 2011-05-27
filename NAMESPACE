@@ -1,19 +1,23 @@
 importFrom("ggplot2","ggplot")
-import("FLCore","FLXSA")
-export("theme_flr",
-       "decade", 
-       "moments",
-       "stdz",
-       "minMax",
-       ".theme")
-exportMethods("ggplot",
-	      "diags",
-              "sel<-",
-              "computeSel",
-              "catchSel",
-              "discardsSel",
-              "landingsSel",
-              "plot",
-              "plotDiags",
-              "plotEP",
-              "EP")
+import("FLCore")
+export(
+  "plotComp",
+  "plotComps",
+  "theme_flr",
+  "decade", 
+  "moments",
+  "stdz",
+  "minMax",
+  ".theme")
+exportMethods(
+  "ggplot",
+  "diags",
+  "sel<-",
+  "computeSel",
+  "catchSel",
+  "discardsSel",
+  "landingsSel",
+  "plot",
+  "plotDiags",
+  "plotEP",
+  "EP")

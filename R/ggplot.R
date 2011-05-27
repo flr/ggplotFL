@@ -1,23 +1,41 @@
-setGeneric("ggplot", function(data, ...)
-	standardGeneric("ggplot"))
+# ggplot.R - 
+# ggplotFL/R/ggplot.R
 
-setMethod("ggplot", signature("FLQuants"), function(data, ...){
-  dat<-as.data.frame(data)
-  dat$cohort<-dat$year-dat$age
-  ggplot(dat,...)})
+# Copyright 2003-2007 FLR Team. Distributed under the GPL 2 or later
+# Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
+# $Id:  $
 
-setMethod("ggplot", signature("FLQuant"), function(data, ...){
-  dat       <-as.data.frame(data)
-  dat$cohort<-dat$year-dat$age
-  ggplot(dat,...)})
+# ggplot {{{
 
-setMethod("ggplot", signature(data="FLComp"), function(data,...){
-  dat<-as.data.frame(data)
-  dat$cohort<-dat$year-dat$age
-  ggplot(dat,...)})
+setMethod("ggplot", signature(data="FLQuants"),
+  function(data, ...) {
+    dat <- as.data.frame(data)
+    dat$cohort <- dat$year - dat$age
+    ggplot(dat, ...)
+  }
+)
 
-setMethod("ggplot", signature(data="FLCohort"), function(data,...){
-  dat<-as.data.frame(data)
-  dat$cohort<-dat$year-dat$age
-  ggplot(dat,...)})
+setMethod("ggplot", signature(data="FLQuant"),
+  function(data, ...) {
+    dat <- as.data.frame(data)
+    dat$cohort <- dat$year - dat$age
+    ggplot(dat, ...)
+  }
+)
 
+setMethod("ggplot", signature(data="FLComp"),
+  function(data, ...) {
+    dat <- as.data.frame(data)
+    dat$cohort <- dat$year - dat$age
+    ggplot(dat, ...)
+  }
+)
+
+# TODO Check, this is wrong!
+setMethod("ggplot", signature(data="FLCohort"),
+  function(data, ...){
+    dat <- as.data.frame(data)
+    dat$cohort <- dat$year - dat$age
+    ggplot(dat, ...)
+  }
+) # }}}
