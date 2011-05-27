@@ -11,31 +11,32 @@ setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
     dat <- as.data.frame(data)
     dat$cohort <- dat$year - dat$age
-    ggplot(dat, ...)
-  }
-)
+    ggplot(dat, ...)})
 
 setMethod("ggplot", signature(data="FLQuant"),
   function(data, ...) {
     dat <- as.data.frame(data)
-    dat$cohort <- dat$year - dat$age
-    ggplot(dat, ...)
-  }
-)
+
+    try(dat$cohort <- dat$year - dat$age)
+    ggplot(dat, ...)})
 
 setMethod("ggplot", signature(data="FLComp"),
   function(data, ...) {
     dat <- as.data.frame(data)
-    dat$cohort <- dat$year - dat$age
-    ggplot(dat, ...)
-  }
-)
 
-# TODO Check, this is wrong!
+    try(dat$cohort <- dat$year - dat$age)
+    ggplot(dat, ...)})
+
+setMethod("ggplot", signature(data="FLComps"),
+  function(data, ...) {
+    dat <- as.data.frame(data)
+
+    try(dat$cohort <- dat$year - dat$age)
+    ggplot(dat, ...)})
+
+# TODO delete, as redundant
 setMethod("ggplot", signature(data="FLCohort"),
   function(data, ...){
     dat <- as.data.frame(data)
     dat$cohort <- dat$year - dat$age
-    ggplot(dat, ...)
-  }
-) # }}}
+    ggplot(dat, ...)})
