@@ -9,7 +9,6 @@
 setMethod("ggplot", signature(data="FLQuant"),
   function(data, ...) {
     dat <- as.data.frame(data, cohort=TRUE)
-    browser()
     ggplot(dat, ...)
   }
 )
