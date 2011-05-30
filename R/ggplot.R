@@ -12,6 +12,7 @@ setMethod("ggplot", signature(data="FLQuant"),
     dat <- as.data.frame(data)
     
     # create cohort column as year - age
+    dat$cohort  <-  as.numeric(NA)
     if(quant(data) == "age")
       try(dat$cohort <- dat$year - dat$age)
     ggplot(dat, ...)
