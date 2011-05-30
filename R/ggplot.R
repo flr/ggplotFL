@@ -6,6 +6,17 @@
 # $Id:  $
 
 # ggplot {{{
+setMethod("ggplot", signature(data="FLQuant"),
+  function(data, ...) {
+    
+    dat <- as.data.frame(data)
+    
+    # create cohort column as year - age
+    if(quant(data) == "age")
+      try(dat$cohort <- dat$year - dat$age)
+    ggplot(dat, ...)
+  }
+)
 
 setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
@@ -13,11 +24,10 @@ setMethod("ggplot", signature(data="FLQuants"),
     dat$cohort <- dat$year - dat$age
     ggplot(dat, ...)})
 
-setMethod("ggplot", signature(data="FLQuant"),
+setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
     dat <- as.data.frame(data)
-
-    try(dat$cohort <- dat$year - dat$age)
+    dat$cohort <- dat$year - dat$age
     ggplot(dat, ...)})
 
 setMethod("ggplot", signature(data="FLComp"),
