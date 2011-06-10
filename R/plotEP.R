@@ -43,9 +43,9 @@ fnplotEP <- function(object,vars) {
 
   # residuals
   pR <- ggplot(ddply(grw, .(X1, age), transform, data=stdz(data,na.rm=T))) +
-    geom_point(aes(age,year,size=abs(data),col=ifelse(data<0,"red","black"))) +
-	  scale_area(to=c(0,7.5),name="Residual",      legend=FALSE) +
-	  scale_colour_manual(values=c("black","red"),legend=FALSE) +
+    geom_point(aes(age, year, size=abs(data), col=ifelse(data<0,"red","black"))) +
+	  scale_area(to=c(0,7.5), name="Residual", legend=FALSE) +
+	  scale_colour_manual(values=c("black","red"), legend=FALSE) +
 	  facet_grid(~X1) +
 	  ylab("Year") + xlab("Age")
 
