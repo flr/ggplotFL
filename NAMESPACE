@@ -1,7 +1,6 @@
 importFrom("ggplot2","ggplot")
 importFrom("FLCore","plot")
 importClassesFrom("FLCore","FLStock", "FLStocks")
-import("FLAdvice")
 export(
   "plotComp",
   "plotComps",
