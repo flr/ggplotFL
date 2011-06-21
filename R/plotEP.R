@@ -15,7 +15,7 @@ fnplotEP <- function(object,vars) {
   grw$decade <- factor(decade(grw$year))
 
   # themes
-  G.theme <- opts(.theme(12,
+  G.theme <- opts(mytheme(12,
       list(axis.ticks.length=unit(0.1, "line"),
         axis.title.x=theme_blank(),
 		    axis.text.x=theme_blank(),

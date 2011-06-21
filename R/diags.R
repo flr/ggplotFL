@@ -5,7 +5,7 @@
 # Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
 # $Id:  $
 
-# diags {{{
+# diags(FLXSA) {{{
 setMethod("diags", signature(object="FLXSA"),
   function(object,i=NULL) {
 
@@ -45,7 +45,9 @@ setMethod("diags", signature(object="FLXSA"),
 
     return(res)
   }
-)
+) # }}}
+
+# diags(FLSR) {{{
 
 setMethod("diags", signature(object="FLSR"),
   function(object, i=NULL) {

@@ -1,24 +1,31 @@
-importFrom("ggplot2","ggplot")
-importFrom("FLCore","plot")
-importClassesFrom("FLCore","FLStock", "FLStocks")
-export(
-  "plotComp",
-  "plotComps",
-  "theme_flr",
-  "decade", 
-  "moments",
-  "stdz",
-  "minMax",
-  ".theme")
-exportMethods(
+importClassesFrom("FLCore",
+"FLQuant",
+"FLCohort",
+"FLComp",
+"FLQuants",
+"FLComps",
+"FLSR")
+importFrom("FLCore",
+  "plot",
+  "quantile",
+  "apply",
+  "FLQuants",
+  "as.data.frame",
+  "stock.n",
+  "harvest",
+  "ac")
+importFrom("ggplot2",
   "ggplot",
+  "theme_bw",
+  "theme_text")
+exportMethods(
   "diags",
-  "sel<-",
-  "computeSel",
-  "catchSel",
-  "discardsSel",
-  "landingsSel",
+  "ggplot",
   "plot",
   "plotDiags",
-  "plotEP",
-  "EP")
+  "plotEP")
+export("mytheme",
+  "theme_flr",
+  "theme_min",
+  "plotComp",
+  "plotComps")

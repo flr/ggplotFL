@@ -41,7 +41,15 @@ QQAR <- function(object) {
     qqHat=qqLine(qqx,qqy))
 
   return(res)
-} # }}}
+}
+
+moments<-function(x,n,p=1) (sum(x^p*n)/sum(n))^(1/p)
+decade <-function(x) x-(x %% 10)
+
+stdz  <-function(x,na.rm=TRUE) ((x-mean(x,na.rm=na.rm))/sd(x,na.rm=na.rm))
+minMax<-function(x,na.rm=TRUE) (x-min(x,na.rm=na.rm))/diff(range(x,na.rm=na.rm))
+
+ # }}}
 
 # plotDiags(data.frame) {{{
 setMethod("plotDiags", signature(object="data.frame"),
