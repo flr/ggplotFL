@@ -1,6 +1,6 @@
 # diags.R - 
 # ggplotFL/R/diags.R
-
+# 
 # Copyright 2003-2007 FLR Team. Distributed under the GPL 2 or later
 # Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
 # $Id:  $
@@ -13,22 +13,22 @@ setMethod("diags", signature(object="FLXSA"),
     fn <- function(object,i) {
       x <- index(object)[[i]]
       yHat <- index.hat(object)[[i]]
-      rsdl <- index.res(object)[[i]]
+      residual <- index.res(object)[[i]]
 
       #
       dmns <- dimnames(x)
       y <- stock.n(object)[dmns$age,dmns$year]
 
       #
-      rsdlLag      =FLQuant(NA,dimnames=dimnames(rsdl))
-      rsdlLag[,-dim(rsdl)[2]] <- rsdl[,-1]
-      qq. <- qqnorm(c(rsdl),plot.it=FALSE)
-      qqx <- FLQuant(qq.$x,dimnames=dimnames(rsdl))
-      qqy <- FLQuant(qq.$y,dimnames=dimnames(rsdl))
+      residualLag      =FLQuant(NA,dimnames=dimnames(residual))
+      residualLag[,-dim(residual)[2]] <- residual[,-1]
+      qq. <- qqnorm(c(residual),plot.it=FALSE)
+      qqx <- FLQuant(qq.$x,dimnames=dimnames(residual))
+      qqy <- FLQuant(qq.$y,dimnames=dimnames(residual))
 
       #
-      res <- model.frame(FLQuants(x=x, y=y, yHat=yHat, rsdl=rsdl,
-          rsdlLag=rsdlLag, qqx=qqx, qqy=qqy))
+      res <- model.frame(FLQuants(x=x, y=y, yHat=yHat, residual=residual,
+          residualLag=residualLag, qqx=qqx, qqy=qqy))
 
       return(res)
     }
@@ -56,21 +56,21 @@ setMethod("diags", signature(object="FLSR"),
     x <- ssb(object)
     y <- rec(object)
     yHat <- predict(object)
-    rsdl <- residuals(object)
+    residual <- residuals(object)
 
     dmns <- dimnames(x)
 
-    rsdlLag <- FLQuant(NA, dimnames=dimnames(rsdl))
-    rsdlLag[,-dim(rsdl)[2]] <- rsdl[,-1]
+    residualLag <- FLQuant(NA, dimnames=dimnames(residual))
+    residualLag[,-dim(residual)[2]] <- residual[,-1]
 
-    qq. <- qqnorm(c(rsdl),plot.it=FALSE)
-    qqx <- FLQuant(qq.$x,dimnames=dimnames(rsdl))
-    qqy <- FLQuant(qq.$y,dimnames=dimnames(rsdl))
+    qq. <- qqnorm(c(residual),plot.it=FALSE)
+    qqx <- FLQuant(qq.$x,dimnames=dimnames(residual))
+    qqy <- FLQuant(qq.$y,dimnames=dimnames(residual))
 
     ssb <- FLQuant(seq(0, max(x,na.rm=T), length.out=dim(x)[2]), dimnames=dimnames(x))
     rec <- predict(object, ssb=ssb)
 
-    res <- model.frame(FLQuants(x=x, y=y, yHat=yHat, rsdl=rsdl, rsdlLag=rsdlLag,
+    res <- model.frame(FLQuants(x=x, y=y, yHat=yHat, residual=residual, residualLag=residualLag,
         qqx=qqx, qqy=qqy, rec=rec, ssb=ssb))
 
     return(res)
