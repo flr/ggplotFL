@@ -15,7 +15,7 @@ fnplotEP <- function(object,vars) {
   grw$decade <- factor(decade(grw$year))
 
   # themes
-  G.theme <- opts(mytheme(12,
+  G.theme <- opts(.theme(12,
       list(axis.ticks.length=unit(0.1, "line"),
         axis.title.x=theme_blank(),
 		    axis.text.x=theme_blank(),
@@ -43,9 +43,9 @@ fnplotEP <- function(object,vars) {
 
   # residuals
   pR <- ggplot(ddply(grw, .(X1, age), transform, data=stdz(data,na.rm=T))) +
-    geom_point(aes(age, year, size=abs(data), col=ifelse(data<0,"red","black"))) +
-	  scale_area(to=c(0,7.5), name="Residual", legend=FALSE) +
-	  scale_colour_manual(values=c("black","red"), legend=FALSE) +
+    geom_point(aes(age,year,size=abs(data),col=ifelse(data<0,"red","black"))) +
+	  scale_area(to=c(0,7.5),name="Residual",      legend=FALSE) +
+	  scale_colour_manual(values=c("black","red"),legend=FALSE) +
 	  facet_grid(~X1) +
 	  ylab("Year") + xlab("Age")
 

@@ -5,18 +5,15 @@
 # Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
 # $Id:  $
 
-# ggplot {{{
 setMethod("ggplot", signature(data="FLQuant"),
   function(data, ...) {
     dat <- as.data.frame(data, cohort=TRUE)
-    ggplot(dat, ...)
-  }
-)
+    ggplot(dat, ...)})
 
 setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
     dat <- as.data.frame(data)
-    dat$cohort <- dat$year - dat$age
+    dat$cohort <- dat$year - as.numeric(dat$age)
     ggplot(dat, ...)})
 
 setMethod("ggplot", signature(data="FLQuants"),

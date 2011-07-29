@@ -12,12 +12,12 @@ mytheme <- function(theme=theme_bw, base_size = 12, base_family="", ...)
 # }}}
 
 # theme_flr {{{
-theme_flr <- function(size=10, font=NA, face='plain',              
+theme_flr <- function(size=10, family="", face='plain',              
   backgroundColor='white', panelColor='white', axisColor='#999999',
   gridColor ='white', textColor='#999999') {
 
     theme_text = function(...)
-      ggplot2::theme_text(family=font,face=face,colour=textColor,size=size, ...)
+      ggplot2::theme_text(family=family, face=face,colour=textColor,size=size, ...)
 
     opts(axis.text.x       =theme_text(vjust=1, hjust=0.5),
          axis.text.y       =theme_text(hjust=1, vjust=0.5),
