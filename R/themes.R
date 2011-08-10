@@ -12,12 +12,11 @@ mytheme <- function(theme=theme_bw, base_size = 12, base_family="", ...)
 # }}}
 
 # theme_flr {{{
-theme_flr <- function(size=10, family="", face='plain',              
-  backgroundColor='white', panelColor='white', axisColor='#999999',
-  gridColor ='white', textColor='#999999') {
+theme_flr<-function (size           =10,        font=NA,            face='plain',
+                     backgroundColor='white',   panelColor='white',
+                     axisColor      ='#999999', gridColor ='white', textColor='#999999'){
 
-    theme_text = function(...)
-      ggplot2::theme_text(family=family, face=face,colour=textColor,size=size, ...)
+    theme_text = function(...) ggplot2::theme_text(family=font,face=face,colour=textColor,size=size, ...)
 
     opts(axis.text.x       =theme_text(vjust=1, hjust=0.5),
          axis.text.y       =theme_text(hjust=1, vjust=0.5),
@@ -39,8 +38,9 @@ theme_flr <- function(size=10, family="", face='plain',
          strip.text.x      =theme_text(hjust=0),
          strip.text.y      =theme_text(angle=-90),
          plot.title        =theme_text(hjust=0),
-         plot.margin       =unit(c(0.1, 0.1, 0.1, 0.1), 'lines'))
-} # }}}
+         plot.margin       =unit(c(0.1, 0.1, 0.1, 0.1), 'lines'))}
+
+ # }}}
 
 # theme_min {{{
 theme_min <- function (size=10, font=NA, face='plain',
@@ -76,5 +76,5 @@ theme_min <- function (size=10, font=NA, face='plain',
          face=face, size=size),
        plot.title = theme_text(hjust=0, colour=textColor, family=font,
          face=face, size=size),
-       plot.margin = unit(c(0.1, 0.1, 0.1, 0.1), 'lines'))
-} # }}}
+       plot.margin = unit(c(0.1, 0.1, 0.1, 0.1), 'lines'))} 
+# }}}
