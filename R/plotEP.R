@@ -6,7 +6,7 @@
 # $Id:  $
 
 # fnplotEP {{{
-fnplotEP <- function(object,vars) {
+fnplotEP <- function(object,vars,theme) {
   
   # data into data.frame 
   grw <- mdply(vars, function(x,stk)
@@ -15,14 +15,15 @@ fnplotEP <- function(object,vars) {
   grw$decade <- factor(decade(grw$year))
 
   # themes
-  G.theme <- opts(.theme(12,
+  G.theme <- opts(theme_flr(12,
       list(axis.ticks.length=unit(0.1, "line"),
-        axis.title.x=theme_blank(),
-		    axis.text.x=theme_blank(),
-		    plot.margin=unit(c(0,1,0,1), "lines"))))
+           axis.title.x=theme_blank(),
+		       axis.text.x=theme_blank(),
+		       plot.margin=unit(c(0,1,0,1), "lines"))))
 
   # snug fit
-  snug.opts <- opts(axis.ticks = theme_blank(), 
+  snug.opts <- opts(
+      axis.ticks        = theme_blank(), 
 		  axis.title.x      = theme_blank(), 
 		  axis.title.y      = theme_blank(), 
 		  axis.text.x       = theme_blank(), 
@@ -63,10 +64,10 @@ fnplotEP <- function(object,vars) {
 
 # plotEP(FLStock) {{{
 setMethod('plotEP', signature(object='FLStock'), 
-  function(object,vars=c("mat","stock.wt","EP")) fnplotEP(object, vars))
+  function(object,vars=c("mat","stock.wt","EP"),theme=theme_flr) fnplotEP(object, vars, theme))
 # }}}
 
 # plotEP(FLBiol) {{{
 setMethod('plotEP', signature(object='FLBiol'), 
-  function(object,vars=c("mat","stock.wt","EP")) fnplotEP(object, vars))
+  function(object,vars=c("mat","stock.wt","EP"),theme=theme_flr) fnplotEP(object, vars, theme))
 # }}}

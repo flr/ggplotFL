@@ -21,6 +21,7 @@ importFrom("ggplot2",
   "theme_text")
 exportMethods(
   "diags",
+  "EP",
   "ggplot",
   "plot",
   "plotDiags",
