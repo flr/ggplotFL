@@ -26,7 +26,9 @@ exportMethods(
   "plot",
   "plotDiags",
   "plotEP")
-export("mytheme",
+export(
+  "decade",
+  "mytheme",
   "theme_flr",
   "theme_min",
   "plotComp",
