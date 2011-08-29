@@ -4,7 +4,8 @@ importClassesFrom("FLCore",
   "FLComp",
   "FLQuants",
   "FLComps",
-  "FLSR")
+  "FLSR",
+  "FLSRs")
 importFrom("FLCore",
   "ac")
 importMethodsFrom("FLCore",
@@ -14,7 +15,8 @@ importMethodsFrom("FLCore",
   "FLQuants",
   "as.data.frame",
   "stock.n",
-  "harvest")
+  "harvest",
+  "FLSRs")
 importFrom("ggplot2",
   "ggplot",
   "theme_bw",
