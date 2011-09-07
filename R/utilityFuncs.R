@@ -1,4 +1,15 @@
 ## moments
+
+##### Utility functions
+xCord <- function(i)
+  floor(i/2)*2-i+2
+
+yCord <- function(i)
+  floor((i+1)/2)
+
+vplayout <- function(x, y)
+  viewport(layout.pos.row=x, layout.pos.col=y)
+
 moments<-function(x,n,p=1) (sum(x^p*n)/sum(n))^(1/p)
 decade <-function(x) x-(x %% 10)
 
