@@ -30,7 +30,6 @@ exportMethods(
   "plotEP")
 export(
   "decade",
-  "mytheme",
   "theme_flr",
   "theme_min",
   "plotComp",
