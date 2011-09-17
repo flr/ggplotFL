@@ -23,12 +23,14 @@ importFrom("ggplot2",
   "theme_text")
 exportMethods(
   "diags",
+  "diags",
   "EP",
   "ggplot",
   "plot",
   "plotDiags",
   "plotEP")
 export(
+  "getDiag",
   "decade",
   "theme_flr",
   "theme_min",
