@@ -20,7 +20,6 @@ setMethod("plot", signature(x="FLStock", y="missing"),
   }
 ) # }}}
 
-
 # plot(FLStocks) {{{
 setMethod("plot", signature(x="FLStocks", y="missing"),
   function(x, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5), lty=c(2,1,2),
