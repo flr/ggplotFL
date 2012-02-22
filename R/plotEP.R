@@ -5,6 +5,8 @@
 # Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
 # $Id:  $
 
+stdz  <-function(x,na.rm=TRUE) ((x-mean(x,na.rm=na.rm))/sd(x,na.rm=na.rm))
+
 # fnplotEP {{{
 fnplotEP <- function(object,vars,theme) {
   
@@ -35,7 +37,7 @@ fnplotEP <- function(object,vars,theme) {
 
   ## ggplot objects
   # -by-age
-  pG <- ggplot(ddply(grw,.(X1), transform, data=data/mean(data,na.rm=T))) +
+  pG <- ggplot(ddply(grw,.(X1), transform, data=data/max(data,na.rm=T))) +
     geom_point(aes( age,data,group=decade,colour=decade)) +
     stat_smooth(aes(age,data,group=decade,colour=decade)) +
     facet_grid(~X1) +

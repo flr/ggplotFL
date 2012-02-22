@@ -34,5 +34,6 @@ export(
   "decade",
   "theme_flr",
   "theme_min",
+  "theme_ms",
   "plotComp",
   "plotComps")
