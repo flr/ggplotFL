@@ -18,9 +18,8 @@ importMethodsFrom("FLCore",
   "harvest",
   "FLSRs")
 importFrom("ggplot2",
-  "ggplot",
-  "theme_bw",
-  "theme_text")
+  "ggplot"
+  )
 exportMethods(
   "diags",
   "diags",
