@@ -4,7 +4,7 @@ Version: 0.1
 Author: Laurie T. Kell <laurie.kell@iccat.int>, Iago Mosqueira <iago.mosqueira-sanchez@jrc.ec.europa.eu>
 Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for various
   FLR classes, and (2) ggplot-based versions of standard plots in various FLR pkgs.
-Depends: R(>= 2.13.1), methods, ggplot2, FLCore(>= 2.3)
+Depends: R(>= 2.13.1), methods, ggplot2, FLCore(>= 2.3), plyr
 Suggests: FLXSA
 Maintainer: Laurie T. Kell <laurie.kell@iccat.int>, Iago Mosqueira <iago.mosqueira-sanchez@jrc.ec.europa.eu>
 License: GPL 2.0
