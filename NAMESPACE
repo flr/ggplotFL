@@ -27,10 +27,27 @@ exportMethods(
   "ggplot",
   "plot",
   "plotDiags",
-  "plotEP")
+  "plotEP",
+  "ssn",
+  "EP",
+  "catchSel",
+  "landingsSel", 
+  "discardsSel", 
+  "computeSel",
+  "sel<-")
 export(
   "getDiag",
   "decade",
-  "theme_ms",
   "plotComp",
-  "plotComps")
+  "plotComps",
+  "moments",
+  "decade",
+  "stdz",
+  "minMax",  
+  "calcFreq",
+  "calcDensity",
+  "calcProb",
+  "alignSR",
+  "theme_ms",
+  "theme_complete_bw",
+  "theme_invisible")
