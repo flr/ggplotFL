@@ -16,6 +16,45 @@ decade <-function(x) x-(x %% 10)
 stdz  <-function(x,na.rm=TRUE) ((x-mean(x,na.rm=na.rm))/sd(x,na.rm=na.rm))
 minMax<-function(x,na.rm=TRUE) (x-min(x,na.rm=na.rm))/diff(range(x,na.rm=na.rm))
 
+## Calculates frequency of points in squares
+calcFreq=function(x,y,x.n=11,y.n=x.n){
+ 
+  df=data.frame(x=x,y=y)
+  df=data.frame(df,xFac=cut(df$x,seq(min(df$x),max(df$x),length.out=x.n)),
+                   yFac=cut(df$y,seq(min(df$y),max(df$y),length.out=y.n)))
+  
+  c.=ddply(data.frame(df,count=1),.(xFac,yFac), function(x) count(x$count))[,c("xFac","yFac","freq")]
+  
+  p.=merge(df,c.,by=c("xFac","yFac"))[,c("x","y","freq","xFac","yFac")]
+  
+  return(p.[order(p.$freq),])}
+
+## calculates density of points
+calcDensity=function(x,y,x.n=11,y.n=x.n){
+
+   require(MASS)
+   require(coda)
+   require(emdbook)
+
+    dat=data.frame(x=x,y=y,n=50)
+    f1 =with(dat, kde2d(x,y,n=n)) 
+    f2 =data.frame(expand.grid(x=f1$x, y=f1$y), z=as.vector(f1$z))
+  
+  return(f2)}
+
+## calculates 2D probabilities
+calcProb=function(x,y,prob=c(0.6,0.9)){
+
+   require(coda)
+   require(emdbook)
+
+   tmp=HPDregionplot(mcmc(data.frame(x,y)),prob=prob)
+
+
+   prb=ldply(tmp, function(dat) data.frame(level=dat$level,x=dat$x, y=dat$y))
+   
+   return(prb)}
+ 
 setMethod("ssn", signature(object="FLStock"),
     function(object) stock.n(object)*exp(-m(object)*(1.0-m.spwn(object))-harvest(object)*(1.0-harvest.spwn(object))))
 
@@ -76,5 +115,4 @@ alignSR<-function(x,recAge){
       sr<-x[,c("Recruits","SSB")]
 
     return(sr)}
-
 
