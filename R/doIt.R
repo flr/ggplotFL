@@ -108,18 +108,18 @@ doRetros=function(runs,dir="",plotFn=list("SSB"=ssb, "Recruits"=rec,
     facet_grid(qname~Retro,scale="free")+
     scale_x_continuous(limits=c(1950,2012),breaks=c(1960,1980,2000))+
     scale_y_continuous(                    breaks=NULL)+
-    theme + xlab("Year") + ylab("")
+    themeMy + xlab("Year") + ylab("")
   
   f2=ggplot(subset(plts,Retro %in% 2007:2011))+
     geom_line(aes(year,data,group=Retro,colour=Retro),size=.5)+
     facet_grid(qname~Run,scale="free")+
     scale_x_continuous(limits=c(1950,2012),breaks=c(1960,1980,2000))+
     scale_y_continuous(                    breaks=NULL)+
-    theme + xlab("Year") + ylab("")
+    themeMy + xlab("Year") + ylab("")
   
   f3=ggplot(sel)+
     geom_line(aes(age,data,col=Run,group=Run))+
-    theme+xlab("Age")+ylab("Selectivity")           
+    themeMy+xlab("Age")+ylab("Selectivity")           
   
   td=ddply(subset(plts[,c("qname","Run","Retro","year","data")],year>2008), .(Run,Retro,qname), transform, data=stdz(data))
   td=cast(td,Retro+qname+year~Run,value="data")
