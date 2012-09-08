@@ -36,6 +36,8 @@ exportMethods(
   "computeSel",
   "sel<-")
 export(
+  "doDiags",
+  "doRetros",
   "getDiag",
   "decade",
   "plotComp",
