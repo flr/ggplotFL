@@ -22,7 +22,6 @@ importFrom("ggplot2",
   )
 exportMethods(
   "diags",
-  "diags",
   "EP",
   "ggplot",
   "plot",

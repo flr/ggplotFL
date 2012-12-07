@@ -86,28 +86,28 @@ getDiag=function(object,diagPlots=diagPlots()[[class(object)]]) {
     return(res)}
 
 ## FLSR
-setMethod("diags", signature(object="FLSR"),
-  function(object,sctPlot=diagPlots()$FLSR){
-    #   function(object, col="#CCFF33", group=1, stuff=facet_wrap(~age,scale="free"),
-    
-      res=model.frame(FLQuants("x"       =ssb(      object),
-                               "y"       =rec(      object),
-                               "hat"     =predict(  object),
-                               "residual"=residuals(object)),drop=TRUE)
- 
-     res=getDiag(res,sctPlot)
-     
-     if ("Functional Form" %in% sctPlot$name)  
-        res=rbind.fill(res,cbind(name="Functional Form",  
-                model.frame(FLQuants("hat" =predict(object,ssb=FLQuant(seq(0,min(ssb(object)),length.out=21))),
-                                     "x"   =FLQuant(seq(0,min(ssb(object)),length.out=21))),drop=TRUE)[,-1]))
-                
-    # ggplot(diags(pSR,srPlot))                                  + 
-    #     geom_point(aes(x,y))+facet_wrap(~name,scale="free")    +
-    #     geom_line(aes(x,hat),colour="red")                     +
-    #     stat_smooth(aes(x,y))
-
-    return(res)})
+# setMethod("diags", signature(object="FLSR"),
+#   function(object,sctPlot=diagPlots()$FLSR){
+#     #   function(object, col="#CCFF33", group=1, stuff=facet_wrap(~age,scale="free"),
+#     
+#       res=model.frame(FLQuants("x"       =ssb(      object),
+#                                "y"       =rec(      object),
+#                                "hat"     =predict(  object),
+#                                "residual"=residuals(object)),drop=TRUE)
+#  
+#      res=getDiag(res,sctPlot)
+#      
+#      if ("Functional Form" %in% sctPlot$name)  
+#         res=rbind.fill(res,cbind(name="Functional Form",  
+#                 model.frame(FLQuants("hat" =predict(object,ssb=FLQuant(seq(0,min(ssb(object)),length.out=21))),
+#                                      "x"   =FLQuant(seq(0,min(ssb(object)),length.out=21))),drop=TRUE)[,-1]))
+#                 
+#     # ggplot(diags(pSR,srPlot))                                  + 
+#     #     geom_point(aes(x,y))+facet_wrap(~name,scale="free")    +
+#     #     geom_line(aes(x,hat),colour="red")                     +
+#     #     stat_smooth(aes(x,y))
+# 
+#     return(res)})
 
 ## function to create diags DF for plotting from residuals
 getDiag=function(object,diagPlots=diagPlots()[[class(object)]]) {

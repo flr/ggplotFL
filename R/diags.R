@@ -74,8 +74,6 @@ setMethod("diags", signature(object="FLXSA"),
   }
 ) # }}}
 
-# diags(FLSR) {{{
-
 setMethod("diags", signature(object="FLSR"),
   function(object, i=NULL) {
     
@@ -105,6 +103,4 @@ setMethod("diags", signature(object="FLSR"),
     res <-data.frame(res,qqHat=c(qqpar["a"]*qqx+qqpar["b"]))
     
     return(res)
-  }
-) # }}}
-
+  })
