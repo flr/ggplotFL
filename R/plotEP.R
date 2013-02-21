@@ -17,19 +17,19 @@ fnplotEP <- function(object,vars,theme) {
   grw$decade <- factor(decade(grw$year))
 
   # themes
-  G.theme <- opts(theme(12,
-      list(axis.ticks.length=unit(0.1, "line"),
-           axis.title.x=theme_blank(),
-		       axis.text.x=theme_blank(),
-		       plot.margin=unit(c(0,1,0,1), "lines"))))
+ G.theme <- theme(
+            axis.ticks.length=unit(0.1, "line"),
+            axis.title.x=element_blank(),
+  		       axis.text.x=element_blank(),
+  		       plot.margin=unit(c(0,1,0,1), "lines"))
 
   # snug fit
-  snug.opts <- opts(
-      axis.ticks        = theme_blank(), 
-		  axis.title.x      = theme_blank(), 
-		  axis.title.y      = theme_blank(), 
-		  axis.text.x       = theme_blank(), 
-		  axis.text.y       = theme_blank(), 
+  snug.opts <- theme(
+      axis.ticks        = element_blank(), 
+		  axis.title.x      = element_blank(), 
+		  axis.title.y      = element_blank(), 
+		  axis.text.x       = element_blank(), 
+		  axis.text.y       = element_blank(), 
 		  axis.ticks.length = unit(0, "lines"), 
 		  axis.ticks.margin = unit(0, "lines"), 
 		  panel.margin      = unit(c(0.5, 0.25,-1.0, 0.25), "lines"), 
@@ -42,14 +42,14 @@ fnplotEP <- function(object,vars,theme) {
     geom_point(aes( age,data,group=decade,colour=decade)) +
     stat_smooth(aes(age,data,group=decade,colour=decade)) +
     facet_grid(~X1) +
-    scale_colour_discrete(legend=FALSE) +
-    opts(G.theme)
+    scale_colour_discrete(guide="none") +
+    G.theme
 
   # residuals
   pR <- ggplot(ddply(grw, .(X1, age), transform, data=stdz(data,na.rm=T))) +
     geom_point(aes(age,year,size=abs(data),col=ifelse(data<0,"red","black"))) +
-	  scale_area(range=c(0,7.5),name="Residual",  legend=FALSE) +
-	  scale_colour_manual(values=c("black","red"),legend=FALSE) +
+	  scale_size_area(max_size=7.5,name="Residual",  guide="none") +
+	  scale_colour_manual(values=c("black","red"),guide="none") +
 	  facet_grid(~X1) +
 	  ylab("Year") + xlab("Age")
 
@@ -59,7 +59,7 @@ fnplotEP <- function(object,vars,theme) {
   grid.newpage()
   pushViewport(viewport(layout=grid.layout(4,1)))
 
-  print(pR + opts(strip.background=theme_blank()),
+  print(pR + opts(strip.background=element_blank()),
     vp=viewport(layout.pos.row=2:4, layout.pos.col=1))
   
   print(pG + snug.opts, vp=viewport(layout.pos.row=1, layout.pos.col=1))
