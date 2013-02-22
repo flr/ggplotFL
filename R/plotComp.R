@@ -34,7 +34,6 @@ plotComp = function(x, fn=NULL, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5),
      p1=p1+geom_line(aes(year,data,group=iter,colour=iter),
                 data=transform(subset(as.data.frame(FLQuants(lapply(fn,function(f,x) f(x), x=x))),iter %in% worm),iter=factor(iter)))
   
-  print(p1)
   invisible(p1)
 } # }}}
 
