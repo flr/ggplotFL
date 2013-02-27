@@ -15,8 +15,8 @@ whooow  =function(x,fn,probs)
           
 # plotComp {{{
 plotComp = function(x, fn=NULL, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5),
-  lty=c(2,1,2), facet=facet_wrap(~qname, scale="free"),worm=sample(dims(x)$iter,5)) {
-  
+  lty=c(2,1,2), facet=facet_wrap(~qname, scale="free"),worm=NA) {
+
   if (dims(x)$iter>=length(probs)){
     res = whooow(x,fn,probs)
     p1  = ggplot(res) + geom_line(aes(x=year,y=data,group=iter,size=iter,lty=iter)) +
@@ -30,11 +30,11 @@ plotComp = function(x, fn=NULL, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5),
              xlab("Year") + ylab("") +
              facet
 
-  if (dims(x)$iter>5)
+  if (dims(x)$iter>5 & !(is.na(worm) | is.null(worm))) 
      p1=p1+geom_line(aes(year,data,group=iter,colour=iter),
                 data=transform(subset(as.data.frame(FLQuants(lapply(fn,function(f,x) f(x), x=x))),iter %in% worm),iter=factor(iter)))
   
-  invisible(p1)
+  p1
 } # }}}
 
 # plotComps {{{
@@ -62,6 +62,5 @@ plotComps = function(x, fn=NULL, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5),
            xlab("Year") + ylab("") +
            facet
 
-   print(p1)
-   invisible(p1)} 
+   p1} 
 # }}}
