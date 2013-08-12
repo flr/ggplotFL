@@ -1,54 +1,15 @@
 importClassesFrom("FLCore",
-  "FLQuant",
-  "FLCohort",
   "FLComp",
-  "FLQuants",
   "FLComps",
-  "FLSR",
-  "FLSRs")
+  "FLQuant",
+  "FLQuants")
 importFrom("FLCore",
-  "ac")
+  "ac",
+	"plot")
 importMethodsFrom("FLCore",
-  "plot",
-  "quantile",
-  "apply",
-  "FLQuants",
-  "as.data.frame",
-  "stock.n",
-  "harvest",
-  "FLSRs")
+  "as.data.frame")
 importFrom("ggplot2",
-  "ggplot"
-  )
+  "ggplot")
 exportMethods(
-  "diags",
-  "EP",
   "ggplot",
-  "plot",
-  "plotDiags",
-  "plotEP",
-  "ssn",
-  "EP",
-  "catchSel",
-  "landingsSel", 
-  "discardsSel", 
-  "computeSel",
-  "sel<-")
-export(
-  "doDiags",
-  "doRetros",
-  "getDiag",
-  "decade",
-  "plotComp",
-  "plotComps",
-  "moments",
-  "decade",
-  "stdz",
-  "minMax",  
-  "calcFreq",
-  "calcDensity",
-  "calcProb",
-  "alignSR",
-  "theme_ms",
-  "theme_complete_bw",
-  "theme_invisible")
+	"plot")
