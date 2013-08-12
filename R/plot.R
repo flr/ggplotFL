@@ -5,25 +5,67 @@
 # Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
 # $Id:  $
 
-#     fn=list("SSB"=ssb, "Recruits" = rec,
-#       "Plus Group"=function(x) stock.n(x)[ac(dims(x)$max)],
-#       "Fpg"=function(x) harvest(x)[ac(dims(x)$max)],
-#       "F2:5"=function(x) apply(harvest(x)[ac(2:5)],2,mean))
-    
 # plot(FLStock) {{{
+#' ggplot versions of FLR class plot() methods
+#'
+#' New basic plot for some FLR classes are defined in ggplotFL.
+#'
+#' @aliases plot,FLStock,missing-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'   data(ple4)
+#'   plot(ple4)
+
 setMethod("plot", signature(x="FLStock", y="missing"),
-  function(x, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5), lty=c(2,1,2),
-    facet=facet_wrap(~qname,scale="free"),
-    fn=list("SSB"=ssb, "Recruits" = rec, "Yield"=catch, F=fbar),...) {
-    
-    plotComp(x,fn,probs,size,lty,facet)
-  }
+	function(x, main="", xlab="", ylab="", ...) {
+
+		# extract info to plot: rec, ssb, catch and fbar
+		out <- FLQuants(Rec=rec(x), SSB=ssb(x), Catch=catch(x), Harvest=fbar(x))
+
+		# object w/ iters?
+		if(dims(x)$iter > 1) {
+			res <- FLQ2df(out, quantiles=c(0.10, 0.25, 0.50, 0.75, 0.90))
+		} else {
+			res <- FLQ2df(out)
+		}
+		
+		# plot q50 vs. year + facet on qname +
+		p <- ggplot(data=res, aes(x=year, y=q50)) + facet_grid(qname~., scales="free") +
+			# line + xlab + ylab + limits to include 0 +
+			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			# no legend
+			theme(legend.title = element_blank())
+		
+		# object w/ iters?
+		if(dims(x)$iter > 1) {
+			p <- p +
+			# 75% quantile ribbon in red, alpha=0.25
+			geom_ribbon(aes(x=year, ymin = q25, ymax = q75), fill="red", alpha = .25) +
+			# 90% quantile ribbon in red, aplha=0.10
+			geom_ribbon(aes(x=year, ymin = q10, ymax = q90),  fill="red", alpha = .10)
+		}
+		
+		p
+	}
 ) # }}}
 
 # plot(FLStocks) {{{
+#' ggplot versions of FLR class plot() methods
+#'
+#' New basic plot for some FLR classes are defined in ggplotFL.
+#'
+#' @aliases plots,FLStocks,missing-method
+#' @rdname plot
+#' @examples
+#'   data(ple4)
+#'   fls <- FLStocks(runA=ple4, runB=ple4)
+#'   plot(fls)
+
 setMethod("plot", signature(x="FLStocks", y="missing"),
-  function(x, probs=c(0.75,0.50,0.25), size=c(0.5,1.0,0.5), lty=c(2,1,2),
-    facet=facet_wrap(~qname,scale="free"),
-    fn=list("SSB"=ssb, "Recruits"=rec, "Yield"=catch, F=fbar),...)
-    plotComps(x,fn,probs,size,lty,facet)
+	function(x, main="", xlab="", ylab="", ...) {
+
+		return(TRUE)
+
+	}
 ) # }}}
