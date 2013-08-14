@@ -6,15 +6,15 @@
 # Soundtrack:
 # Notes:
 
-# XX {{{
-# }}}
-
 library(ggplotFL)
 
 data(ple4)
 
 catch(ple4) <- rnorm(100, catch(ple4), catch(ple4))
+catch(ple4)[catch(ple4) < 0]  <- 0
 
 plot(ple4)
 
 pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+
+plot(pls)
