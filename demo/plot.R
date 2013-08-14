@@ -10,6 +10,8 @@ library(ggplotFL)
 
 data(ple4)
 
+plot(ple4)
+
 catch(ple4) <- rnorm(100, catch(ple4), catch(ple4))
 catch(ple4)[catch(ple4) < 0]  <- 0
 

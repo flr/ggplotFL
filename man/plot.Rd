@@ -15,7 +15,7 @@
 data(ple4)
   plot(ple4)
 data(ple4)
-  fls <- FLStocks(runA=ple4, runB=ple4)
-  plot(fls)
+  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+  plot(pls)
 }
 

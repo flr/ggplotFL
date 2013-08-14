@@ -68,23 +68,28 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 #' @rdname plot
 #' @examples
 #'   data(ple4)
-#'   fls <- FLStocks(runA=ple4, runB=ple4)
-#'   plot(fls)
+#'   pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+#'   plot(pls)
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, main="", xlab="", ylab="", ...) {
+		
+		# extract slots by stock
+		fqs <- lapply(x, function(y) FLQuants(Rec=rec(y), SSB=ssb(y),
+			Catch=catch(y), Harvest=fbar(y)))
 
-		# extract slots
-		out <- lapply(x, function(x) FLQuants(Rec=rec(x), SSB=ssb(x),
-			Catch=catch(x), Harvest=fbar(x)))
+		# get median if iters
+		fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile, 0.50)))
+		# stock names
+		stk <- rep.int(names(fqs), unlist(lapply(fqs, nrow)))
+		# rbind dfs
+		fqs <- do.call(rbind, fqs)
+		rownames(fqs) <- NULL
+		# add stock names
+		fqs <- transform(fqs, stock=stk)
 
-		res <- lapply(out, FLQ2df)
-		res <- melt(res, id.vars=c('age', 'year', 'unit', 'season', 'area', 'qname'))
-		# TODO Review
-		res <- cast(res, age+year+unit+season+area+qname+L1~variable)
-	
 		# plot q50 vs. year +
-		p <- ggplot(data=res, aes(x=year, y=q50, colour=L1)) +
+		p <- ggplot(data=fqs, aes(x=year, y=data, colour=stock)) +
 		# facet on qname +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +

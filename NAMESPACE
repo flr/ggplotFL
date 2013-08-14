@@ -1,15 +1,8 @@
-importClassesFrom("FLCore",
-  "FLComp",
-  "FLComps",
-  "FLQuant",
-  "FLQuants")
-importFrom("FLCore",
-  "ac",
-	"plot")
-importMethodsFrom("FLCore",
-  "as.data.frame")
+import("FLCore")
 importFrom("ggplot2",
   "ggplot")
+importFrom("reshape",
+  "cast")
 exportMethods(
   "ggplot",
 	"plot")
