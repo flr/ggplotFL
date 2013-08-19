@@ -1,0 +1,56 @@
+% Plotting FLR objects with ggplot2
+% Iago Mosqueira, EC JRC - FLR Project
+% 2013
+
+```{r, setup, echo=FALSE, results='hide', message=FALSE}
+library(knitr)
+opts_chunk$set(dev='pdf', cache=TRUE)
+options(width=50)
+```
+
+# Using ggplot2 with FLR objects
+```{r, load, echo=FALSE, results='hide', message=FALSE}
+library(ggplotFL)
+data(ple4)
+```
+
+The `ggplot2` ^[\url{http://ggplot2.org/}] package provides a powerful alternative paradigm for creating simple and complex plots in R using the *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. ISBN 0-387-98774-6.]
+
+To facilitate the use of `ggplot2` methods in `FLR`, `ggplotFL` has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing `FLR` classes, a new set of basic plots for some `FLR` classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even farly complex data structures.
+
+# The overloaded `ggplot` method
+
+## FLQuant
+
+```{r, flquant, echo=TRUE, tidy=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
+ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line()
+```
+
+## FLQuants
+
+## FLStock
+
+# plot() for FLR classes
+
+## FLStock
+```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
+plot(ple4)
+```
+# Converting to data.frame
+
+# Some extra examples
+
+# More information
+
+* The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
+```{r, devtools, echo=TRUE, eval=FALSE}
+	library(devtools)
+	install_github('ggplotFL', 'flr')
+```
+* Learn about ggplot2
+* reshape
+
+# Version
+
+* R: `r version$version.string`
+* ggplot2: `r packageVersion('ggplot2')`
