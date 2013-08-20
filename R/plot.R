@@ -31,16 +31,15 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 		
 			# cast with quantiles in columns
 			df <- cast(df, age+year+unit+season+area+qname~iter, value="data")
-			names(df)[7:11] <- paste("q", c(10, 25, 50, 75, 90), sep="")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
 			df <- as.data.frame(fqs)
-			names(df)[7] <- "q50"
+			names(df)[7] <- "50%"
 		}
 	
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=q50)) + facet_grid(qname~., scales="free") +
+		p <- ggplot(data=df, aes(x=year, y=`50%`)) + facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -50,9 +49,9 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 		if(dims(x)$iter > 1) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = q25, ymax = q75), fill="red", alpha = .25) +
+			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
 			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes(x=year, ymin = q10, ymax = q90),  fill="red", alpha = .10)
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),  fill="red", alpha = .10)
 		}
 		
 		return(p)
@@ -101,3 +100,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 
 	}
 ) # }}}
+
+# plot(FLQuant)
+
+# plot(FLQuants)

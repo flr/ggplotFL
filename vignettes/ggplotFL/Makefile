@@ -9,6 +9,7 @@ knitr: $(FILE).Rmd
 
 tex: $(FILE).md
 	pandoc -o $(FILE).tex --template=$(TEMPLATE) $(FILE).md
+# TODO: search w/ awk for figure, match names in VAR, then substitute
 	sed -i 's/figure}.*/marginfigure}/' $(FILE).tex
 
 pdf: $(FILE).tex
