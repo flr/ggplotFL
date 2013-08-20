@@ -1,0 +1,161 @@
+% Plotting FLR objects with ggplot2 and ggplotFL
+% Iago Mosqueira, EC JRC - FLR Project
+% August 2013
+
+
+
+
+# Using ggplot2 with FLR objects
+
+
+
+The `ggplot2` ^[\url{http://ggplot2.org/}] package provides a powerful alternative paradigm for creating simple and complex plots in R using the *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. ISBN 0-387-98774-6.]
+
+To facilitate the use of `ggplot2` methods in `FLR`, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing `FLR` classes, a new set of basic plots for some `FLR` classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
+
+# The overloaded `ggplot` method
+
+## FLQuant
+
+
+```r
+ggplot(data = catch(ple4), aes(year, data)) + geom_point() + 
+    geom_line()
+```
+
+![Combined line and point plot of a time series from an FLQuant object.](figure/flquant.pdf) 
+
+
+## FLQuants
+
+
+```r
+ggplot(data = FLQuants(Yield = catch(ple4), SSB = ssb(ple4), 
+    F = fbar(ple4)), aes(year, data)) + geom_line() + 
+    facet_wrap(~qname, scales = "free", nrow = 3)
+```
+
+![Facet wrap line plot of some time series from an FLQuants object.](figure/flquants.pdf) 
+
+## FLStock
+
+# plot() for FLR classes
+
+The `ggplotFL` package also provides new versions of the `plot` method for a number of `FLR` classes. Each S4 class defined in any `FLR` package should have a `plot()` method defined that provides a visual summary of the contents of the object.
+
+## FLStock
+![ggplot2 version of the standard plot() for FLStock, as applied to `ple4`](figure/plotFLStock.pdf) 
+
+# Converting to data.frame
+
+The methods shown above simply depend on conversion of `FLR` objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an `FLR` object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the `FLR` objects into a `data.frame`.
+
+## Example: plot quantiles of a simulation
+
+To have full control over a plot of the median (or mean) and the confidence or probability intervals of a simulated or randomized time series, i.e. an `FLQuant` object with iters, we need to arrange the different values computed from the object in separate columns of a `data.frame`.
+
+If we start with some random `FLQuant` object, such as
+
+```r
+fla <- rlnorm(100, FLQuant(exp(cumsum(rnorm(25, 0, 
+    0.1)))), 0.1)
+ggplot(fla, aes(factor(year), data)) + geom_boxplot() + 
+    xlab("")
+```
+
+![plot of chunk exsim1](figure/exsim1.pdf) 
+
+we can first compute the necessary statistics on the object itself, as these operations are very efficient on an array. `quantile()` on an `FLQuant` will return the specified quantiles along the `iter` dimension. Let's extract the 10th, 25th, 50th, 75th and 90th quantiles.
+
+
+```r
+flq <- quantile(fla, c(0.1, 0.25, 0.5, 0.75, 0.9))
+```
+
+
+The object can now be coerced to a `data.frame`
+
+```r
+fdf <- as.data.frame(flq)
+```
+
+and inspected to see how the 100 `iters` have been now turned into the five requested quantiles
+
+
+```r
+head(fdf)
+```
+
+```
+##   quant year   unit season   area iter  data
+## 1   all    1 unique    all unique  10% 2.307
+## 2   all    2 unique    all unique  10% 2.462
+## 3   all    3 unique    all unique  10% 2.159
+## 4   all    4 unique    all unique  10% 2.441
+## 5   all    5 unique    all unique  10% 2.295
+## 6   all    6 unique    all unique  10% 2.564
+```
+
+
+The long format `data.frame` can be reshaped into a wide format one so that we can instruct `ggplot` to use the quantiles, now in separate columns, to provide limits for the shaded areas in `geom_ribbon`. To do this we can use `cast`, as follows
+
+
+```r
+fdw <- cast(fdf, quant + year + unit + season + area ~ 
+    iter, value = "data")
+```
+
+
+This creates a wide `data.frame` in which the `iter` column is spread into five columns named as the levels of its conversion into factor
+
+
+```r
+levels(fdf[, "iter"])
+```
+
+```
+## [1] "10%" "25%" "50%" "75%" "90%"
+```
+
+
+We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the columns names returned by `quantile()` need to be quoted using backticks.
+
+
+```r
+ggplot(data = fdw, aes(x = year, y = `50%`)) + geom_line() + 
+    geom_ribbon(aes(x = year, ymin = `10%`, ymax = `90%`), 
+        fill = "red", alpha = 0.15) + geom_ribbon(aes(x = year, 
+    ymin = `25%`, ymax = `75%`), fill = "red", alpha = 0.25) + 
+    ylab("data")
+```
+
+![plot of chunk exsim7](figure/exsim7.pdf) 
+
+
+ 
+
+## Example: Using FLQuants
+
+Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the `FLR` user with most tools required to create a large range of `ggplot`s out of any `FLR` object.
+
+# Some extra examples
+
+## Simulation trajectories plot
+
+# More information
+
+* The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
+
+```r
+library(devtools)
+install_github("ggplotFL", "flr")
+```
+
+* To learn about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
+
+# Package versions
+
+* R: R version 3.0.1 (2013-05-16)
+* ggplot2: 0.9.3.1
+* ggplotFL: 2.15.20130807
+* FLCore: 2.5.20130820
