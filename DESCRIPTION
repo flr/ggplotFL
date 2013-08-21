@@ -1,6 +1,6 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.15.20130807
+Version: 2.15.20130820
 Author: Laurie T. Kell <laurie.kell@iccat.int>, Iago Mosqueira
     <iago.mosqueira-sanchez@jrc.ec.europa.eu>
 Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
@@ -12,7 +12,7 @@ Depends:
   ggplot2,
   plyr,
 	reshape,
-  FLCore(>= 2.5)
+  FLCore(>= 2.5),
 Suggests:
 	knitr
 Collate:
@@ -24,3 +24,4 @@ License: GPL-2
 VignetteBuilder: knitr
 lazyLoad: Yes
 lazyData: Yes
+VignetteBuilder: knitr

@@ -1,0 +1,11 @@
+*.tex
+*.bbl
+*.blg
+*.aux
+*.out
+*.log
+*.spl
+*.md
+figure/*
+cache/*
+

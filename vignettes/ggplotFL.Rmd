@@ -2,6 +2,11 @@
 % Iago Mosqueira, EC JRC - FLR Project
 % August 2013
 
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Using ggplotFL}
+-->
+
 ```{r, setup, echo=FALSE, results='hide', message=FALSE}
 library(knitr)
 opts_chunk$set(dev='pdf', cache=TRUE)
@@ -42,6 +47,7 @@ The `ggplotFL` package also provides new versions of the `plot` method for a num
 ```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
 plot(ple4)
 ```
+
 # Using ggplot2 by converting to data.frame
 
 The methods shown above simply depend on conversion of `FLR` objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an `FLR` object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the `FLR` objects into a `data.frame`.
@@ -83,7 +89,7 @@ This creates a wide `data.frame` in which the `iter` column is spread into five 
 levels(fdf[,'iter'])
 ```
 
-We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the columns names returned by `quantile()` need to be quoted using backticks.
+We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the column names returned by `quantile()` need to be quoted using backticks.
 
 ```{r, exsim7, echo=TRUE, cache=TRUE}
 ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
@@ -105,7 +111,8 @@ Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from
 	library(devtools)
 	install_github('ggplotFL', 'flr')
 ```
-* To learn about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
+* Any bug, question or suggestion on `ggplotFL` can be notified to the developers at its issue page ^[https://github.com/flr/ggplotFL/issues]
+* To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 
 # Package versions
 
@@ -113,3 +120,4 @@ Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from
 * ggplot2: `r packageVersion('ggplot2')`
 * ggplotFL: `r packageVersion('ggplotFL')`
 * FLCore: `r packageVersion('FLCore')`
+
