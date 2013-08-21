@@ -52,6 +52,8 @@ plot(ple4)
 
 The methods shown above simply depend on conversion of `FLR` objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an `FLR` object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the `FLR` objects into a `data.frame`.
 
+# Examples
+
 ## EXAMPLE: plot quantiles of a simulation
 
 To have full control over a plot of the median (or mean) and the confidence or probability intervals of a simulated or randomized time series, i.e. an `FLQuant` object with iters, we need to arrange the different values computed from the object in separate columns of a `data.frame`.
@@ -119,14 +121,32 @@ p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.pos
 ## EXAMPLE: Bubble plots
 
 ```{r, exbub, echo=TRUE, cache=TRUE, fig.cap=""}
-ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age")
+ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
 ```
+
+## EXAMPLE: Residual plots
+```{r, exres, echo=TRUE, cache=TRUE, fig.cap=""}
+dat <- as.data.frame(catch.n(ple4))
+dat$resid <- dat$data - mean(dat$data)
+
+ggplot(dat, aes(year, as.factor(age), size=resid)) +
+	geom_point(shape=21, aes(colour=factor(sign(resid)), fill=factor(sign(resid)))) +
+	scale_size(range = c(1, 20)) +
+	scale_colour_manual(values=c("black", "white")) +
+	scale_fill_manual(values=c("lightgray", "black")) +
+	theme(legend.position = "none") + ylab("age")
+```
+
 ## EXAMPLE: Cohort
 
 ```{r, excoh, echo=TRUE, cache=TRUE, fig.cap=""}
 ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=factor(age))) + scale_colour_hue()
 ```
 
+```{r, spa, echo=FALSE, results='asis', eval=FALSE}
+library(sparktex)
+sparktex(c(catch(ple4))[1:10])
+```
 
 # More information
 
@@ -141,7 +161,7 @@ ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=facto
 
 * To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 
-# Package versions
+## Package versions
 
 * R: `r version$version.string`
 * ggplot2: `r packageVersion('ggplot2')`
