@@ -4,7 +4,7 @@
 
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Using ggplotFL}
+%\VignetteIndexEntry{Plotting FLR objects with ggplot2 and ggplotFL}
 -->
 
 ```{r, setup, echo=FALSE, results='hide', message=FALSE}
