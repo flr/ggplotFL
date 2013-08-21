@@ -52,12 +52,12 @@ plot(ple4)
 
 The methods shown above simply depend on conversion of `FLR` objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an `FLR` object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the `FLR` objects into a `data.frame`.
 
-## Example: plot quantiles of a simulation
+## EXAMPLE: plot quantiles of a simulation
 
 To have full control over a plot of the median (or mean) and the confidence or probability intervals of a simulated or randomized time series, i.e. an `FLQuant` object with iters, we need to arrange the different values computed from the object in separate columns of a `data.frame`.
 
 If we start with some random `FLQuant` object, such as
-```{r, exsim1, echo=TRUE, cache=TRUE}
+```{r, exsim1, echo=TRUE, cache=TRUE, fig.cap=""}
 fla <- rlnorm(100, FLQuant(exp(cumsum(rnorm(25, 0, 0.1)))), 0.1) 
 ggplot(fla, aes(factor(year), data)) + geom_boxplot() + xlab("")
 ```
@@ -91,18 +91,42 @@ levels(fdf[,'iter'])
 
 We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the column names returned by `quantile()` need to be quoted using backticks.
 
-```{r, exsim7, echo=TRUE, cache=TRUE}
-ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
+```{r, exsim7, echo=TRUE, cache=TRUE, fig.cap=""}
+p <- ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
 	geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`), fill="red", alpha = .15) +
 	geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
 	ylab("data")
+print(p)
 ```
 
-## Example: Using FLQuants
+## EXAMPLE: Using FLQuants
 
 Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the `FLR` user with most tools required to create a large range of `ggplot`s out of any `FLR` object.
 
-## Example: Simulation trajectories plot
+## EXAMPLE: Simulation trajectories plot
+
+
+```{r, exspa, echo=TRUE, cache=TRUE, fig.cap=""}
+fds  <- cast(as.data.frame(iter(fla, c(1, 4, 23, 56))), quant+year+unit+season+area~iter, value="data")
+
+p + geom_line(data=fds, aes(year, c(`1`)), colour='red', size=1)
+
+fds  <- as.data.frame(iter(fla, c(1, 4, 23, 56)))
+
+p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.position = "none")
+```
+
+## EXAMPLE: Bubble plots
+
+```{r, exbub, echo=TRUE, cache=TRUE, fig.cap=""}
+ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age")
+```
+## EXAMPLE: Cohort
+
+```{r, excoh, echo=TRUE, cache=TRUE, fig.cap=""}
+ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=factor(age))) + scale_colour_hue()
+```
+
 
 # More information
 
@@ -111,7 +135,10 @@ Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from
 	library(devtools)
 	install_github('ggplotFL', 'flr')
 ```
-* Any bug, question or suggestion on `ggplotFL` can be notified to the developers at its issue page ^[https://github.com/flr/ggplotFL/issues]
+* Any bug, question or suggestion on `ggplotFL` can be notified to the developers at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the `FLR` mailing list.
+
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage \marginnote{http://flr-project.org}.
+
 * To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 
 # Package versions
@@ -120,4 +147,3 @@ Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from
 * ggplot2: `r packageVersion('ggplot2')`
 * ggplotFL: `r packageVersion('ggplotFL')`
 * FLCore: `r packageVersion('FLCore')`
-
