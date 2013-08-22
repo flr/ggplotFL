@@ -15,9 +15,6 @@
 \usepackage{natbib}
 \bibliographystyle{plainnat}
 
-% sparklines
-\usepackage{sparklines}
-
 % biblatex
 $if(biblatex)$
 \usepackage{biblatex}

@@ -143,11 +143,6 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=factor(age))) + scale_colour_hue()
 ```
 
-```{r, spa, echo=FALSE, results='asis', eval=FALSE}
-library(sparktex)
-sparktex(c(catch(ple4))[1:10])
-```
-
 # More information
 
 * The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
