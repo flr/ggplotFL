@@ -1,5 +1,5 @@
 % Plotting FLR objects with ggplot2 and ggplotFL
-% Iago Mosqueira, EC JRC - FLR Project
+% Iago Mosqueira, EC JRC - FLR Project.
 % August 2013
 
 <!--
@@ -9,28 +9,29 @@
 
 ```{r, setup, echo=FALSE, results='hide', message=FALSE}
 library(knitr)
-opts_chunk$set(dev='pdf', cache=TRUE)
+opts_chunk$set(dev='pdf', cache=TRUE, fig.width=4.5, fig.height=4.5)
 options(width=50)
 ```
 
-# Using ggplot2 with FLR objects
 ```{r, load, echo=FALSE, results='hide', message=FALSE}
 library(ggplotFL)
 data(ple4)
 set.seed(1423)
 ```
+# Using ggplot2 with *FLR* objects
 
-The `ggplot2` ^[\url{http://ggplot2.org/}] package provides a powerful alternative paradigm for creating simple and complex plots in R using the *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. ISBN 0-387-98774-6.]
+The `ggplot2` package provides a powerful alternative paradigm for creating simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. ISBN 0-387-98774-6.]
 
-To facilitate the use of `ggplot2` methods in `FLR`, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing `FLR` classes, a new set of basic plots for some `FLR` classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
+To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
-# The overloaded `ggplot` method
+# The overloaded 'ggplot` method
 
 ## FLQuant
 
 ```{r, flquant, echo=TRUE, tidy=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
 ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line()
 ```
+
 
 ## FLQuants
 
@@ -39,9 +40,9 @@ ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, 
 ```
 ## FLStock
 
-# New plot() method for FLR classes
+# New plot() methods for FLR classes
 
-The `ggplotFL` package also provides new versions of the `plot` method for a number of `FLR` classes. Each S4 class defined in any `FLR` package should have a `plot()` method defined that provides a visual summary of the contents of the object.
+The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package should have a `plot()` method defined that provides a visual summary of the contents of the object.
 
 ## FLStock
 ```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
@@ -50,11 +51,11 @@ plot(ple4)
 
 # Using ggplot2 by converting to data.frame
 
-The methods shown above simply depend on conversion of `FLR` objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an `FLR` object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the `FLR` objects into a `data.frame`.
+The methods shown above simply depend on conversion of *FLR* objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an *FLR* object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the *FLR* objects into a `data.frame`.
 
-# Examples
+# Some examples
 
-## EXAMPLE: plot quantiles of a simulation
+## Example: plot quantiles of a simulation
 
 To have full control over a plot of the median (or mean) and the confidence or probability intervals of a simulated or randomized time series, i.e. an `FLQuant` object with iters, we need to arrange the different values computed from the object in separate columns of a `data.frame`.
 
@@ -73,10 +74,10 @@ The object can now be coerced to a `data.frame`
 ```{r, exsim3, echo=TRUE, cache=TRUE}
 fdf <- as.data.frame(flq)
 ```
-and inspected to see how the 100 `iters` have been now turned into the five requested quantiles
+and inspected to see how the 100 `iters` have been now turned into the five requested quantiles in the iter column
 
-```{r, exsim4, echo=TRUE, cache=TRUE, results='markup'}
-head(fdf)
+```{r, exsim4, echo=FALSE, cache=TRUE, results='markup'}
+head(fdf, 3)
 ```
 
 The long format `data.frame` can be reshaped into a wide format one so that we can instruct `ggplot` to use the quantiles, now in separate columns, to provide limits for the shaded areas in `geom_ribbon`. To do this we can use `cast`, as follows
@@ -101,11 +102,11 @@ p <- ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
 print(p)
 ```
 
-## EXAMPLE: Using FLQuants
+## Example: Using FLQuants
 
-Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the `FLR` user with most tools required to create a large range of `ggplot`s out of any `FLR` object.
+Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the *FLR* user with most tools required to create a large range of `ggplot`s out of any *FLR* object.
 
-## EXAMPLE: Simulation trajectories plot
+## Example: Simulation trajectories plot
 
 
 ```{r, exspa, echo=TRUE, cache=TRUE, fig.cap=""}
@@ -118,13 +119,13 @@ fds  <- as.data.frame(iter(fla, c(1, 4, 23, 56)))
 p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.position = "none")
 ```
 
-## EXAMPLE: Bubble plots
+## Example: Bubble plots
 
 ```{r, exbub, echo=TRUE, cache=TRUE, fig.cap=""}
 ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
 ```
 
-## EXAMPLE: Residual plots
+## Example: Residual plots
 ```{r, exres, echo=TRUE, cache=TRUE, fig.cap=""}
 dat <- as.data.frame(catch.n(ple4))
 dat$resid <- dat$data - mean(dat$data)
@@ -137,7 +138,7 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 	theme(legend.position = "none") + ylab("age")
 ```
 
-## EXAMPLE: Cohort
+## Example: Cohort
 
 ```{r, excoh, echo=TRUE, cache=TRUE, fig.cap=""}
 ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=factor(age))) + scale_colour_hue()
@@ -150,9 +151,9 @@ ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=facto
 	library(devtools)
 	install_github('ggplotFL', 'flr')
 ```
-* Any bug, question or suggestion on `ggplotFL` can be notified to the developers at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the `FLR` mailing list.
+* Any bug, question or suggestion on `ggplotFL` can be notified to the developers at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the *FLR* mailing list.
 
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage \marginnote{http://flr-project.org}.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[http://flr-project.org].
 
 * To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 

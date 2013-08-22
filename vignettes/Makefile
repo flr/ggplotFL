@@ -10,7 +10,6 @@ clean:
 
 %.pdf: %.tex
 	pdflatex $*.tex
-#	$(R_HOME)/bin/Rscript -e "library(tools); texi2pdf('$*.Rmd')"
 
 %.tex: %.md
 	pandoc -o $*.tex --template=$(TEMPLATE) $*.md
