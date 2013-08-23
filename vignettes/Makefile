@@ -16,4 +16,6 @@ clean:
 	sed -i 's/figure}.*/marginfigure}/' $*.tex
 
 %.md: %.Rmd
-	$(R_HOME)/bin/Rscript -e "library(knitr); knit('$*.Rmd')"
+	$(R_HOME)/bin/Rscript -e "library(knitr)" \
+		-e "knit('$*.Rmd')"
+
