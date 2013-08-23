@@ -1,5 +1,9 @@
 % Plotting FLR objects with ggplot2 and ggplotFL
-% Iago Mosqueira, EC JRC - FLR Project.
+% Iago Mosqueira, EC JRC\thanks{
+	European Commission\\
+	Joint Research Center\\
+	IPSC - Maritime Affairs Unit G.04\\
+	Ispra, Italy} - FLR Project
 % August 2013
 
 <!--
