@@ -13,6 +13,7 @@ clean:
 
 %.tex: %.md
 	pandoc -o $*.tex --template=$(TEMPLATE) $*.md
+	# HACK: Turn figure{} output by pandoc md2tex to marginfigure
 	sed -i 's/figure}.*/marginfigure}/' $*.tex
 
 %.md: %.Rmd

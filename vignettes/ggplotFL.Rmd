@@ -33,7 +33,7 @@ To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has 
 ## FLQuant
 
 ```{r, flquant, echo=TRUE, tidy=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
-ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line()
+ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("")
 ```
 
 
