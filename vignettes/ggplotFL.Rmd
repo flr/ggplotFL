@@ -30,19 +30,31 @@ To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has 
 
 # The overloaded 'ggplot` method
 
+The standard `ggplot` functions expects a `data.frame` for its first argument, `data`. If `ggplot` is called on an *FLR* object, a conversion to `data.frame` takes place before the result, plus any other arguments provided, are passed to the original `ggplot()`. Conversion makes use of `as.data.frame`^[`method?as.data.frame('FLQuant')`] methods defined in `FLCore`, with the `cohort` argument set to `TRUE`.
+
 ## FLQuant
+
+Passing an `FLQuant` object to ggplot, we can specify the names of the dimensions as variables in the plot, where `data` refers to the column storing the actual numeric values. For example, to plot `data` (the `catch` slot from `ple4` in this case) against year, we could use
 
 ```{r, flquant, echo=TRUE, tidy=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
 ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("")
 ```
 
-
 ## FLQuants
 
+Similarly, we can pass on to `ggplot` an object of class `FLQuants`, and the conversion to `data.frame` will make use of the corresponding method ^[method?as.data.frame('FLQuants')]. A new column gives the name of each `FLQuant` in the list, called `qname`. When can then use it to, for example, define a call to `facet_wrap()` to obtain a separate subplot per element.
+
 ```{r, flquants, echo=TRUE, tidy=TRUE, fig.cap="Facet wrap line plot of some time series from an FLQuants object."}
-ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3)
+ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3) + labs(x="", y="")
 ```
+
+This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset can be selected for plotting, and transformations or computations can be carried out in the call to the `FLQuants()` creator.
+
 ## FLStock
+```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, facted by slot."}
+ggplot(data=ple4, aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3) + labs(x="", y="")
+```
+
 
 # New plot() methods for FLR classes
 
