@@ -1,4 +1,4 @@
-% Plotting FLR objects with ggplot2 and ggplotFL
+% Plotting FLR objects with ggplotFL and ggplot2
 % Iago Mosqueira, EC JRC\thanks{
 	European Commission\\
 	Joint Research Center\\
@@ -22,6 +22,7 @@ library(ggplotFL)
 data(ple4)
 set.seed(1423)
 ```
+
 # Using ggplot2 with *FLR* objects
 
 The `ggplot2` package provides a powerful alternative paradigm for creating simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. ISBN 0-387-98774-6.]
@@ -51,8 +52,8 @@ ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, 
 This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset can be selected for plotting, and transformations or computations can be carried out in the call to the `FLQuants()` creator.
 
 ## FLStock
-```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, facted by slot."}
-ggplot(data=ple4, aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3) + labs(x="", y="")
+```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=18, fig.height=6}
+ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
 ```
 
 

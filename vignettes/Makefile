@@ -1,7 +1,7 @@
 TEMPLATE=tufte-handout.template
-PDFS= ggplotFL.pdf
+PDFS=ggplotFL.pdf
 R_HOME=/usr/local
-
+FIGS=flstock
 
 all: $(PDFS)
 
@@ -13,10 +13,19 @@ clean:
 
 %.tex: %.md
 	pandoc -o $*.tex --template=$(TEMPLATE) $*.md
-	# HACK: Turn figure{} output by pandoc md2tex to marginfigure
 	sed -i 's/figure}.*/marginfigure}/' $*.tex
 
 %.md: %.Rmd
 	$(R_HOME)/bin/Rscript -e "library(knitr)" \
 		-e "knit('$*.Rmd')"
 
+test:
+	if [ $${FIGSLN} -gt 1 ] ; then \
+		FIGSLN=`grep -n "figure\/$(FIGS).pdf" $*.tex | awk -F: '{print $$1}'`; \
+		sed -i '$(shell expr $$(FIGSLN) - 2)s/figure}.*/figure*}/' $*.tex; \
+		sed -i '$(shell expr $$(FIGSLN) + 3)s/figure}.*/figure*}/' $*.tex; \
+	fi
+	LN=$(shell grep -n "figure\/$(FIGS).pdf" $*.tex | awk -F: '{print $$1}');\
+		PRE=`expr $$LN - 2`; \
+		$(shell sed '$$PREs/figu/FIGU/' $*,tex); \
+		echo $$PRE
