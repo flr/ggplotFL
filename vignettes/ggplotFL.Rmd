@@ -2,8 +2,9 @@
 % Iago Mosqueira, EC JRC\thanks{
 	European Commission\\
 	Joint Research Center\\
-	IPSC - Maritime Affairs Unit G.04\\
-	Ispra, Italy} - FLR Project
+	IPSC - Maritime Affairs Unit\\
+	Ispra, Italy\\
+	\url{https://fishreg.jrc.ec.europa.eu/}} - FLR Project
 % August 2013
 
 <!--
@@ -52,7 +53,7 @@ ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, 
 This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset can be selected for plotting, and transformations or computations can be carried out in the call to the `FLQuants()` creator.
 
 ## FLStock
-```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=18, fig.height=6}
+```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
 ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
 ```
 
@@ -163,16 +164,19 @@ ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=facto
 
 # More information
 
+* You can submit bug reports, questions or suggestions on `ggplotFL` at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the *FLR* mailing list.
+
+* Or send a pull request to ^[https://github.com/flr/ggplotFL/]
+
 * The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
 	install_github('ggplotFL', 'flr')
 ```
-* Any bug, question or suggestion on `ggplotFL` can be notified to the developers at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the *FLR* mailing list.
 
 * For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[http://flr-project.org].
 
-* To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or read the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
+* To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or look at the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 
 ## Package versions
 

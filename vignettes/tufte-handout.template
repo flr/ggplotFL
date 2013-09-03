@@ -29,6 +29,9 @@ $endif$
 % url
 \usepackage{url}
 
+% hyperref
+\usepackage{hyperref}
+
 % units.
 \usepackage{units}
 
