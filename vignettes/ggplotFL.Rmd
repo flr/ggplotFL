@@ -30,11 +30,20 @@ The `ggplot2` package provides a powerful alternative paradigm for creating simp
 
 To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
+# New plot() methods for FLR classes
+
+The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package should have a `plot()` method defined that provides a visual summary of the contents of the object.
+
+## FLStock
+```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
+plot(ple4)
+```
+
 # The overloaded 'ggplot` method
 
-The standard `ggplot` functions expects a `data.frame` for its first argument, `data`. If `ggplot` is called on an *FLR* object, a conversion to `data.frame` takes place before the result, plus any other arguments provided, are passed to the original `ggplot()`. Conversion makes use of `as.data.frame`^[`method?as.data.frame('FLQuant')`] methods defined in `FLCore`, with the `cohort` argument set to `TRUE`.
+The standard `ggplot` functions expects a `data.frame` for its first argument, `data`. If `ggplot` is called on an *FLR* object, a conversion to `data.frame` takes place before the result, plus any other arguments provided, get passed to the original `ggplot()`. Conversion makes use of `as.data.frame`^[`method?as.data.frame('FLQuant')`] methods defined in `FLCore`, with the `cohort` argument set to `TRUE`.
 
-## FLQuant
+# FLQuant
 
 Passing an `FLQuant` object to ggplot, we can specify the names of the dimensions as variables in the plot, where `data` refers to the column storing the actual numeric values. For example, to plot `data` (the `catch` slot from `ple4` in this case) against year, we could use
 
@@ -53,18 +62,8 @@ ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, 
 This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset can be selected for plotting, and transformations or computations can be carried out in the call to the `FLQuants()` creator.
 
 ## FLStock
-```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
+```{r, flstock, echo=FALSE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
 ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
-```
-
-
-# New plot() methods for FLR classes
-
-The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package should have a `plot()` method defined that provides a visual summary of the contents of the object.
-
-## FLStock
-```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
-plot(ple4)
 ```
 
 # Using ggplot2 by converting to data.frame
@@ -165,18 +164,14 @@ ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=facto
 # More information
 
 * You can submit bug reports, questions or suggestions on `ggplotFL` at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the *FLR* mailing list.
-
-* Or send a pull request to ^[https://github.com/flr/ggplotFL/]
-
+* Or send a pull request to \url{https://github.com/flr/ggplotFL/}
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[http://flr-project.org].
+* To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or look at the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 * The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
 	install_github('ggplotFL', 'flr')
 ```
-
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[http://flr-project.org].
-
-* To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or look at the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
 
 ## Package versions
 

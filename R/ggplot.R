@@ -9,7 +9,7 @@
 
 #' ggplot method for various FLR classes
 #'
-#' The \code{\link{ggplot()}} method has been conveniently overloaded for various
+#' The \code{\link{ggplot}()} method has been conveniently overloaded for various
 #' FLR classes. A call to \code{\link{as.data.frame}} takes place on \code{data}
 #' before passing all arguments to the original \code{ggplot} method.
 #'
@@ -17,6 +17,7 @@
 #' understand the naming conventions used in the resulting \code{data.frame}
 #'
 #' @param data An \code{FLQuant} object
+#' @param ... Other arguments to \link{ggplot}
 #' @rdname ggplot
 #' @aliases ggplot,FLQuant-method
 #' @docType methods
@@ -34,6 +35,11 @@ setMethod("ggplot", signature(data="FLQuant"),
 # FLQuants
 #' @rdname ggplot
 #' @aliases ggplot,FLQuants-method
+#' @examples
+#'    data(ple4)
+#'    dat <- FLQuants(catch=catch(ple4), ssb=ssb(ple4))
+#'    ggplot(data=dat, aes(data, year)) + geom_point() + facet_wrap(~qname)
+
 setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
     data <- as.data.frame(data, cohort=TRUE)

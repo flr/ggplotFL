@@ -8,12 +8,14 @@
 \title{ggplot method for various FLR classes}
 \arguments{
   \item{data}{An \code{FLQuant} object}
+
+  \item{...}{Other arguments to \link{ggplot}}
 }
 \description{
-  The \code{\link{ggplot()}} method has been conviniently
+  The \code{\link{ggplot}()} method has been conveniently
   overloaded for various FLR classes. A call to
-  \code{{\link{{as.data.frame}}}} takes place on
-  \\code{data} before passing all arguments to the original
+  \code{\link{as.data.frame}} takes place on \code{data}
+  before passing all arguments to the original
   \code{ggplot} method.
 }
 \details{
@@ -24,6 +26,9 @@
 \examples{
 dat <- rnorm(1, FLQuant(1, dim=c(5,10)), 0.5)
    ggplot(data=dat, aes(data, year)) + geom_point()
+data(ple4)
+   dat <- FLQuants(catch=catch(ple4), ssb=ssb(ple4))
+   ggplot(data=dat, aes(data, year)) + geom_point() + facet_wrap(~qname)
 }
 \seealso{
   \link{ggplot}, \url{http://github.com/flr/ggplotFL/}
