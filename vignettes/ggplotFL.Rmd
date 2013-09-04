@@ -30,14 +30,6 @@ The `ggplot2` package provides a powerful alternative paradigm for creating simp
 
 To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
-# New plot() methods for FLR classes
-
-The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package should have a `plot()` method defined that provides a visual summary of the contents of the object.
-
-## FLStock
-```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
-plot(ple4)
-```
 
 # The overloaded 'ggplot` method
 
@@ -62,8 +54,23 @@ ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, 
 This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset can be selected for plotting, and transformations or computations can be carried out in the call to the `FLQuants()` creator.
 
 ## FLStock
+**TODO**: ADD text
+
 ```{r, flstock, echo=FALSE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
 ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
+```
+
+# New plot() methods for FLR classes
+
+The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package should have a `plot()` method defined that provides a visual summary of the contents of the object.
+
+**TODO**: ADD text
+
+## FLStock
+**TODO**: ADD text
+
+```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
+plot(ple4)
 ```
 
 # Using ggplot2 by converting to data.frame
@@ -123,8 +130,11 @@ print(p)
 
 Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the *FLR* user with most tools required to create a large range of `ggplot`s out of any *FLR* object.
 
+**TODO**: ADD text
+
 ## Example: Simulation trajectories plot
 
+**TODO**: ADD text
 
 ```{r, exspa, echo=TRUE, cache=TRUE, fig.cap=""}
 fds  <- cast(as.data.frame(iter(fla, c(1, 4, 23, 56))), quant+year+unit+season+area~iter, value="data")
@@ -137,12 +147,15 @@ p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.pos
 ```
 
 ## Example: Bubble plots
+**TODO**: ADD text
 
 ```{r, exbub, echo=TRUE, cache=TRUE, fig.cap=""}
 ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
 ```
 
 ## Example: Residual plots
+**TODO**: ADD text
+
 ```{r, exres, echo=TRUE, cache=TRUE, fig.cap=""}
 dat <- as.data.frame(catch.n(ple4))
 dat$resid <- dat$data - mean(dat$data)
@@ -156,6 +169,7 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 ```
 
 ## Example: Cohort
+**TODO**: ADD text
 
 ```{r, excoh, echo=TRUE, cache=TRUE, fig.cap=""}
 ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=factor(age))) + scale_colour_hue()

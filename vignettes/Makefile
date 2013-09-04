@@ -16,6 +16,7 @@ cleanall: clean
 %.tex: %.md
 	pandoc -o $*.tex --template=$(TEMPLATE) $*.md
 	sed -i 's/figure}.*/marginfigure}/' $*.tex
+	./figure.sh
 
 %.md: %.Rmd
 	$(R_HOME)/bin/Rscript -e "library(knitr)" \
