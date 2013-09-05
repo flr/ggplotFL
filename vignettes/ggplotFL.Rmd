@@ -193,3 +193,5 @@ ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=facto
 * ggplot2: `r packageVersion('ggplot2')`
 * ggplotFL: `r packageVersion('ggplotFL')`
 * FLCore: `r packageVersion('FLCore')`
+
+* Compiled: `r date()`
