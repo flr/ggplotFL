@@ -47,27 +47,27 @@ ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("C
 
 Similarly, we can pass on to `ggplot` an object of class `FLQuants`, and the conversion to `data.frame` will make use of the corresponding method ^[method?as.data.frame('FLQuants')]. A new column gives the name of each `FLQuant` in the list, called `qname`. When can then use it to, for example, define a call to `facet_wrap()` to obtain a separate subplot per element.
 
-```{r, flquants, echo=TRUE, tidy=TRUE, fig.cap="Facet wrap line plot of some time series from an FLQuants object."}
+```{r, flquants, echo=TRUE, tidy=TRUE, fig.cap="Facet wrap line plot of time series from an FLQuants object."}
 ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3) + labs(x="", y="")
 ```
 
-This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset can be selected for plotting, and transformations or computations can be carried out in the call to the `FLQuants()` creator.
+This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset of slots can be selected for plotting, and even transformations or computations can be carried out in the call to the `FLQuants()` creator.
 
 ## FLStock
-**TODO**: ADD text
 
-```{r, flstock, echo=FALSE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
+A whole FLStock object can also be used as argument to `ggplot()`, even if the heterogeneity in scale of the data contained makes the plot slightly confusing. For example, we can plot time series of every `FLQuant` slot in `ple4`, with color applied to different `age` dimensions, as follows:
+
+```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
 ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
 ```
 
 # New plot() methods for FLR classes
 
-The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package should have a `plot()` method defined that provides a visual summary of the contents of the object.
-
-**TODO**: ADD text
+The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package has a `plot()` method defined that provides a quick visual summary of the contents of the object.
 
 ## FLStock
-**TODO**: ADD text
+
+The `ggplotFL` version of the standard plot for the `FLStock` class, contains the time series of recruitment (by calling `rec()`), SSB (`ssb()`), catch (`catch()`), and fishing morality or harvest (`fbar()`). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.
 
 ```{r, plotFLStock, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
 plot(ple4)
@@ -84,7 +84,7 @@ The methods shown above simply depend on conversion of *FLR* objects into `data.
 To have full control over a plot of the median (or mean) and the confidence or probability intervals of a simulated or randomized time series, i.e. an `FLQuant` object with iters, we need to arrange the different values computed from the object in separate columns of a `data.frame`.
 
 If we start with some random `FLQuant` object, such as
-```{r, exsim1, echo=TRUE, cache=TRUE, fig.cap=""}
+```{r, exsim1, echo=TRUE, cache=TRUE, fig.cap="Distribution of values of a simulated time series plotted using geom_boxplot()"}
 fla <- rlnorm(100, FLQuant(exp(cumsum(rnorm(25, 0, 0.1)))), 0.1) 
 ggplot(fla, aes(factor(year), data)) + geom_boxplot() + xlab("")
 ```
@@ -118,7 +118,7 @@ levels(fdf[,'iter'])
 
 We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the column names returned by `quantile()` need to be quoted using backticks.
 
-```{r, exsim7, echo=TRUE, cache=TRUE, fig.cap=""}
+```{r, exsim7, echo=TRUE, cache=TRUE, fig.cap="Time series with 75% and 90% credibility intervals plotted using geom_ribbon."}
 p <- ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
 	geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`), fill="red", alpha = .15) +
 	geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
@@ -126,25 +126,25 @@ p <- ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
 print(p)
 ```
 
+Assigning the result of the call to `ggplot()` to a variable, as done above, will allow us to reuse the plot later on by modifying or adding components.
+
+## Example: Simulation trajectories plot
+
+If the result of an stochastic simulation is summarised by showing credibility intervals, it is very informative to plot as well some of the individual iterations as a way of showing the fact that individual trajectories are generally not as smooth as, for example, the median shown in the figure above.
+
+```{r, exspa, echo=TRUE, cache=TRUE, fig.cap="Spaghetti plot of an stochastic simulation, by calling geom_line on top of the stored ribbon plot."}
+fds  <- as.data.frame(iter(fla, c(1, 4, 23)))
+
+p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.position = "none")
+```
+
+This is easy to do in `ggplot2` by adding an extra element on top of the previous plot, stored in the `p` object from the code above.
+
 ## Example: Using FLQuants
 
 Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the *FLR* user with most tools required to create a large range of `ggplot`s out of any *FLR* object.
 
 **TODO**: ADD text
-
-## Example: Simulation trajectories plot
-
-**TODO**: ADD text
-
-```{r, exspa, echo=TRUE, cache=TRUE, fig.cap=""}
-fds  <- cast(as.data.frame(iter(fla, c(1, 4, 23, 56))), quant+year+unit+season+area~iter, value="data")
-
-p + geom_line(data=fds, aes(year, c(`1`)), colour='red', size=1)
-
-fds  <- as.data.frame(iter(fla, c(1, 4, 23, 56)))
-
-p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.position = "none")
-```
 
 ## Example: Bubble plots
 **TODO**: ADD text
@@ -168,12 +168,7 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 	theme(legend.position = "none") + ylab("age")
 ```
 
-## Example: Cohort
-**TODO**: ADD text
-
-```{r, excoh, echo=TRUE, cache=TRUE, fig.cap=""}
-ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=factor(age))) + scale_colour_hue()
-```
+\vspace{1in}
 
 # More information
 
@@ -194,4 +189,4 @@ ggplot(catch.n(ple4), aes(cohort, data)) + geom_line(aes(group=age, colour=facto
 * ggplotFL: `r packageVersion('ggplotFL')`
 * FLCore: `r packageVersion('FLCore')`
 
-* Compiled: `r date()`
+## Compiled: `r date()`
