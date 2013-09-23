@@ -10,5 +10,6 @@
 ## UTILITIES
 
 ## DOCUMENTATION
+	- Added mention to plot(FLStocks) to vignette
 
 ## DEPRECATED & DEFUNCT

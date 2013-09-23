@@ -73,6 +73,16 @@ The `ggplotFL` version of the standard plot for the `FLStock` class, contains th
 plot(ple4)
 ```
 
+
+## FLStocks
+
+Similarly, the standard `plot()` method for the `FLStocks` class now relies on ggplot. For example, we can create an example `FLStocks` object by splitting the female and male units of `ple4sex` and adding them as separate elements in the list. A call to `plot()` would give us the corresponding plot. Remember the object returned by `ggplot` can be assigned to a variable in the workspace and modified as required.
+
+```{r, plotFLStocks, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to a split of `ple4sex`"}
+data(ple4sex)
+plot(FLStocks(ple4M=ple4sex[,,'male'], ple4F=ple4sex[,,'female']))
+```
+
 # Using ggplot2 by converting to data.frame
 
 The methods shown above simply depend on conversion of *FLR* objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an *FLR* object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the *FLR* objects into a `data.frame`.
