@@ -5,7 +5,7 @@
 	IPSC - Maritime Affairs Unit\\
 	Ispra, Italy\\
 	\url{https://fishreg.jrc.ec.europa.eu/}} - FLR Project
-% August 2013
+% `r format(Sys.time(), "%B %Y")`
 
 <!--
 %\VignetteEngine{knitr::knitr}
@@ -45,7 +45,7 @@ ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("C
 
 ## FLQuants
 
-Similarly, we can pass on to `ggplot` an object of class `FLQuants`, and the conversion to `data.frame` will make use of the corresponding method ^[method?as.data.frame('FLQuants')]. A new column gives the name of each `FLQuant` in the list, called `qname`. When can then use it to, for example, define a call to `facet_wrap()` to obtain a separate subplot per element.
+Similarly, we can pass on to `ggplot` an object of class `FLQuants`, and the conversion to `data.frame` will make use of the corresponding method ^[`method?as.data.frame('FLQuants')`]. A new column gives the name of each `FLQuant` in the list, called `qname`. When can then use it to, for example, define a call to `facet_wrap()` to obtain a separate subplot per element.
 
 ```{r, flquants, echo=TRUE, tidy=TRUE, fig.cap="Facet wrap line plot of time series from an FLQuants object."}
 ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3) + labs(x="", y="")
@@ -157,11 +157,13 @@ Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from
 **TODO**: ADD text
 
 ## Example: Bubble plots
-**TODO**: ADD text
+Bubble plots allow us to represent a third continuous dimension in a scatter plot by sizing points according the value of a variable. For example, catch in numbers  by age and year can be visualized using
 
-```{r, exbub, echo=TRUE, cache=TRUE, fig.cap=""}
+```{r, exbub, echo=TRUE, cache=TRUE, fig.cap="Bubble plot of catch by age in numbners for North Sea plaice."}
 ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
 ```
+
+where *data* is used to size the bubbles in the call to *aes()*.
 
 ## Example: Residual plots
 **TODO**: ADD text
@@ -192,11 +194,12 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 	install_github('ggplotFL', 'flr')
 ```
 
-## Package versions
+## Software Versions
 
-* R: `r version$version.string`
-* ggplot2: `r packageVersion('ggplot2')`
+* `r version$version.string`
 * ggplotFL: `r packageVersion('ggplotFL')`
 * FLCore: `r packageVersion('FLCore')`
+* ggplot2: `r packageVersion('ggplot2')`
+* **Compiled**: `r date()`
+* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
-## Compiled: `r date()`
