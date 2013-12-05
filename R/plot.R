@@ -154,3 +154,67 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		return(p)
 	}
 ) # }}}
+
+# plot(FLQuant) {{{
+#' ggplot versions of FLR class plot() methods
+#'
+#' New basic plot for some FLR classes are defined in ggplotFL.
+#'
+#' @aliases plot,FLQuants,missing-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'   data(ple4)
+#'   plot(catch.n(ple4))
+
+setMethod("plot", signature(x="FLQuant", y="missing"),
+	function(x, main="", xlab="", ylab="", ...) {
+		
+		# object w/ iters? compute quantiles
+		if(dims(x)$iter > 1) {
+
+			# compute quantiles on FLQs, then convert to df
+			df <- as.data.frame(quantile(x, c(0.10, 0.25, 0.50, 0.75, 0.90)))
+		
+			# cast with quantiles in columns
+			df <- cast(df, age+year+unit+season+area~iter, value="data")
+			
+		# otherwise, rename 'data' as 'q50'
+		} else {
+			df <- as.data.frame(x)
+			names(df)[7] <- "50%"
+		}
+
+		# dims on facet or groups
+		dx <- dim(x)
+		ldi <- names(x)[-c(2,6)][dx[-c(2,6)] > 1]
+
+		# basic plot data vs. year
+		p <- ggplot(data=df, aes(x=year, y=`50%`)) + geom_line() +
+			# line + xlab + ylab + limits to include 0 +
+			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			# no legend
+			theme(legend.title = element_blank())
+
+		# build formula
+		if(length(ldi) == 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
+				labeller=label_both)
+		}
+		else if (length(ldi) > 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1], sep= "+"))),
+				scales="free", labeller=label_both)
+		}
+
+		# object w/ iters?
+		if(dims(x)$iter > 1) {
+			p <- p +
+			# 75% quantile ribbon in red, alpha=0.25
+			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
+			# 90% quantile ribbon in red, aplha=0.10
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),  fill="red", alpha = .10)
+		}
+		
+		return(p)
+	}
+) # }}}
