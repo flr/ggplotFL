@@ -43,13 +43,22 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, main="", xlab="", ylab="", ...) {
+
+		cos <- c('red', 'blue')
 		
 		# extract slots by stock
 		fqs <- lapply(x, function(y) FLQuants(Rec=rec(y), SSB=ssb(y),
 			Catch=catch(y), Harvest=fbar(y)))
 
-		# get median if iters
-		fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile, 0.50)))
+		# get median & 85% quantiles if iters
+		its <- unlist(lapply(x, function(x) dims(x)$iter))
+		if(any(its > 1))
+		{
+			# quantiles
+			fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile,
+				c(0.10, 0.50, 0.90))))
+		}
+
 		# stock names
 		stk <- rep.int(names(fqs), unlist(lapply(fqs, nrow)))
 		# rbind dfs
@@ -58,15 +67,26 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		# add stock names
 		fqs <- transform(fqs, stock=stk)
 
-		# plot q50 vs. year +
-		p <- ggplot(data=fqs, aes(x=year, y=data, colour=stock)) +
-		# facet on qname +
-			facet_grid(qname~., scales="free") +
-			# line + xlab + ylab + limits to include 0 +
-			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
-			# no legend
-			theme(legend.position="bottom", legend.title=element_blank())
+		# cast with quantiles in columns
+		df <- cast(fqs, age+year+unit+season+area+qname+stock~iter, value="data")
 
+
+		# plot data vs. year + facet on qname +
+		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +
+		facet_grid(qname~., scales="free") +
+			# line + xlab + ylab + limits to include 0 +
+			geom_line(aes(colour=stock)) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			# no legend
+			theme(legend.title = element_blank())
+		
+		# object w/ iters?
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+				p <- p +
+			# 75% quantile ribbon in red, alpha=0.25
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock), fill='red', alpha = .10)
+			# 90% quantile ribbon in red, aplha=0.10
+		}
+		
 		return(p)
 
 	}
