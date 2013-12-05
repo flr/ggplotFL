@@ -2,6 +2,7 @@
 
 ## NEW FEATURES
 - New package vignette
+- plot() method for FLQuants, reused by plot(FLStock)
 
 ## USER-VISIBLE CHANGES 
 

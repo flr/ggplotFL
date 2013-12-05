@@ -22,38 +22,9 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 		
 		# extract info to plot: rec, ssb, catch and fbar
 		fqs <- FLQuants(Rec=rec(x), SSB=ssb(x), Catch=catch(x), Harvest=fbar(x))
-		
-		# object w/ iters? compute quantiles
-		if(dims(x)$iter > 1) {
 
-			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(lapply(fqs, quantile, c(0.10, 0.25, 0.50, 0.75, 0.90)))
-		
-			# cast with quantiles in columns
-			df <- cast(df, age+year+unit+season+area+qname~iter, value="data")
-			
-		# otherwise, rename 'data' as 'q50'
-		} else {
-			df <- as.data.frame(fqs)
-			names(df)[7] <- "50%"
-		}
-	
-		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=`50%`)) + facet_grid(qname~., scales="free") +
-			# line + xlab + ylab + limits to include 0 +
-			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
-			# no legend
-			theme(legend.title = element_blank())
-		
-		# object w/ iters?
-		if(dims(x)$iter > 1) {
-			p <- p +
-			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
-			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),  fill="red", alpha = .10)
-		}
-		
+		p <- plot(fqs)
+
 		return(p)
 	}
 ) # }}}
@@ -101,6 +72,85 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 	}
 ) # }}}
 
-# plot(FLQuant)
+# plot(FLStock, FLPar) {{{
+#' ggplot versions of FLR class plot() methods
+#'
+#' New basic plot for some FLR classes are defined in ggplotFL.
+#'
+#' @aliases plot,FLStock,FLPar-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'   data(ple4)
+#'   rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
+#'   plot(ple4, rps)
 
-# plot(FLQuants)
+setMethod("plot", signature(x="FLStock", y="FLPar"),
+	function(x, y, ...) {
+
+		p <- plot(x, ...)
+		p <- plot(x)
+
+		rpa <- as.data.frame(y)
+		names(rpa)[1] <- 'qname'
+
+		# BUG BUT Catch is Yield in plot(FLStock)
+		qnames <- c("Rec", "SSB", "Catch", "Harvest")
+		idx <- pmatch(as.character(rpa$qname), qnames, duplicates.ok=TRUE)
+		rpa <- rpa[idx,c('qname', 'data')]
+		
+		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
+		
+		return(p)
+	}
+) # }}}
+
+# plot(FLQuants) {{{
+#' ggplot versions of FLR class plot() methods
+#'
+#' New basic plot for some FLR classes are defined in ggplotFL.
+#'
+#' @aliases plot,FLQuants,missing-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'   data(ple4)
+#'   plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
+
+setMethod("plot", signature(x="FLQuants", y="missing"),
+	function(x, main="", xlab="", ylab="", ...) {
+		
+		# object w/ iters? compute quantiles
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+
+			# compute quantiles on FLQs, then convert to df
+			df <- as.data.frame(lapply(x, quantile, c(0.10, 0.25, 0.50, 0.75, 0.90)))
+		
+			# cast with quantiles in columns
+			df <- cast(df, age+year+unit+season+area+qname~iter, value="data")
+			
+		# otherwise, rename 'data' as 'q50'
+		} else {
+			df <- as.data.frame(x)
+			names(df)[7] <- "50%"
+		}
+	
+		# plot data vs. year + facet on qname +
+		p <- ggplot(data=df, aes(x=year, y=`50%`)) + facet_grid(qname~., scales="free") +
+			# line + xlab + ylab + limits to include 0 +
+			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			# no legend
+			theme(legend.title = element_blank())
+		
+		# object w/ iters?
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+			p <- p +
+			# 75% quantile ribbon in red, alpha=0.25
+			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
+			# 90% quantile ribbon in red, aplha=0.10
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),  fill="red", alpha = .10)
+		}
+		
+		return(p)
+	}
+) # }}}

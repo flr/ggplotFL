@@ -5,7 +5,7 @@
 	IPSC - Maritime Affairs Unit\\
 	Ispra, Italy\\
 	\url{https://fishreg.jrc.ec.europa.eu/}} - FLR Project
-% `r format(Sys.time(), "%B %Y")`
+% `r format(as.Date(system("git log -1 --format=%ci ggplotFL.Rmd", intern=TRUE)), "%B %Y")`
 
 <!--
 %\VignetteEngine{knitr::knitr}
@@ -26,7 +26,7 @@ set.seed(1423)
 
 # Using ggplot2 with *FLR* objects
 
-The `ggplot2` package provides a powerful alternative paradigm for creating simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. ISBN 0-387-98774-6.]
+The `ggplot2` package provides a powerful alternative paradigm for creating simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13).]
 
 To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
@@ -35,13 +35,14 @@ To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has 
 
 The standard `ggplot` functions expects a `data.frame` for its first argument, `data`. If `ggplot` is called on an *FLR* object, a conversion to `data.frame` takes place before the result, plus any other arguments provided, get passed to the original `ggplot()`. Conversion makes use of `as.data.frame`^[`method?as.data.frame('FLQuant')`] methods defined in `FLCore`, with the `cohort` argument set to `TRUE`.
 
-# FLQuant
+## FLQuant
 
 Passing an `FLQuant` object to ggplot, we can specify the names of the dimensions as variables in the plot, where `data` refers to the column storing the actual numeric values. For example, to plot `data` (the `catch` slot from `ple4` in this case) against year, we could use
 
 ```{r, flquant, echo=TRUE, tidy=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
 ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("")
 ```
+where we pass directly an `FLQuant` object for the `data` argument in `ggplot`, specify an aesthetic mapping (`aes(year, data)`), and add both points (`geom_point()`) and lines (`geom_line()`), together with the appropriate axis labels.
 
 ## FLQuants
 
@@ -55,7 +56,7 @@ This procedure is particularly useful when plotting information from objects wit
 
 ## FLStock
 
-A whole FLStock object can also be used as argument to `ggplot()`, even if the heterogeneity in scale of the data contained makes the plot slightly confusing. For example, we can plot time series of every `FLQuant` slot in `ple4`, with color applied to different `age` dimensions, as follows:
+A whole FLStock object can also be used as argument to `ggplot()`, even if the heterogeneity in scale of the data contained makes the plot slightly confusing. For example, we can plot time series of every `FLQuant` slot in `ple4`, with color applied to different `age` dimensions, by calling
 
 ```{r, flstock, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
 ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
@@ -76,9 +77,9 @@ plot(ple4)
 
 ## FLStocks
 
-Similarly, the standard `plot()` method for the `FLStocks` class now relies on ggplot. For example, we can create an example `FLStocks` object by splitting the female and male units of `ple4sex` and adding them as separate elements in the list. A call to `plot()` would give us the corresponding plot. Remember the object returned by `ggplot` can be assigned to a variable in the workspace and modified as required.
+Similarly, the standard `plot()` method for the `FLStocks` class now relies on ggplot. For example, we can create an example `FLStocks` object by splitting the female and male units of `ple4sex` and adding them as separate elements in the list. A call to `plot()` would give us the corresponding plot. Remember the object returned by `ggplot` can always be assigned to a variable in the workspace and modified as required.
 
-```{r, plotFLStocks, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to a split of `ple4sex`"}
+```{r, plotFLStocks, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to se separated version of `ple4sex`"}
 data(ple4sex)
 plot(FLStocks(ple4M=ple4sex[,,'male'], ple4F=ple4sex[,,'female']))
 ```
@@ -184,10 +185,10 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 
 # More information
 
-* You can submit bug reports, questions or suggestions on `ggplotFL` at the `ggplotFL` issue page ^[https://github.com/flr/ggplotFL/issues], or on the *FLR* mailing list.
-* Or send a pull request to \url{https://github.com/flr/ggplotFL/}
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[http://flr-project.org].
-* To learn more about ggplot2, visit the ggplot2 website ^[\url{http://ggplot2.org/}], or look at the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. ISBN 978-0-387-98140-6]
+* You can submit bug reports, questions or suggestions on `ggplotFL` at the `ggplotFL` issue page ^[<https://github.com/flr/ggplotFL/issues>], or on the *FLR* mailing list.
+* Or send a pull request to <https://github.com/flr/ggplotFL/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
+* To learn more about ggplot2, visit the ggplot2 website ^[<http://ggplot2.org/>], or look at the ggplot2 book.^[Wickham, H. 2009. *ggplot2: Elegant Graphics for Data Analysis*. Springer, Use R! Series. [doi:10.1111/j.1467-985X.2010.00676_9.x](http://dx.doi.org/10.1111%2Fj.1467-985X.2010.00676_9.x)]
 * The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
