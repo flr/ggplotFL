@@ -8,7 +8,7 @@ clean:
 	rm -rf *.tex *.bbl *.blg *.aux *.out *.log *.spl *.md figure/ cache/
 
 cleanall: clean
-	rm $(PDFS)
+	rm -f $(PDFS)
 
 %.pdf: %.tex
 	pdflatex $*.tex

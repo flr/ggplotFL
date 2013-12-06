@@ -1,7 +1,9 @@
 #!/bin/bash
 
+# TODO: Allow for multiple chunks to be converted
+
 # figure chunck names to modify as figure*
-export FIGS=flstock
+export FIGS=ggfls
 
 # figure chunck names to modify as figure
 
