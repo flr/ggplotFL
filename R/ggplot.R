@@ -5,7 +5,7 @@
 # Maintainer: Laurie Kell, ICCAT & Iago Mosqueira, JRC
 # Notes:
 
-# FLQuant
+# FLQuant {{{
 
 #' ggplot method for various FLR classes
 #'
@@ -30,7 +30,10 @@ setMethod("ggplot", signature(data="FLQuant"),
   function(data, ...) {
     data <- as.data.frame(data, cohort=TRUE)
 		ggplot(data, ...)
-	})
+	}
+) # }}}
+
+# FLQuants {{{
 
 # FLQuants
 #' @rdname ggplot
@@ -44,7 +47,7 @@ setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
     data <- as.data.frame(data, cohort=TRUE)
 		ggplot(data, ...)
-	})
+	}) # }}}
 
 # FLComp
 #' @rdname ggplot

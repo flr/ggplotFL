@@ -1,8 +1,8 @@
 % Plotting FLR objects with ggplotFL and ggplot2
-% Iago Mosqueira, EC JRC\thanks{
+% Iago Mosqueira, EC JRC\protect\thanks{
 	European Commission\\
 	Joint Research Center\\
-	IPSC - Maritime Affairs Unit\\
+	IPSC - Maritime Affairs Unit G04\\
 	Ispra, Italy\\
 	\url{https://fishreg.jrc.ec.europa.eu/}} - FLR Project
 % `r format(as.Date(system("git log -1 --format=%ci ggplotFL.Rmd", intern=TRUE)), "%B %Y")`
@@ -26,7 +26,7 @@ set.seed(1423)
 
 # Using ggplot2 with *FLR* objects
 
-The `ggplot2` package provides a powerful alternative paradigm for creating simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13).]
+The `ggplot2` package provides a powerful alternative paradigm for creating both simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13).]
 
 To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
@@ -64,11 +64,11 @@ ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age)
 
 # New plot() methods for FLR classes
 
-The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package has a `plot()` method defined that provides a quick visual summary of the contents of the object.
+The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package has a `plot()` method available that provides a quick visual summary of the contents of the object.
 
 ## FLQuant
 
-The standard `plot()` method for `FLQuant` defined in `ggplotFL` uses the faceting capabilities of `ggplot` to better present some of the multiple dimensions of these objects. If any dimension, other than `year` and `iter`, has length greater than one, it will be added to the formula used by `facet_grid`. For example, an `FLQuant` with di,mensions
+The standard `plot()` method for `FLQuant` defined in `ggplotFL` uses the faceting capabilities of `ggplot` to better present some of the multiple dimensions of these objects. If any dimension, other than `year` and `iter`, has length greater than one, it will be added to the formula used by `facet_grid`. For example, an `FLQuant` with dimensions
 
 ```{r, dimflq, echo=TRUE}
 dim(catch.n(ple4))
@@ -86,14 +86,16 @@ plot(rlnorm(200, fbar(ple4), 0.15))
 ```
 ## FLQuants
 
-```{r, pflqs, echo=TRUE, tidy=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant objects with multiple iterations."}
-fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4))
+The `plot` method for `FLQuants` will now by default show each object in a horizontal panel, with indpendent scales, by using `facet_grid`. Objects with iterations will have, as with `plot` for `FLQuant`, their median, 10%, 25%, 75% and 90% quantiles shown as a black line and red ribbons with different levels of transparency, respectively.
+
+```{r, pflqs, echo=TRUE, tidy=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
+fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4))
 plot(fqs)
 ```
 
 ## FLStock
 
-The `ggplotFL` version of the standard plot for the `FLStock` class, contains the time series of recruitment (by calling `rec()`), SSB (`ssb()`), catch (`catch()`), and fishing morality or harvest (`fbar()`). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.
+The `ggplotFL` version of the standard plot for the `FLStock` class, contains the time series of recruitment (obtained by calling `rec()`), SSB (`ssb()`), catch (`catch()`), and fishing morality or harvest (`fbar()`). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.
 
 ```{r, pfls, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
 plot(ple4)
@@ -177,7 +179,7 @@ This is easy to do in `ggplot2` by adding an extra element on top of the previou
 
 ## Example: Using FLQuants
 
-Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the *FLR* user with most tools required to create a large range of `ggplot`s out of any *FLR* object.
+Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
 
 **TODO**: ADD text
 
@@ -228,3 +230,7 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 * **Compiled**: `r date()`
 * **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
+## `knitr` options
+
+```{r setupf, ref.label='setup', echo=2, eval=FALSE}
+```

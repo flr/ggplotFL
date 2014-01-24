@@ -90,7 +90,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		ldi <- names(x)[-c(2,6)][dx[-c(2,6)] > 1]
 
 		# basic plot data vs. year
-		p <- ggplot(data=df, aes(x=year, y=`50%`)) + geom_line() +
+		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -186,7 +186,6 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 
 		# cast with quantiles in columns
 		df <- cast(fqs, age+year+unit+season+area+qname+stock~iter, value="data")
-
 
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +

@@ -5,7 +5,7 @@ R_HOME=/usr/local
 all: $(PDFS)
 
 clean:
-	rm -rf *.tex *.bbl *.blg *.aux *.out *.log *.spl *.md figure/ cache/
+	rm -rf *.tex *.bbl *.blg *.aux *.out *.log *.spl *.md figure/ cache/ tags
 
 cleanall: clean
 	rm -f $(PDFS)
