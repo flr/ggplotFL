@@ -14,7 +14,7 @@
 
 ```{r, setup, echo=FALSE, results='hide', message=FALSE}
 library(knitr)
-opts_chunk$set(dev='pdf', cache=TRUE, fig.width=4.5, fig.height=4.5)
+opts_chunk$set(dev='pdf', cache=TRUE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
 options(width=50)
 ```
 
@@ -39,7 +39,7 @@ The standard `ggplot` functions expects a `data.frame` for its first argument, `
 
 Passing an `FLQuant` object to ggplot, we can specify the names of the dimensions as variables in the plot, where `data` refers to the column storing the actual numeric values. For example, to plot `data` (the `catch` slot from `ple4` in this case) against year, we could use
 
-```{r, ggflq, echo=TRUE, tidy=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
+```{r, ggflq, echo=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
 ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("")
 ```
 where we pass directly an `FLQuant` object for the `data` argument in `ggplot`, specify an aesthetic mapping (`aes(year, data)`), and add both points (`geom_point()`) and lines (`geom_line()`), together with the appropriate axis labels.
@@ -48,7 +48,7 @@ where we pass directly an `FLQuant` object for the `data` argument in `ggplot`, 
 
 Similarly, we can pass on to `ggplot` an object of class `FLQuants`, and the conversion to `data.frame` will make use of the corresponding method ^[`method?as.data.frame('FLQuants')`]. A new column gives the name of each `FLQuant` in the list, called `qname`. When can then use it to, for example, define a call to `facet_wrap()` to obtain a separate subplot per element.
 
-```{r, ggflqs, echo=TRUE, tidy=TRUE, fig.cap="Facet wrap line plot of time series from an FLQuants object."}
+```{r, ggflqs, echo=TRUE, fig.cap="Facet wrap line plot of time series from an FLQuants object."}
 ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free", nrow=3) + labs(x="", y="")
 ```
 
@@ -58,11 +58,11 @@ This procedure is particularly useful when plotting information from objects wit
 
 A whole FLStock object can also be used as argument to `ggplot()`, even if the heterogeneity in scale of the data contained makes the plot slightly confusing. For example, we can plot time series of every `FLQuant` slot in `ple4`, with color applied to different `age` dimensions, by calling
 
-```{r, ggfls, echo=TRUE, tidy=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
+```{r, ggfls, echo=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
 ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
 ```
 
-# New plot() methods for FLR classes
+# New `plot()` methods for FLR classes
 
 The `ggplotFL` package also provides new versions of the `plot` method for a number of *FLR* classes. Each S4 class defined in any *FLR* package has a `plot()` method available that provides a quick visual summary of the contents of the object.
 
@@ -75,20 +75,20 @@ dim(catch.n(ple4))
 ```
 will generate a plot with a time series by year of the data it contains, with horizontal facets for the only dimension, other than `year`, of length greater than 1, `age`.
 
-```{r, pflq, echo=TRUE, tidy=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple *year*s and *age*s."}
+```{r, pflq, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple *year*s and *age*s."}
 plot(catch.n(ple4))
 ```
 
 For `FLQuant` objects with iterations, the `plot` method will calculate the 50% (median), 10%, 25%, 75% and 90% quantiles, to be plotted as a line and two coloured ribbons, respectively.
 
-```{r, pflq2, echo=TRUE, tidy=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple iterations."}
+```{r, pflq2, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple iterations."}
 plot(rlnorm(200, fbar(ple4), 0.15))
 ```
 ## FLQuants
 
 The `plot` method for `FLQuants` will now by default show each object in a horizontal panel, with indpendent scales, by using `facet_grid`. Objects with iterations will have, as with `plot` for `FLQuant`, their median, 10%, 25%, 75% and 90% quantiles shown as a black line and red ribbons with different levels of transparency, respectively.
 
-```{r, pflqs, echo=TRUE, tidy=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
+```{r, pflqs, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
 fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4))
 plot(fqs)
 ```
@@ -105,14 +105,14 @@ plot(ple4)
 
 Similarly, the standard `plot()` method for the `FLStocks` class now relies on ggplot. For example, we can create an example `FLStocks` object by splitting the female and male units of `ple4sex` and adding them as separate elements in the list. A call to `plot()` would give us the corresponding plot. Remember the object returned by `ggplot` can always be assigned to a variable in the workspace and modified as required.
 
-```{r, pflss, echo=FALSE, tidy=TRUE, fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to sex separated `ple4sex`"}
+```{r, pflss, echo=FALSE, fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to the sex-separated FLStock object `ple4sex`"}
 data(ple4sex)
-plot(FLStocks(ple4M=ple4sex[,,'male'], ple4F=ple4sex[,,'female']))
+plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legend.position="top")
 ```
 
 # Using ggplot2 by converting to data.frame
 
-The methods shown above simply depend on conversion of *FLR* objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an *FLR* object takes care of this conversion behind the scenes, but to obtain certains plots, it is best to directly convert the *FLR* objects into a `data.frame`.
+The methods shown above depend on conversion of *FLR* objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an *FLR* object takes care of this conversion behind the scenes, but to obtain full control and develop certains plots, it is best to explicitely convert the *FLR* objects into a `data.frame`. Different conventions are used in the naming of the data.frame columns created from various *FLR* classes, which need to be used when the plot is specified. For further information, please see the help pages for each `data.frame()` method ^[For example `method?as.data.frame('FLQuants')`].
 
 # Some examples
 
@@ -156,10 +156,10 @@ levels(fdf[,'iter'])
 We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the column names returned by `quantile()` need to be quoted using backticks.
 
 ```{r, exsim7, echo=TRUE, cache=TRUE, fig.cap="Time series with 75% and 90% credibility intervals plotted using geom_ribbon."}
-p <- ggplot(data=fdw, aes(x=year, y=`50%`)) + geom_line() +
+p <- ggplot(data=fdw, aes(x=year, y=`50%`)) +
 	geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`), fill="red", alpha = .15) +
 	geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
-	ylab("data")
+	geom_line() + ylab("data")
 print(p)
 ```
 
@@ -179,9 +179,9 @@ This is easy to do in `ggplot2` by adding an extra element on top of the previou
 
 ## Example: Using FLQuants
 
-Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
+Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package^[<http://cran.r-project.org/web/packages/reshape/index.html>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
 
-**TODO**: ADD text
+**TODO**: ADD text & example
 
 ## Example: Bubble plots
 Bubble plots allow us to represent a third continuous dimension in a scatter plot by sizing points according the value of a variable. For example, catch in numbers  by age and year can be visualized using

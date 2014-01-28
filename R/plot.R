@@ -240,3 +240,63 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 		return(p)
 	}
 ) # }}}
+
+# plot(FLComps, list)
+
+# plot(FLSR) {{{
+#' @aliases plot,FLSR,missing-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'   data(nsher)
+#'   plot(nsher)
+
+setMethod('plot', signature(x='FLSR', y='missing'),
+	function(x, ...) {
+
+	dat <- model.frame(FLQuants(SSB=ssb(x), Rec=rec(x), residuals=residuals(x), 	 
+		RecHat=fitted(x)))
+
+	uns <- units(x)
+
+	# SSB vs. REC
+	p1 <- ggplot(data=dat, aes(x=SSB, y=Rec)) + geom_point() +
+		geom_smooth(method='loess') + xlab(paste0('SSB (', uns$ssb, ')')) +
+		ylab(paste0('Recruits (', uns$rec, ')'))
+
+	# model fit line
+	form <- as.list(model(x))[[3]]
+	pars <- as(params(nsher), 'list')
+
+	fmo <- function(x)
+		eval(form, c(list(ssb=x), pars))
+	
+	p1 <- p1 + geom_smooth(method="lm", formula=y~foo(x), colour='red',
+		size=0.5, se=FALSE)
+
+	#
+	p2 <- ggplot(data=dat, aes(x=year, y=residuals)) + geom_point() + 	
+		geom_smooth(method='loess')
+
+	#
+	resac <- data.frame(res1=dat$residuals[-length(dat$residuals)],
+		res2=dat$residuals[-1])
+	p3 <- ggplot(data=resac, aes(x=res1, y=res2)) + geom_point()
+
+	#
+	p4 <- ggplot(data=dat, aes(x=SSB, y=residuals)) + geom_point() + 	
+		geom_smooth(method='loess')
+
+	#
+	p5 <- ggplot(dat, aes(sample = dat$residuals)) + stat_qq(color="red",
+		alpha=1) + geom_abline(intercept = mean(dat$residuals), slope = sd(dat$residuals))
+
+	#
+	p6 <- ggplot(data=dat, aes(x=RecHat, y=residuals)) + geom_point() + 	
+		geom_smooth(method='loess')
+
+	p <- arrangeGrob(p1, p2, p3, p4, p5, p6, nrow=3)
+
+	return(p)
+	}
+) # }}}

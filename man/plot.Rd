@@ -2,6 +2,7 @@
 \name{plot,FLQuants,missing-method}
 \alias{plot,FLQuant,missing-method}
 \alias{plot,FLQuants,missing-method}
+\alias{plot,FLSR,missing-method}
 \alias{plot,FLStock,FLPar-method}
 \alias{plot,FLStock,missing-method}
 \alias{plot,FLStocks,missing-method}
@@ -16,6 +17,8 @@
 \S4method{plot}{FLStocks,missing}(x, main = "", xlab = "", ylab = "", ...)
 
 \S4method{plot}{FLStock,FLPar}(x, y, ...)
+
+\S4method{plot}{FLSR,missing}(x, ...)
 }
 \arguments{
   \item{x}{the coordinates of points in the plot.
@@ -81,5 +84,7 @@ data(ple4)
 data(ple4)
   rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
   plot(ple4, rps)
+data(nsher)
+  plot(nsher)
 }
 

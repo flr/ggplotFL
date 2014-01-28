@@ -1,7 +1,7 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.5.20131206
-Date: 2013-12-06
+Version: 2.5.20140124
+Date: 2014-01-24
 Author: Laurie T. Kell <laurie.kell@iccat.int>,
 	Iago Mosqueira <iago.mosqueira-sanchez@jrc.ec.europa.eu>
 Maintainer: Laurie T. Kell <laurie.kell@iccat.int>,
@@ -15,7 +15,8 @@ Depends:
   methods,
   ggplot2,
   plyr,
-	reshape
+	reshape,
+	gridExtra
 Suggests:
 	knitr
 Collate:
