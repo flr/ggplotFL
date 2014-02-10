@@ -72,7 +72,8 @@ New basic plot for some FLR classes are defined in
 ggplotFL.
 }
 \examples{
-data(ple4)
+# Plot anf FLQuants created from ple4 FLStock
+  data(ple4)
   plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
 data(ple4)
   plot(catch.n(ple4))

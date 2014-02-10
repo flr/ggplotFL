@@ -19,6 +19,8 @@ options(width=50)
 ```
 
 ```{r, load, echo=FALSE, results='hide', message=FALSE}
+library(FLCore)
+library(ggplot2)
 library(ggplotFL)
 data(ple4)
 set.seed(1423)

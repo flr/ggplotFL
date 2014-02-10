@@ -268,7 +268,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# model fit line
 	form <- as.list(model(x))[[3]]
-	pars <- as(params(nsher), 'list')
+	pars <- as(params(x), 'list')
 
 	fmo <- function(x)
 		eval(form, c(list(ssb=x), pars))
@@ -281,9 +281,8 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		geom_smooth(method='loess')
 
 	#
-	resac <- data.frame(res1=dat$Residuals[-length(dat$Residuals)],
-		res2=dat$Residuals[-1])
-	p3 <- ggplot(data=resac, aes(x=res1, y=res2)) + geom_point()
+	p3 <- ggplot(data=data.frame(res1=dat$Residuals[-length(dat$Residuals)],
+		res2=dat$Residuals[-1]), aes(x=res1, y=res2)) + geom_point()
 
 	#
 	p4 <- ggplot(data=dat, aes(x=SSB, y=Residuals)) + geom_point() + 	
