@@ -14,8 +14,10 @@
 #' @docType methods
 #' @rdname plot
 #' @examples
+#'   # Plot anf FLQuants created from ple4 FLStock
 #'   data(ple4)
 #'   plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
+#'
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", ...) {
@@ -254,7 +256,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 setMethod('plot', signature(x='FLSR', y='missing'),
 	function(x, ...) {
 
-	dat <- model.frame(FLQuants(SSB=ssb(x), Rec=rec(x), residuals=residuals(x), 	 
+	dat <- model.frame(FLQuants(SSB=ssb(x), Rec=rec(x), Residuals=residuals(x), 	 
 		RecHat=fitted(x)))
 
 	uns <- units(x)
@@ -271,32 +273,32 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	fmo <- function(x)
 		eval(form, c(list(ssb=x), pars))
 	
-	p1 <- p1 + geom_smooth(method="lm", formula=y~foo(x), colour='red',
+	p1 <- p1 + geom_smooth(method="lm", formula=y~fmo(x), colour='red',
 		size=0.5, se=FALSE)
 
 	#
-	p2 <- ggplot(data=dat, aes(x=year, y=residuals)) + geom_point() + 	
+	p2 <- ggplot(data=dat, aes(x=year, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
 
 	#
-	resac <- data.frame(res1=dat$residuals[-length(dat$residuals)],
-		res2=dat$residuals[-1])
+	resac <- data.frame(res1=dat$Residuals[-length(dat$Residuals)],
+		res2=dat$Residuals[-1])
 	p3 <- ggplot(data=resac, aes(x=res1, y=res2)) + geom_point()
 
 	#
-	p4 <- ggplot(data=dat, aes(x=SSB, y=residuals)) + geom_point() + 	
+	p4 <- ggplot(data=dat, aes(x=SSB, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
 
 	#
-	p5 <- ggplot(dat, aes(sample = dat$residuals)) + stat_qq(color="red",
-		alpha=1) + geom_abline(intercept = mean(dat$residuals), slope = sd(dat$residuals))
+	p5 <- ggplot(data=dat, aes(sample = Residuals)) + stat_qq(color="red",
+		alpha=1) + geom_abline(aes(intercept = mean(Residuals), slope = sd(Residuals)))
 
 	#
-	p6 <- ggplot(data=dat, aes(x=RecHat, y=residuals)) + geom_point() + 	
+	p6 <- ggplot(data=dat, aes(x=RecHat, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
 
 	p <- arrangeGrob(p1, p2, p3, p4, p5, p6, nrow=3)
-
+	
 	return(p)
 	}
 ) # }}}

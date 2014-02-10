@@ -190,7 +190,7 @@ Bubble plots allow us to represent a third continuous dimension in a scatter plo
 ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
 ```
 
-where *data* is used to size the bubbles in the call to *aes()*.
+where *data* is used to size the bubbles in the call to *aes()*. This single line of code replaces the functionality offered by the *lattice*-based *bubbles()* method available in *FLCore*.
 
 ## Example: Residual plots
 **TODO**: ADD text
