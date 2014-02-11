@@ -29,7 +29,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			df <- as.data.frame(lapply(x, quantile, c(0.10, 0.25, 0.50, 0.75, 0.90)))
 		
 			# cast with quantiles in columns
-			df <- cast(df, age+year+unit+season+area+qname~iter, value="data")
+			df <- dcast(df, age+year+unit+season+area+qname~iter, value="data")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
@@ -79,7 +79,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			df <- as.data.frame(quantile(x, c(0.10, 0.25, 0.50, 0.75, 0.90)))
 		
 			# cast with quantiles in columns
-			df <- cast(df, age+year+unit+season+area~iter, value="data")
+			df <- dcast(df, age+year+unit+season+area~iter, value="data")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
@@ -187,7 +187,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		fqs <- transform(fqs, stock=stk)
 
 		# cast with quantiles in columns
-		df <- cast(fqs, age+year+unit+season+area+qname+stock~iter, value="data")
+		df <- dcast(fqs, age+year+unit+season+area+qname+stock~iter, value="data")
 
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +
@@ -295,8 +295,8 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	#
 	p6 <- ggplot(data=dat, aes(x=RecHat, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
-
-	p <- arrangeGrob(p1, p2, p3, p4, p5, p6, nrow=3)
+	
+	p <- gridExtra::arrangeGrob(p1, p2, p3, p4, p5, p6, ncol=2)
 	
 	return(p)
 	}

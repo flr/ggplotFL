@@ -1,8 +1,11 @@
 import("FLCore")
 importFrom("ggplot2",
   "ggplot")
-importFrom("reshape",
-  "cast")
+import("gridExtra")
+importFrom("reshape2",
+	"dcast")
+importFrom("plyr",
+  "is.formula")
 exportMethods(
   "ggplot",
 	"plot")

@@ -19,10 +19,9 @@ options(width=50)
 ```
 
 ```{r, load, echo=FALSE, results='hide', message=FALSE}
-library(FLCore)
-library(ggplot2)
 library(ggplotFL)
 data(ple4)
+data(nsher)
 set.seed(1423)
 ```
 
@@ -84,7 +83,9 @@ plot(catch.n(ple4))
 For `FLQuant` objects with iterations, the `plot` method will calculate the 50% (median), 10%, 25%, 75% and 90% quantiles, to be plotted as a line and two coloured ribbons, respectively.
 
 ```{r, pflq2, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple iterations."}
-plot(rlnorm(200, fbar(ple4), 0.15))
+plot(
+		 rlnorm(200, fbar(ple4), 0.15)
+		 )
 ```
 ## FLQuants
 
@@ -110,6 +111,10 @@ Similarly, the standard `plot()` method for the `FLStocks` class now relies on g
 ```{r, pflss, echo=FALSE, fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to the sex-separated FLStock object `ple4sex`"}
 data(ple4sex)
 plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legend.position="top")
+```
+## FLSR
+```{r, pflsr, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSR."}
+plot(nsher)
 ```
 
 # Using ggplot2 by converting to data.frame
@@ -143,10 +148,10 @@ and inspected to see how the 100 `iters` have been now turned into the five requ
 head(fdf, 3)
 ```
 
-The long format `data.frame` can be reshaped into a wide format one so that we can instruct `ggplot` to use the quantiles, now in separate columns, to provide limits for the shaded areas in `geom_ribbon`. To do this we can use `cast`, as follows
+The long format `data.frame` can be reshaped into a wide format one so that we can instruct `ggplot` to use the quantiles, now in separate columns, to provide limits for the shaded areas in `geom_ribbon`. To do this we can use `reshape2::dcast`, as follows
 
 ```{r, exsim5, echo=TRUE, cache=TRUE}
-fdw <- cast(fdf, quant+year+unit+season+area~iter, value="data")
+fdw <- dcast(fdf, quant+year+unit+season+area~iter, value="data")
 ```
 
 This creates a wide `data.frame` in which the `iter` column is spread into five columns named as the levels of its conversion into factor
@@ -181,7 +186,7 @@ This is easy to do in `ggplot2` by adding an extra element on top of the previou
 
 ## Example: Using FLQuants
 
-Coercion using `as.data.frame`, combined with the use of `cast` and `melt` (from the `reshape` package^[<http://cran.r-project.org/web/packages/reshape/index.html>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
+Coercion using `as.data.frame`, combined with the use of `dcast` and `melt` (from the `reshape2` package^[<http://cran.r-project.org/web/packages/reshape2/index.html>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
 
 **TODO**: ADD text & example
 

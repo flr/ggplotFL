@@ -11,12 +11,12 @@ Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
     various FLR pkgs.
 Depends:
 	R(>= 3.0.0),
-  plyr,
-	reshape,
-	gridExtra
-Imports:
-  FLCore(>= 2.5),
   ggplot2,
+  FLCore,
+	gridExtra,
+	reshape2
+Imports:
+  plyr
 Suggests:
 	knitr
 SystemRequirements:
