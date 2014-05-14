@@ -9,6 +9,7 @@
 ## USER-VISIBLE CHANGES 
 
 ## BUG FIXES
+- Call to dcast had wrong argument name for value.var
 
 ## UTILITIES
 

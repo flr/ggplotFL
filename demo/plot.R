@@ -20,3 +20,5 @@ plot(ple4)
 pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
 
 plot(pls)
+
+
