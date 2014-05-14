@@ -29,14 +29,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			df <- as.data.frame(lapply(x, quantile, c(0.10, 0.25, 0.50, 0.75, 0.90)))
 		
 			# cast with quantiles in columns
-			df <- dcast(df, age+year+unit+season+area+qname~iter, value.var="data")
+			df <- dcast(df, as.formula(paste(paste(names(df)[c(1:5,8)], collapse='+'),
+				'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
 			df <- as.data.frame(x)
 			names(df)[7] <- "50%"
 		}
-	
+		
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes(x=year, y=`50%`)) + facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
@@ -79,7 +80,8 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			df <- as.data.frame(quantile(x, c(0.10, 0.25, 0.50, 0.75, 0.90)))
 		
 			# cast with quantiles in columns
-			df <- dcast(df, age+year+unit+season+area~iter, value.var="data")
+			df <- dcast(df, as.formula(paste(paste(names(df)[1:5], collapse='+'),
+				'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
@@ -191,7 +193,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +
-		facet_grid(qname~., scales="free") +
+			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line(aes(colour=stock)) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -201,12 +203,11 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock), fill='red', alpha = .10)
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock),
+			fill='red', alpha = .10)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
-		
 		return(p)
-
 	}
 ) # }}}
 
@@ -242,8 +243,6 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 		return(p)
 	}
 ) # }}}
-
-# plot(FLComps, list)
 
 # plot(FLSR) {{{
 #' @aliases plot,FLSR,missing-method
@@ -301,3 +300,5 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	return(p)
 	}
 ) # }}}
+
+# plot(FLComps, list)
