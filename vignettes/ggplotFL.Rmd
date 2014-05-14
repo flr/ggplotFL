@@ -12,7 +12,7 @@
 %\VignetteIndexEntry{Plotting FLR objects with ggplot2 and ggplotFL}
 -->
 
-```{r, setup, echo=FALSE, results='hide', message=FALSE}
+```{r, ini, echo=FALSE, results='hide', message=FALSE}
 library(knitr)
 opts_chunk$set(dev='pdf', cache=TRUE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
 options(width=50)
@@ -239,5 +239,5 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 
 ## `knitr` options
 
-```{r setupf, ref.label='setup', echo=2, eval=FALSE}
+```{r inif, ref.label='ini', echo=2, eval=FALSE}
 ```
