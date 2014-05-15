@@ -113,6 +113,9 @@ data(ple4sex)
 plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legend.position="top")
 ```
 ## FLSR
+
+The `ggplotFL` version of the class plot for `FLSR` contains the same six panels as before: (1) stock-recruit data, fitted model and lowess smoother, (2) residuals by year, (3) lag 1-correlated residuals, (4) residuals by SSB, (5) residuals qqplot and (6) residuals by fitted values. Blud lines are lo9wess smoothers, to better visualize trends in the data shown.
+
 ```{r, pflsr, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSR."}
 plot(nsher)
 ```
