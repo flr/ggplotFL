@@ -10,3 +10,5 @@ The vignette in `vignettes/ggplotFL.Rmd` is writen using `knitr` and pandoc's ma
 - knitr
 - hardwrap.sty
 - tufte-handout.cls >=3.5.1
+
+[![Build Status](https://travis-ci.org/flr/ggplotFL.svg?branch=master)](https://travis-ci.org/flr/ggplotFL)
