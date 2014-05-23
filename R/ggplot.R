@@ -63,8 +63,8 @@ setMethod("ggplot", signature(data="FLComp"),
 #' @aliases ggplot,FLComps-method
 setMethod("ggplot", signature(data="FLComps"),
   function(data, ...) {
-    dat <- as.data.frame(data)
+    data <- as.data.frame(data)
 
-    try(dat$cohort <- dat$year - dat$age)
-    ggplot(dat, ...)
+    try(data$cohort <- data$year - data$age)
+    ggplot(data, ...)
 	})

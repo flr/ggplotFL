@@ -1,6 +1,5 @@
 TEMPLATE=tufte-handout.template
 PDFS:=$(patsubst %.Rmd,%.pdf,$(wildcard *.Rmd))
-R_HOME=/usr/local
 
 all: $(PDFS)
 
