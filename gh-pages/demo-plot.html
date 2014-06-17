@@ -2,9 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>mergeFL. FLCore 2.5.20140616</title>
+<title>Demonstrate plot methods available. ggplotFL 2.5.20140514</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="The FLR Team">
+<meta name="author" content="Laurie T. Kell &lt;laurie@kell.es&gt;,
+Iago Mosqueira &lt;iago.mosqueira-sanchez@jrc.ec.europa.eu&gt;">
 
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -20,7 +21,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <a class="brand" href="#">ggplotFL 2.5.20140514</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -35,43 +36,36 @@
         
       </header>
       
-      <h1>Merging FLStock objects</h1>
+      <h1>Using ggplot2 in FLR</h1>
 
-<div class="row">
-  <div class="span8">
-        
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>Two FLStock object can be <em>merged</em> using this method or a plus sign. Catch slots are added, and weight slots are averaged, weighted by the relative catches. No meaningful calculation is currently done for harvest, harvest.spwn, m, and m.spwn.</p>
-  
-    </div>
+<div class="row"><div class="span8">
+  <pre>
+  <div class='input'># plot.R - DESC
+# plot.R
 
-    <div class="Methods">
-      <h2>Methods</h2>
-      
-      <p><dl>
-<dt> signature(e1=FLStock, e2=FLStock) :</dt><dd>Adds two FLStock objects</dd>
-</dl></p>
-  
-    </div>
-      </div>
-  <div class="span4">
-    <!-- <ul>
-      <li>mergeFLStock</li><li>+,FLStock,FLStock-method</li>
-    </ul>
-    <ul>
-      <li>methods</li>
-    </ul> -->
-      
-    <h2>See also</h2>
-     <a href='FLStock.html'>FLStock</a> 
-    
-    <h2>Author</h2>
-    The FLR Team
-    
-  </div>
+# Copyright 2003-2013 FLR Team. Distributed under the GPL 2 or later
+# Maintainer: Iago Mosqueira, JRC
+# Soundtrack:
+# Notes:
+
+library(ggplotFL)
+
+data(ple4)
+
+plot(ple4)
+
+catch(ple4) &lt;- rnorm(100, catch(ple4), catch(ple4))
+catch(ple4)[catch(ple4) &lt; 0]  &lt;- 0
+
+plot(ple4)
+
+pls &lt;- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+
+plot(pls)
+
 </div>
+  </pre>
+</div></div>
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>

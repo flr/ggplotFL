@@ -8,9 +8,9 @@
 
 sd_section("ggplot",
   "Overloaded ggplot method for various FLR classes",
-  c("ggplot"))
+  c("ggplot,FLQuant-method"))
 
 sd_section("FLR classes plot",
   "ggplot-based plot for different FLR classes",
-  c("plot"))
+  c("plot,FLQuants,missing-method"))
 
