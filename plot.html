@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>plot. FLCore 2.5.20140616</title>
+<title>plot,FLQuants,missing-method. ggplotFL 2.5.20140514</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="The FLR Team">
+<meta name="author" content="">
 
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <a class="brand" href="#">ggplotFL 2.5.20140514</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -35,80 +35,118 @@
         
       </header>
       
-      <h1>Method plot</h1>
+      <h1>ggplot versions of FLR class plot() methods</h1>
 
 <div class="row">
   <div class="span8">
-        
+    <h2>Usage</h2>
+    <pre><div>"plot"(x, main&nbsp;=&nbsp;"", xlab&nbsp;=&nbsp;"", ylab&nbsp;=&nbsp;"", ...)</div>
+<div>"plot"(x, main&nbsp;=&nbsp;"", xlab&nbsp;=&nbsp;"", ylab&nbsp;=&nbsp;"", ...)</div>
+<div>"plot"(x, main&nbsp;=&nbsp;"", xlab&nbsp;=&nbsp;"", ylab&nbsp;=&nbsp;"", ...)</div>
+<div>"plot"(x, main&nbsp;=&nbsp;"", xlab&nbsp;=&nbsp;"", ylab&nbsp;=&nbsp;"", ...)</div>
+<div>"plot"(x, y, ...)</div>
+<div>"plot"(x, y, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>the coordinates of points in the plot. Alternatively, a
+      single plotting structure, function or <em>any <span style="R">R</span> object with a
+        <code>plot</code> method</em> can be provided.</dd>
+      <dt>...</dt>
+      <dd>Arguments to be passed to methods, such as
+    <a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>graphical parameters</a> (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).
+    Many methods will accept the following arguments:
+    <dl>
+<dt><code>type</code></dt><dd>what type of plot should be drawn.  Possible types are
+      <ul>
+<li> <code>"p"</code> for <b>p</b>oints,
+        </li>
+<li> <code>"l"</code> for <b>l</b>ines,
+        </li>
+<li> <code>"b"</code> for <b>b</b>oth,
+        </li>
+<li> <code>"c"</code> for the lines part alone of <code>"b"</code>,
+        </li>
+<li> <code>"o"</code> for both &#145;<b>o</b>verplotted&#146;,
+        </li>
+<li> <code>"h"</code> for &#145;<b>h</b>istogram&#146; like (or
+        &#145;high-density&#146;) vertical lines,
+        </li>
+<li> <code>"s"</code> for stair <b>s</b>teps,
+        </li>
+<li> <code>"S"</code> for other <b>s</b>teps, see &#145;Details&#146; below,
+        </li>
+<li> <code>"n"</code> for no plotting.
+      </li>
+</ul>
+
+      All other <code>type</code>s give a warning or an error; using, e.g.,
+      <code>type = "punkte"</code> being equivalent to <code>type = "p"</code> for S
+      compatibility.  Note that some methods,
+      e.g. <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot.factor'>plot.factor</a></code>, do not accept this.
+    </dd>
+<dt><code>main</code></dt><dd>an overall title for the plot: see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/title'>title</a></code>.</dd>
+<dt><code>sub</code></dt><dd>a sub title for the plot: see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/title'>title</a></code>.</dd>
+<dt><code>xlab</code></dt><dd>a title for the x axis: see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/title'>title</a></code>.</dd>
+<dt><code>ylab</code></dt><dd>a title for the y axis: see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/title'>title</a></code>.</dd>
+<dt><code>asp</code></dt><dd>the <code class = 'eq'>y/x</code> aspect ratio,
+      see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot.window'>plot.window</a></code>.</dd>
+</dl>
+
+  </dd>
+      <dt>y</dt>
+      <dd>the y coordinates of points in the plot, <em>optional</em>
+    if <code>x</code> is an appropriate structure.</dd>
+    </dl>
+    
+    <div class="ggplot versions of FLR class plot() methods">
+      <h2>ggplot versions of FLR class plot() methods</h2>
+      
+    </div>
+
     <div class="Description">
       <h2>Description</h2>
       
-      <p>Standard plot methods for every FLR class. FLR plot methods are based on
-  <code><a href='http://www.inside-r.org/packages/cran/lattice/docs/Lattice'>lattice</a></code>, and attempt to show a general view of the object 
-  contents.</p>
+      <p>New basic plot for some FLR classes are defined in ggplotFL.</p>
   
-      <p>Users are encouraged to write their own plotting code make use of the overloaded
-  <code><a href='http://www.inside-r.org/packages/cran/lattice/docs/Lattice'>lattice</a></code> methods, for example <code><a href='http://www.inside-r.org/packages/cran/lattice/docs/xyplot'>xyplot</a></code> or
-  <code><a href='http://www.inside-r.org/packages/cran/lattice/docs/xyplot'>bwplot</a></code>. See also <code><a href='lattice.html'>lattice-FLCore</a></code>.</p>
+      <p>New basic plot for some FLR classes are defined in ggplotFL.</p>
   
-    </div>
-
-    <div class="Generic function">
-      <h2>Generic function</h2>
-      
-      <p>plot(x,y)</p>
+      <p>New basic plot for some FLR classes are defined in ggplotFL.</p>
   
-    </div>
-
-    <div class="Methods">
-      <h2>Methods</h2>
-      
-      <p><dl>
-<dt> signature(x=FLQuant,y=missing) :</dt><dd>Plot of an <em>FLQuant</em> conditioned on all dimension of length > 1.</dd>
-<dt> signature(x=FLQuantPoint,y=missing) :</dt><dd>Box and whiskers plot of the yearly time series, conditioned on all dimension of length > 1.</dd>
-<dt> signature(x=FLPar,y=missing) :</dt><dd>Densityplot per parameter.</dd>
-<dt> signature(x=FLStock,y=missing) :</dt><dd>Times series of catch and landings, recruitment, harvest and spawning stock biomass.</dd>
-<dt> signature(x=FLStocks,y=missing) :</dt><dd>Times series of catch, recruitment, harvest and spawning stock biomass.</dd>
-<dt> signature(x=FLBiol,y=missing) :</dt><dd>Time series of SSB and recruitment.</dd>
-<dt> signature(x=FLCohort,y=missing) :</dt><dd>Plot of an <em>FLQuant</em> conditioned on all dimension of length > 1.</dd>
-<dt> signature(x=FLIndex,y=missing) :</dt><dd>Either a time series of the standardised index by quant, type='ts', or and splom plot of a log-linear regression between quants, type='splom'.</dd>
-<dt> signature(x=FLSR,y=missing) :</dt><dd>A six-panelled plot showing the model fit, residuals by year, AR(1) residuals, residuals by SSB, residuals by estimated recruits and a normal Q-Q plot.</dd>
-</dl></p>
+      <p>New basic plot for some FLR classes are defined in ggplotFL.</p>
+  
+      <p>New basic plot for some FLR classes are defined in ggplotFL.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>data(ple4)
-data(ple4.biol)
-
-# FLQuant
-plot(catch.n(ple4)[, 1:20])
-plot(catch.n(ple4)[, 1:20], type=&#39;b&#39;, pch=19, cex=0.5)
-
-# FLStock
-plot(ple4)
-</div>
-<strong class='warning'>Warning message:
-invalid factor level, NA generated</strong>
-<div class='input'>
-# FLBiol
-plot(ple4.biol)
+    <pre class="examples"><div class='input'># Plot anf FLQuants created from ple4 FLStock
+  data(ple4)
+  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
+data(ple4)
+  plot(catch.n(ple4))
+data(ple4)
+  plot(ple4)
+data(ple4)
+  pls &lt;- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+  plot(pls)
+data(ple4)
+  rps &lt;- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
+  plot(ple4, rps)
+data(nsher)
+  plot(nsher)
 </div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>plot,FLQuant,missing-method</li><li>plot,FLQuantPoint,missing-method</li><li>plot,FLPar,missing-method</li><li>plot,FLStock,missing-method</li><li>plot,FLStocks,missing-method</li><li>plot,FLStocks,FLPar-method</li><li>plot,FLBiol,missing-method</li><li>plot,FLCohort,missing-method</li><li>plot,FLIndex,missing-method</li><li>plot,FLIndices,missing-method</li><li>plot,FLSR,missing-method</li>
+      <li>plot,FLQuant,missing-method</li><li>plot,FLQuants,missing-method</li><li>plot,FLSR,missing-method</li><li>plot,FLStock,FLPar-method</li><li>plot,FLStock,missing-method</li><li>plot,FLStocks,missing-method</li>
     </ul>
     <ul>
-      <li>methods</li>
+      
     </ul> -->
       
-    <h2>See also</h2>
-     <a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a> 
-    
-    <h2>Author</h2>
-    The FLR Team
-    
+        
   </div>
 </div>
       
