@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>FLQuantTotals. FLCore 2.5.20140616</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="The FLR Team">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Method quantTotals</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Method quantTotals">
+      <h2>Method quantTotals</h2>
+      
+    </div>
+
+    <div class="Method quantTotals">
+      <h2>Method quantTotals</h2>
+      
+    </div>
+
+    <div class="Method quantTotals">
+      <h2>Method quantTotals</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p></p>
+  
+      <p>These methods return an object of same dimensions as the input but with the sums along
+	the first (<code>yearTotals</code>) or second dimension (<code>quantTotals</code>). Although the
+	names might appear contradictory, it must be noted that what each method really returns
+	are the totals over the selected dimension.</p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Generic function">
+      <h2>Generic function</h2>
+      
+      <p>quantTotals(x)</p>
+  
+      <p>yearTotals(x)</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><dl>
+<dt> signature(x=FLQuant) :</dt><dd>Compute totals for an FLQuant dimension and replicate to
+	the whole object</dd>
+</dl></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'> flq &lt;- FLQuant(rlnorm(100), dim=c(10,10))
+ quantTotals(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1      2      3      4      5      6      7      8      9      10    
+   1  14.682 14.682 14.682 14.682 14.682 14.682 14.682 14.682 14.682 14.682
+   2  14.296 14.296 14.296 14.296 14.296 14.296 14.296 14.296 14.296 14.296
+   3  14.610 14.610 14.610 14.610 14.610 14.610 14.610 14.610 14.610 14.610
+   4  17.523 17.523 17.523 17.523 17.523 17.523 17.523 17.523 17.523 17.523
+   5  16.443 16.443 16.443 16.443 16.443 16.443 16.443 16.443 16.443 16.443
+   6  11.453 11.453 11.453 11.453 11.453 11.453 11.453 11.453 11.453 11.453
+   7  16.942 16.942 16.942 16.942 16.942 16.942 16.942 16.942 16.942 16.942
+   8  11.986 11.986 11.986 11.986 11.986 11.986 11.986 11.986 11.986 11.986
+   9  15.919 15.919 15.919 15.919 15.919 15.919 15.919 15.919 15.919 15.919
+   10 11.881 11.881 11.881 11.881 11.881 11.881 11.881 11.881 11.881 11.881
+
+units:  NA 
+</div>
+<div class='input'> # See how the values obtained by yearSums are being replicated
+ yearSums(flq)
+ # Get the proportions by quant
+ flq / quantTotals(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1         2         3         4         5         6         7        
+   1  0.0616821 0.0862662 0.0395790 0.0259552 0.2101603 0.3856787 0.0473902
+   2  0.2024949 0.0752207 0.2517529 0.1435340 0.1172642 0.0489112 0.0312301
+   3  0.0383803 0.0562370 0.3895952 0.0680718 0.1750865 0.0274081 0.0298442
+   4  0.0061739 0.0591356 0.3173580 0.2087458 0.0460584 0.0647470 0.0681016
+   5  0.3243218 0.0628325 0.1495046 0.1819677 0.0223592 0.0118223 0.0882830
+   6  0.1359659 0.2711378 0.0977152 0.0688337 0.0465207 0.0705000 0.0398153
+   7  0.1868729 0.0128324 0.0415100 0.0651624 0.1152660 0.0222131 0.1269848
+   8  0.0568504 0.0896940 0.0351568 0.1405279 0.2467030 0.0417084 0.0601788
+   9  0.3007059 0.0420619 0.0170760 0.1336644 0.0246783 0.0278642 0.0707238
+   10 0.0330755 0.1078107 0.1000397 0.0655016 0.2690362 0.1027310 0.0788851
+     year
+quant 8         9         10       
+   1  0.0303538 0.0877734 0.0251611
+   2  0.0502297 0.0521143 0.0272480
+   3  0.0804656 0.0931757 0.0417356
+   4  0.0283667 0.0904852 0.1108279
+   5  0.0483197 0.0661357 0.0444534
+   6  0.1768626 0.0530890 0.0395598
+   7  0.0379438 0.3228328 0.0683819
+   8  0.0955812 0.1729654 0.0606342
+   9  0.1266180 0.0288439 0.2277637
+   10 0.0781540 0.0803843 0.0843818
+
+units:  NA 
+</div>
+<div class='input'> # or year
+ flq / yearTotals(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1         2         3         4         5         6         7        
+   1  0.0444228 0.1093664 0.0269088 0.0230120 0.1760541 0.4950281 0.0723657
+   2  0.1419930 0.0928510 0.1666517 0.1239057 0.0956460 0.0611250 0.0464327
+   3  0.0275053 0.0709459 0.2635753 0.0600565 0.1459520 0.0350062 0.0453489
+   4  0.0053066 0.0894747 0.2575055 0.2208798 0.0460481 0.0991817 0.1241107
+   5  0.2615844 0.0892106 0.1138341 0.1806814 0.0209769 0.0169940 0.1509767
+   6  0.0763813 0.2681289 0.0518205 0.0476038 0.0303985 0.0705836 0.0474247
+   7  0.1552962 0.0187724 0.0325648 0.0666645 0.1114203 0.0328989 0.2237501
+   8  0.0334231 0.0928266 0.0195121 0.1017089 0.1687082 0.0437012 0.0750160
+   9  0.2348108 0.0578177 0.0125876 0.1284918 0.0224150 0.0387775 0.1170951
+   10 0.0192764 0.1106058 0.0550395 0.0469954 0.1823808 0.1067036 0.0974793
+     year
+quant 8         9         10       
+   1  0.0428970 0.0824366 0.0335583
+   2  0.0691164 0.0476563 0.0353843
+   3  0.1131583 0.0870806 0.0553909
+   4  0.0478443 0.1014244 0.1764115
+   5  0.0764763 0.0695636 0.0663993
+   6  0.1949668 0.0388931 0.0411561
+   7  0.0618761 0.3498666 0.1052395
+   8  0.1102689 0.1326120 0.0660167
+   9  0.1940165 0.0293724 0.3293698
+   10 0.0893795 0.0610944 0.0910735
+
+units:  NA 
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>quantTotals</li><li>quantTotals-methods</li><li>quantTotals,FLQuant-method</li><li>yearTotals</li><li>yearTotals-methods</li><li>yearTotals,FLQuant-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+     <a href='FLComp.html'>FLComp</a> 
+    
+    <h2>Author</h2>
+    The FLR Team
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

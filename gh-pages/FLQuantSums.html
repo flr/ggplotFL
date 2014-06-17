@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>FLQuantSums. FLCore 2.5.20140616</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="The FLR Team">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Methods to compute sums, means and vars of FLQuant objects</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Methods to compute sums, means and vars of FLQuant objects">
+      <h2>Methods to compute sums, means and vars of FLQuant objects</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This set of methods computes three different summaries (sum, mean and variance) of an
+	<code>FLQuant</code> object along each of the six dimensions (quant, year, unit, season, area,
+	or iter). Three methods (<code>dimSums</code>, <code>dimMeans</code> and <code>dimVars</code>) operate
+	by default over the second to fifth dimensions (<code>unit</code>, <code>season</code> and 
+	<code>area</code>).</p>
+  
+      <p>These methods simply encapsulate a call to <code><a href='http://www.inside-r.org/packages/cran/base/docs/apply'>apply</a></code> with the 
+  corresponding dimension and function.</p>
+  
+      <p>Sums are not calculated for the <code>iter</code> dimension, as it is used to store multiple 
+	replicates of a given array of values.</p>
+  
+      <p>Methods to operate over the first dimension refer to it as the <code>quant</code> dimension,
+	regardless of the actual name used in the object.</p>
+  
+      <p>The output object will have length=1 on the selected dimension.</p>
+  
+    </div>
+
+    <div class="Generic function">
+      <h2>Generic function</h2>
+      
+      <p>quantSums(x), quantMeans(x), quantVars(x)</p>
+  
+      <p>yearSums(x), yearMeans(x), yearVars(x)</p>
+  
+      <p>unitSums(x), unitMeans(x), unitVars(x)</p>
+  
+      <p>seasonSums(x), seasonMeans(x), seasonVars(x)</p>
+  
+      <p>areaSums(x), areaMeans(x), areaVars(x)</p>
+  
+      <p>iterMeans(x), iterVars(x)</p>
+  
+      <p>dimSums(x), dimMeans(x), dimVars(x)</p>
+  
+    </div>
+
+    <div class="Method arguments">
+      <h2>Method arguments</h2>
+      
+      <p><dl>
+<dt><code>x</code> :</dt><dd>an object of a class for which this method has been defined.</dd>
+<dt><code>na.rm</code> :</dt><dd>a logical indicating whether <code>NA</code>s should be deleted from the
+	calculations. Defaults to <code>TRUE</code>.</dd>
+<dt><code>dim</code> :</dt><dd>numeric, the dimensions over which <code>dimSums</code>, <code>dimMeans</code> or 
+	<code>dimVars</code> should operate. Defaults to <code>c(1:2,6)</code>.</dd>
+</dl></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><dl>
+<dt> signature(x=FLQuant) :</dt><dd>Computes a given summary statistic over a certain dimension 
+	of an FLQuant.</dd>
+</dl></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'> flq &lt;- FLQuant(rnorm(4000), dim=c(5,10,2,2,2,10), quant=&#39;age&#39;)
+ quantSums(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+iters:  10 
+
+, , unit = 1, season = 1, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all  0.1726772(2.406) -0.0396006(1.879) -1.1624075(1.531) -0.8288689(1.242)
+     year
+age   5                 6                 7                 8                
+  all  0.4659193(1.081)  0.6899955(2.072) -0.5129241(3.841)  0.2161479(1.277)
+     year
+age   9                 10               
+  all -0.0158184(2.385)  1.3636225(2.671)
+
+, , unit = 2, season = 1, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all  1.1562251(2.235)  0.5161846(2.987) -0.8226337(2.996) -0.4024057(1.030)
+     year
+age   5                 6                 7                 8                
+  all -0.9531009(1.729)  1.0840436(2.711) -0.5364316(0.953) -0.5030242(2.002)
+     year
+age   9                 10               
+  all  1.6898529(1.626) -0.9915846(1.840)
+
+, , unit = 1, season = 2, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all -0.2796824(2.833) -1.1201373(2.240) -0.2243497(2.564) -0.6406208(1.137)
+     year
+age   5                 6                 7                 8                
+  all -0.1142630(1.136) -1.0113033(1.353) -0.1083928(2.498) -0.0029040(1.208)
+     year
+age   9                 10               
+  all  0.9446440(1.597) -1.2430954(2.032)
+
+, , unit = 2, season = 2, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all  0.2346042(1.947)  0.3025694(2.703) -0.8112608(1.757) -0.0438377(1.682)
+     year
+age   5                 6                 7                 8                
+  all  1.2900213(1.180) -0.1628909(3.797)  0.5938397(1.688)  1.1025101(1.556)
+     year
+age   9                 10               
+  all  0.3699908(1.658) -0.2828899(1.694)
+
+, , unit = 1, season = 1, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  0.6908835(1.770) -0.4581982(1.862) -0.1481456(0.845) -1.6942563(0.835)
+     year
+age   5                 6                 7                 8                
+  all -0.3881179(2.211) -0.1500196(1.123)  0.3871368(1.297) -1.7125769(1.668)
+     year
+age   9                 10               
+  all -0.1471900(2.288) -0.1407223(3.127)
+
+, , unit = 2, season = 1, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  0.0762149(2.427)  0.4548791(1.283)  0.2698551(2.127)  0.1996102(2.384)
+     year
+age   5                 6                 7                 8                
+  all  0.0069865(1.516) -0.3163041(2.119) -0.8770101(1.318)  0.4556414(2.811)
+     year
+age   9                 10               
+  all -0.1706179(2.204) -0.5347786(0.988)
+
+, , unit = 1, season = 2, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  1.2466875(2.271)  0.4451629(1.200) -1.8289138(1.445)  0.3401074(0.729)
+     year
+age   5                 6                 7                 8                
+  all -0.2291279(2.608) -0.4592867(1.169) -1.1916576(1.774)  0.8099532(2.610)
+     year
+age   9                 10               
+  all -0.6596036(1.212)  0.0580093(0.893)
+
+, , unit = 2, season = 2, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  2.0785952(1.251) -0.2812603(1.810)  0.1115535(2.675) -0.3742746(1.558)
+     year
+age   5                 6                 7                 8                
+  all -0.2547886(1.221)  0.0538230(2.716)  0.4659518(2.656) -0.3936448(1.510)
+     year
+age   9                 10               
+  all  0.6430686(1.891)  0.0477298(2.881)
+
+units:  NA 
+</div>
+<div class='input'> quantMeans(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+iters:  10 
+
+, , unit = 1, season = 1, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all  0.0345354(0.481) -0.0079201(0.376) -0.2324815(0.306) -0.1657738(0.248)
+     year
+age   5                 6                 7                 8                
+  all  0.0931839(0.216)  0.1379991(0.414) -0.1025848(0.768)  0.0432296(0.255)
+     year
+age   9                 10               
+  all -0.0031637(0.477)  0.2727245(0.534)
+
+, , unit = 2, season = 1, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all  0.2312450(0.447)  0.1032369(0.597) -0.1645267(0.599) -0.0804811(0.206)
+     year
+age   5                 6                 7                 8                
+  all -0.1906202(0.346)  0.2168087(0.542) -0.1072863(0.191) -0.1006048(0.400)
+     year
+age   9                 10               
+  all  0.3379706(0.325) -0.1983169(0.368)
+
+, , unit = 1, season = 2, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all -0.0559365(0.567) -0.2240275(0.448) -0.0448699(0.513) -0.1281242(0.227)
+     year
+age   5                 6                 7                 8                
+  all -0.0228526(0.227) -0.2022607(0.271) -0.0216786(0.500) -0.0005808(0.242)
+     year
+age   9                 10               
+  all  0.1889288(0.319) -0.2486191(0.406)
+
+, , unit = 2, season = 2, area = 1
+
+     year
+age   1                 2                 3                 4                
+  all  0.0469208(0.389)  0.0605139(0.541) -0.1622522(0.351) -0.0087675(0.336)
+     year
+age   5                 6                 7                 8                
+  all  0.2580043(0.236) -0.0325782(0.759)  0.1187679(0.338)  0.2205020(0.311)
+     year
+age   9                 10               
+  all  0.0739982(0.332) -0.0565780(0.339)
+
+, , unit = 1, season = 1, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  0.1381767(0.354) -0.0916396(0.372) -0.0296291(0.169) -0.3388513(0.167)
+     year
+age   5                 6                 7                 8                
+  all -0.0776236(0.442) -0.0300039(0.225)  0.0774274(0.259) -0.3425154(0.334)
+     year
+age   9                 10               
+  all -0.0294380(0.458) -0.0281445(0.625)
+
+, , unit = 2, season = 1, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  0.0152430(0.485)  0.0909758(0.257)  0.0539710(0.425)  0.0399220(0.477)
+     year
+age   5                 6                 7                 8                
+  all  0.0013973(0.303) -0.0632608(0.424) -0.1754020(0.264)  0.0911283(0.562)
+     year
+age   9                 10               
+  all -0.0341236(0.441) -0.1069557(0.198)
+
+, , unit = 1, season = 2, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  0.2493375(0.454)  0.0890326(0.240) -0.3657828(0.289)  0.0680215(0.146)
+     year
+age   5                 6                 7                 8                
+  all -0.0458256(0.522) -0.0918573(0.234) -0.2383315(0.355)  0.1619906(0.522)
+     year
+age   9                 10               
+  all -0.1319207(0.242)  0.0116019(0.179)
+
+, , unit = 2, season = 2, area = 2
+
+     year
+age   1                 2                 3                 4                
+  all  0.4157190(0.250) -0.0562521(0.362)  0.0223107(0.535) -0.0748549(0.312)
+     year
+age   5                 6                 7                 8                
+  all -0.0509577(0.244)  0.0107646(0.543)  0.0931904(0.531) -0.0787290(0.302)
+     year
+age   9                 10               
+  all  0.1286137(0.378)  0.0095460(0.576)
+
+units:  NA 
+</div>
+<div class='input'> yearSums(flq)
+ iterMeans(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = 1, season = 1, area = 1
+
+   year
+age 1           2           3           4           5           6          
+  1 -1.8522e-01 -1.0693e-01 -5.8804e-01 -5.5286e-01  4.0693e-01 -1.9435e-01
+  2 -4.8273e-02 -2.6235e-01  1.0953e-01 -1.8253e-01  1.1771e-02 -3.7616e-01
+  3 -2.8117e-01 -2.1817e-02 -3.7095e-01 -8.0845e-02  2.3151e-01  5.4889e-01
+  4  2.4226e-02  4.8913e-03 -2.9365e-01  3.8042e-01 -3.0639e-01  1.9127e-02
+  5 -3.6175e-01 -4.2323e-03  1.1096e-02 -3.2051e-01 -3.0403e-01  3.6643e-01
+   year
+age 7           8           9           10         
+  1  2.0265e-01  1.2184e-01  2.5287e-01  9.9017e-01
+  2 -6.2003e-01 -6.8856e-02  1.7674e-01  2.6888e-01
+  3  3.7820e-01 -3.7199e-01 -1.0336e-01  2.9910e-01
+  4  3.6751e-02  3.2405e-01  2.1226e-01 -1.0127e-01
+  5 -2.1178e-01  2.2137e-01 -5.9797e-01 -4.3121e-01
+
+, , unit = 2, season = 1, area = 1
+
+   year
+age 1           2           3           4           5           6          
+  1 -7.3276e-02  2.7881e-02 -3.0700e-02  1.1630e-01 -2.6695e-01 -7.4975e-02
+  2  4.5331e-01 -4.3165e-01  1.4217e-01  2.1834e-02 -3.2626e-01  2.1302e-01
+  3  3.8201e-01  3.7773e-01 -1.7964e-01 -8.1742e-02  3.5363e-01  3.9577e-01
+  4  5.9069e-01 -3.6491e-01 -1.5783e-01  1.0456e-01 -4.1175e-01  1.7278e-01
+  5 -1.0579e-01  2.5268e-01 -4.4725e-01 -4.7994e-02 -2.6285e-01  4.0766e-01
+   year
+age 7           8           9           10         
+  1  2.3141e-01 -3.7183e-01  4.1721e-01 -7.5229e-01
+  2 -2.2738e-01 -3.0940e-01  4.7664e-01  1.1614e-01
+  3 -6.3791e-02 -1.0978e-01  3.9402e-01  2.7500e-01
+  4 -3.3576e-01  3.9910e-01  2.0313e-01 -7.1571e-01
+  5  9.6806e-02 -1.8151e-01 -2.3177e-01 -1.6305e-02
+
+, , unit = 1, season = 2, area = 1
+
+   year
+age 1           2           3           4           5           6          
+  1 -2.1404e-01 -1.7255e-01 -9.3984e-02 -6.0557e-03 -2.4929e-01  3.7723e-01
+  2 -4.0222e-01 -3.3158e-01  3.4706e-01  1.1930e-01  1.2583e-01 -3.1154e-01
+  3  1.8330e-01 -1.2651e-01  1.0605e-02  3.7094e-01  7.6491e-02 -4.0973e-01
+  4  5.2246e-01 -2.8796e-01 -1.8548e-01 -2.7546e-01  2.7226e-01 -3.8228e-01
+  5  2.1800e-01  2.9392e-01 -6.1252e-01 -1.2506e-01 -2.9107e-01 -3.5107e-01
+   year
+age 7           8           9           10         
+  1  9.7271e-04 -2.4363e-01 -2.5005e-01  1.0074e-01
+  2 -3.9506e-02 -2.3761e-01  2.5883e-01  1.6665e-01
+  3  2.8150e-01 -2.6762e-01 -1.4187e-02 -4.4742e-01
+  4  3.3730e-01 -1.4420e-01  3.6524e-01 -3.5817e-01
+  5 -2.5384e-02  1.5461e-01  1.6178e-03 -5.8615e-02
+
+, , unit = 2, season = 2, area = 1
+
+   year
+age 1           2           3           4           5           6          
+  1  4.1181e-01  1.1666e-01  3.4108e-01  1.5903e-01  2.0850e-01 -1.2135e-01
+  2 -7.4180e-02  1.3213e-01  3.0883e-01  9.8208e-02 -5.2908e-01 -2.8763e-04
+  3 -4.1255e-01 -4.0106e-01 -2.7779e-01 -4.0483e-01 -8.2195e-02  1.1512e-01
+  4  6.6218e-02  7.8569e-01 -6.4570e-01 -1.9018e-01  3.3161e-01  1.0743e-01
+  5  6.8208e-02  2.7802e-01  1.0277e-01  2.0847e-01  2.0815e-01 -4.0763e-01
+   year
+age 7           8           9           10         
+  1 -1.4396e-01 -1.6951e-01  7.6661e-02  1.6730e-01
+  2  2.6674e-01  6.1725e-02 -6.0655e-02 -4.6855e-01
+  3  2.6657e-01  2.0204e-01 -6.8119e-02  2.5912e-01
+  4  3.5354e-02  5.0748e-01  2.6804e-01 -1.0032e-01
+  5  2.3317e-01  3.4175e-01 -1.2351e-01  1.0851e-01
+
+, , unit = 1, season = 1, area = 2
+
+   year
+age 1           2           3           4           5           6          
+  1  1.7362e-02  2.3955e-01  2.2052e-01 -3.5280e-01  3.5014e-01 -4.0818e-01
+  2  2.3212e-01 -2.0549e-01  2.0791e-01 -1.4416e-01 -3.3685e-01 -5.6044e-01
+  3 -4.9661e-01  8.8648e-02 -1.6126e-01 -1.9921e-01  1.0361e-01  5.9903e-02
+  4 -5.3265e-03 -1.2973e-01 -5.7042e-01 -1.5379e-01 -1.5109e-01 -1.3118e-02
+  5  1.6877e-01 -1.8728e-01  4.1771e-01 -6.4799e-01 -8.3490e-02  3.5395e-01
+   year
+age 7           8           9           10         
+  1  3.5489e-02  2.2320e-01  2.4341e-01 -7.3760e-01
+  2 -1.7552e-01 -3.7518e-01 -1.8804e-01  1.4003e-01
+  3  7.9327e-02 -6.1030e-01 -1.1407e-01 -2.0433e-01
+  4 -8.0751e-02 -1.7391e-01  9.6567e-02  2.6090e-01
+  5  4.3425e-01  4.1874e-02 -1.9739e-01 -3.3669e-02
+
+, , unit = 2, season = 1, area = 2
+
+   year
+age 1           2           3           4           5           6          
+  1 -4.9450e-01  7.4959e-03  1.7881e-01  3.6391e-01 -8.5781e-02 -3.5085e-02
+  2  1.9544e-01  1.2410e-01 -3.9289e-01  1.2711e-01 -2.6085e-01 -3.4445e-01
+  3  1.0946e-02  2.9971e-01 -3.3882e-01 -1.6881e-01 -1.6630e-01  1.4935e-01
+  4 -1.5508e-01  3.8859e-01  1.8788e-01  2.7179e-01  1.3655e-01 -1.3809e-01
+  5  1.2069e-01 -7.1834e-02 -1.2770e-01 -1.5511e-01  4.9518e-01  3.5437e-01
+   year
+age 7           8           9           10         
+  1 -9.0220e-03 -1.3684e-01 -1.7891e-01 -3.0765e-01
+  2  7.5337e-02  2.0106e-01 -1.0176e-01 -2.7330e-02
+  3 -1.9947e-01 -3.5153e-01 -4.9960e-02  4.9326e-01
+  4 -4.5024e-03  2.6378e-01  4.4002e-01 -1.0792e-01
+  5 -1.5350e-03  9.6504e-02 -2.0497e-01 -2.5975e-01
+
+, , unit = 1, season = 2, area = 2
+
+   year
+age 1           2           3           4           5           6          
+  1  7.3135e-02  1.3508e-01 -6.0585e-01  4.6734e-01 -5.0430e-02 -2.0850e-02
+  2  4.1211e-01 -1.5836e-01  7.5118e-02 -2.4388e-01  1.2385e-01 -5.5439e-02
+  3  8.4823e-02  1.5136e-02 -2.7636e-01 -1.2307e-01 -7.3557e-02  5.8127e-01
+  4  3.6635e-01  2.3864e-01 -7.6800e-01 -3.9644e-01 -1.6197e-01 -3.6529e-02
+  5 -5.3767e-02  2.4660e-03  5.9411e-02  9.0089e-05 -4.6446e-01 -3.1760e-01
+   year
+age 7           8           9           10         
+  1 -4.8034e-01 -3.7172e-01 -1.3930e-01  2.5736e-01
+  2 -3.3835e-01  1.5682e-01  6.3292e-01  5.0133e-01
+  3 -1.5560e-01  1.4997e-01 -2.0841e-01  7.4806e-02
+  4  1.4264e-02  3.7206e-02 -7.3311e-01 -5.3903e-01
+  5  1.2076e-01 -2.1386e-01  1.3308e-01 -3.6680e-01
+
+, , unit = 2, season = 2, area = 2
+
+   year
+age 1           2           3           4           5           6          
+  1 -1.6968e-01 -2.7459e-01  5.4649e-01 -1.2197e-02 -7.7911e-02 -7.2953e-02
+  2 -2.0159e-01  5.3137e-01  1.3661e-01 -3.1731e-01  9.4949e-02  5.2872e-01
+  3  2.4088e-01  2.9136e-01 -2.7879e-01 -4.7385e-01 -1.1155e+00  4.5797e-01
+  4  4.2934e-01  1.0219e-01 -1.7273e-01  2.4175e-01  5.5328e-01 -2.3249e-01
+  5  6.2449e-01 -3.2032e-01  3.2521e-01 -5.0203e-01  4.4131e-01 -5.8526e-01
+   year
+age 7           8           9           10         
+  1  3.3134e-01  9.0206e-02  2.7368e-01 -4.3124e-01
+  2 -1.7304e-01 -2.1284e-01  5.0569e-01  2.9046e-01
+  3 -2.4760e-01 -3.2118e-01  3.3844e-01  1.2175e-01
+  4  1.9949e-01 -7.4786e-02 -4.7310e-01  3.0822e-01
+  5  2.4761e-01 -1.0195e-01  7.1590e-02  1.9363e-01
+
+units:  NA 
+</div>
+<div class='input'> dim(quantSums(flq))</div>
+<div class='output'>[1]  1 10  2  2  2 10
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>quantSums</li><li>quantSums-methods</li><li>quantSums,FLQuant-method</li><li>quantMeans</li><li>quantMeans-methods</li><li>quantMeans,FLQuant-method</li><li>quantVars</li><li>quantVars-methods</li><li>quantVars,FLQuant-method</li><li>yearSums</li><li>yearSums-methods</li><li>yearSums,FLQuant-method</li><li>yearMeans</li><li>yearMeans-methods</li><li>yearMeans,FLQuant-method</li><li>yearVars</li><li>yearVars-methods</li><li>yearVars,FLQuant-method</li><li>unitSums</li><li>unitSums-methods</li><li>unitSums,FLQuant-method</li><li>unitMeans</li><li>unitMeans-methods</li><li>unitMeans,FLQuant-method</li><li>unitVars</li><li>unitVars-methods</li><li>unitVars,FLQuant-method</li><li>seasonSums</li><li>seasonSums-methods</li><li>seasonSums,FLQuant-method</li><li>seasonMeans</li><li>seasonMeans-methods</li><li>seasonMeans,FLQuant-method</li><li>seasonVars</li><li>seasonVars-methods</li><li>seasonVars,FLQuant-method</li><li>areaSums</li><li>areaSums-methods</li><li>areaSums,FLQuant-method</li><li>areaMeans</li><li>areaMeans-methods</li><li>areaMeans,FLQuant-method</li><li>areaVars</li><li>areaVars-methods</li><li>areaVars,FLQuant-method</li><li>iterMeans</li><li>iterMeans-methods</li><li>iterMeans,FLQuant-method</li><li>iterVars</li><li>iterVars-methods</li><li>iterVars,FLQuant-method</li><li>dimSums</li><li>dimSums-methods</li><li>dimSums,FLQuant-method</li><li>dimMeans</li><li>dimMeans-methods</li><li>dimMeans,FLQuant-method</li><li>dimVars</li><li>dimVars-methods</li><li>dimVars,FLQuant-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+     <a href='FLIndex.html'>FLQuant</a>, <a href='http://www.inside-r.org/packages/cran/base/docs/sum'>sum</a>, <a href='http://www.inside-r.org/packages/cran/base/docs/mean'>mean</a>, <a href='http://www.inside-r.org/packages/cran/stats/docs/cor'>var</a>
+    
+    <h2>Author</h2>
+    The FLR Team
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

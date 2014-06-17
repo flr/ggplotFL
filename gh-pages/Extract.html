@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Extract. FLCore 2.5.20140616</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="The FLR Team">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extract or Replace Parts of an FLR Object</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Extract or Replace Parts of an FLR Object">
+      <h2>Extract or Replace Parts of an FLR Object</h2>
+      
+    </div>
+
+    <div class="Extract or Replace Parts of an FLR Object">
+      <h2>Extract or Replace Parts of an FLR Object</h2>
+      
+    </div>
+
+    <div class="Extract or Replace Parts of an FLR Object">
+      <h2>Extract or Replace Parts of an FLR Object</h2>
+      
+    </div>
+
+    <div class="Extract or Replace Parts of an FLR Object">
+      <h2>Extract or Replace Parts of an FLR Object</h2>
+      
+    </div>
+
+    <div class="Extract or Replace Parts of an FLR Object">
+      <h2>Extract or Replace Parts of an FLR Object</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Operators acting on FLQuant, FLCohort, FLPar, FLComp, and derived classes to extract or
+  replace sections of an object.</p>
+  
+      <p>Please note the difference between referencing sections of an object by position, using
+  values of class <code>numeric</code>, or by dimnames, of class <code>character</code>. See examples
+  below.</p>
+  
+      <p>All classes that are derived from <code>FLComp</code> (for example, <code>FLStock</code> and 
+  <code>FLBiol</code>) can be subset along the six dimensions of their <code>FLQuant</code> slots.</p>
+  
+      <p>Classes that are derived from <code>FLlst</code> (for example, <code>FLStocks</code> and 
+ <code>FLBiols</code>) can be subset in a similar way to ordinary list objects.</p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Generic function">
+      <h2>Generic function</h2>
+      
+      <p><dl>
+<dt></dt><dd>[x,i,j,drop]</dd>
+<dt></dt><dd>[<-(x,i,j,value)</dd>
+<dt></dt><dd>[[<-(x,i,j,value)</dd>
+<dt></dt><dd>\$<-(x,name,value)</dd>
+</dl></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><dl>
+<dt> signature(x=FLQuant,i=ANY,j=ANY,drop=missing) :</dt><dd>Returns an <code>FLQuant</code> object, subset along any of the six dimensions (quant, year, unit, season, area and iter).</dd>
+<dt> signature(x=FLPar,i=ANY,j=ANY,drop=missing) :</dt><dd>Subset an <code>FLPar</code> object.</dd>
+<dt> signature(x=FLStock,i=ANY,j=ANY,drop=missing) :</dt><dd>Returns an <code>FLStock</code> where all the <code>FLQuant</code> slots have been subset by quant, year, unit, season, area and iter.</dd>
+<dt> signature(x=FLBiol,i=ANY,j=ANY,drop=missing) :</dt><dd>Returns an <code>FLBiol</code> where all the <code>FLQuant</code> slots have been subset by quant, year, unit, season, area and iter.</dd>
+<dt> signature(x=FLCohort,i=ANY,j=ANY,drop=missing) :</dt><dd>Describe method</dd>
+<dt> signature(x=FLlst,i=ANY,j=missing,value=missing) :</dt><dd>Returns the specified element of the list.  For example, for an <code>FLStocks</code> object, stocks[[1]] will return a single <code>FLStock</code>.</dd>
+<dt> signature(x=FLlst,name=character,value=missing) :</dt><dd>Describe method</dd>
+</dl></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>flq &lt;- FLQuant(rnorm(50), dimnames=list(age=1:5, year=1990:2000, season=1:4))
+flq[1,]
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = 1, area = unique
+
+   year
+age 1990     1991     1992     1993     1994     1995     1996     1997    
+  1 -1.05329 -1.26139  0.33913 -0.90707 -1.82860 -1.73842  0.82544  0.95563
+   year
+age 1998     1999     2000    
+  1 -0.74262 -0.57434 -1.05329
+
+, , unit = unique, season = 2, area = unique
+
+   year
+age 1990     1991     1992     1993     1994     1995     1996     1997    
+  1 -1.26139  0.33913 -0.90707 -1.82860 -1.73842  0.82544  0.95563 -0.74262
+   year
+age 1998     1999     2000    
+  1 -0.57434 -1.05329 -1.26139
+
+, , unit = unique, season = 3, area = unique
+
+   year
+age 1990     1991     1992     1993     1994     1995     1996     1997    
+  1  0.33913 -0.90707 -1.82860 -1.73842  0.82544  0.95563 -0.74262 -0.57434
+   year
+age 1998     1999     2000    
+  1 -1.05329 -1.26139  0.33913
+
+, , unit = unique, season = 4, area = unique
+
+   year
+age 1990     1991     1992     1993     1994     1995     1996     1997    
+  1 -0.90707 -1.82860 -1.73842  0.82544  0.95563 -0.74262 -0.57434 -1.05329
+   year
+age 1998     1999     2000    
+  1 -1.26139  0.33913 -0.90707
+
+units:  NA 
+</div>
+<div class='input'>flq[,1:5]
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = 1, area = unique
+
+   year
+age 1990      1991      1992      1993      1994     
+  1 -1.053293 -1.261389  0.339128 -0.907070 -1.828597
+  2 -0.539806 -0.487402 -1.095951 -1.834592 -0.841133
+  3 -0.802871  0.525804 -0.021378  0.821895  0.401568
+  4  1.173130 -0.280933  0.041310 -0.910493  0.146772
+  5 -0.470586 -0.369823 -0.693777  0.830737 -0.699722
+
+, , unit = unique, season = 2, area = unique
+
+   year
+age 1990      1991      1992      1993      1994     
+  1 -1.261389  0.339128 -0.907070 -1.828597 -1.738422
+  2 -0.487402 -1.095951 -1.834592 -0.841133  1.217315
+  3  0.525804 -0.021378  0.821895  0.401568  0.363089
+  4 -0.280933  0.041310 -0.910493  0.146772  0.027892
+  5 -0.369823 -0.693777  0.830737 -0.699722 -0.100574
+
+, , unit = unique, season = 3, area = unique
+
+   year
+age 1990      1991      1992      1993      1994     
+  1  0.339128 -0.907070 -1.828597 -1.738422  0.825435
+  2 -1.095951 -1.834592 -0.841133  1.217315 -0.990965
+  3 -0.021378  0.821895  0.401568  0.363089  0.577322
+  4  0.041310 -0.910493  0.146772  0.027892 -0.660786
+  5 -0.693777  0.830737 -0.699722 -0.100574 -1.694187
+
+, , unit = unique, season = 4, area = unique
+
+   year
+age 1990      1991      1992      1993      1994     
+  1 -0.907070 -1.828597 -1.738422  0.825435  0.955628
+  2 -1.834592 -0.841133  1.217315 -0.990965 -0.765696
+  3  0.821895  0.401568  0.363089  0.577322  0.489502
+  4 -0.910493  0.146772  0.027892 -0.660786  1.158724
+  5  0.830737 -0.699722 -0.100574 -1.694187  0.643635
+
+units:  NA 
+</div>
+<div class='input'>flq[,&#39;1990&#39;]
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = 1, area = unique
+
+   year
+age 1990     
+  1 -1.053293
+  2 -0.539806
+  3 -0.802871
+  4  1.173130
+  5 -0.470586
+
+, , unit = unique, season = 2, area = unique
+
+   year
+age 1990     
+  1 -1.261389
+  2 -0.487402
+  3  0.525804
+  4 -0.280933
+  5 -0.369823
+
+, , unit = unique, season = 3, area = unique
+
+   year
+age 1990     
+  1  0.339128
+  2 -1.095951
+  3 -0.021378
+  4  0.041310
+  5 -0.693777
+
+, , unit = unique, season = 4, area = unique
+
+   year
+age 1990     
+  1 -0.907070
+  2 -1.834592
+  3  0.821895
+  4 -0.910493
+  5  0.830737
+
+units:  NA 
+</div>
+<div class='input'>flq[1:2,,,c(1,3)]
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = 1, area = unique
+
+   year
+age 1990     1991     1992     1993     1994     1995     1996     1997    
+  1 -1.05329 -1.26139  0.33913 -0.90707 -1.82860 -1.73842  0.82544  0.95563
+  2 -0.53981 -0.48740 -1.09595 -1.83459 -0.84113  1.21732 -0.99097 -0.76570
+   year
+age 1998     1999     2000    
+  1 -0.74262 -0.57434 -1.05329
+  2 -0.73047 -0.50424 -0.53981
+
+, , unit = unique, season = 3, area = unique
+
+   year
+age 1990     1991     1992     1993     1994     1995     1996     1997    
+  1  0.33913 -0.90707 -1.82860 -1.73842  0.82544  0.95563 -0.74262 -0.57434
+  2 -1.09595 -1.83459 -0.84113  1.21732 -0.99097 -0.76570 -0.73047 -0.50424
+   year
+age 1998     1999     2000    
+  1 -1.05329 -1.26139  0.33913
+  2 -0.53981 -0.48740 -1.09595
+
+units:  NA 
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>Extract-FLCore</li><li>[,FLArray,ANY,ANY-method</li><li>[,FLArray,array,ANY-method</li><li>[,FLComp,ANY,ANY-method</li><li>[,FLlst,ANY,missing-method</li><li>[,FLPar,ANY,ANY-method</li><li>[,FLStock,ANY,ANY-method</li><li>[,FLCohort,ANY,ANY-method</li><li>[,FLIndex,ANY,ANY-method</li><li>[&lt;-,FLArray,ANY,ANY,ANY-method</li><li>[&lt;-,FLComp,ANY,ANY,ANY-method</li><li>[&lt;-,FLlst,ANY,missing,ANY-method</li><li>[&lt;-,FLPar,ANY,ANY,ANY-method</li><li>[&lt;-,FLStock,ANY,ANY,FLStock-method</li><li>[[&lt;-,FLlst,ANY,missing-method</li><li>$&lt;-,FLlst,character-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+     <a href='http://www.inside-r.org/packages/cran/base/docs/Extract'>Extract</a> 
+    
+    <h2>Author</h2>
+    The FLR Team
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

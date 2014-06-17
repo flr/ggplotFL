@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>quantile. FLCore 2.5.20140616</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="The FLR Team">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Method quantile</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Quantiles for <code>FLQuant</code> objects can be obtained with this method. 
+  Default quantiles returned are <code>seq(0, 1, 0.25)</code>, but they can be specified using
+  the <code>probs</code> argument. The returned <code>FLQuant</code> object uses the 
+  sixth dimension (<em>iter</em>) to store the requested quantiles, with appropriate 
+  dimnames.</p>
+  
+      <p>For objects of class <code>FLQuantPoint</code>, quantile is merely an accessor
+  for two elements of the sixth dimension, <code>lowq</code> and <code>uppq</code>. You could 
+  use the <code><a href='FLQuantPoint-accesors.html'>lowq</a></code> and <code><a href='FLQuantPoint-accesors.html'>uppq</a></code> methods instead.</p>
+  
+    </div>
+
+    <div class="Generic function">
+      <h2>Generic function</h2>
+      
+      <p>quantile(x, ...)</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><dl>
+<dt> signature(x=FLQuant) :</dt><dd>Describe method</dd>
+<dt> signature(x=FLQuantPoint) :</dt><dd>Describe method</dd>
+</dl></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># Normally distributed FLQuant, with log-normal random mean and fixed sd of 20
+flq &lt;- rnorm(100, FLQuant(rlnorm(20), dim=c(2,10)), 20)
+
+# obtains all standard quantiles (0, 0.25, 0.5, 0.75 and 1)
+quantile(flq)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+iters:  5 
+
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1               2               3               4              
+    1  3.000042(21.5) -0.290694(29.3)  4.788111(21.0)  1.851781(21.9)
+    2 10.046560(20.4)  0.025515(23.5)  5.187100(23.7)  5.213460(18.0)
+     year
+quant 5               6               7               8              
+    1  0.516789(20.6) -3.624482(22.7)  3.082225(23.2)  6.694639(30.5)
+    2  1.740704(15.7)  1.195295(24.2)  4.773539(22.3)  2.338072(24.9)
+     year
+quant 9               10             
+    1  1.929347(21.1)  2.036286(22.2)
+    2  7.628467(21.1)  7.306377(25.7)
+
+units:  NA 
+</div>
+<div class='input'># select one of them
+quantile(flq)[,,,,,1]
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1       2       3       4       5       6       7       8       9      
+    1 -49.378 -42.226 -48.406 -45.028 -57.852 -39.706 -43.472 -42.575 -53.939
+    2 -71.975 -49.956 -34.118 -45.950 -43.761 -53.677 -55.331 -35.349 -40.772
+     year
+quant 10     
+    1 -45.839
+    2 -30.899
+
+units:  NA 
+</div>
+<div class='input'># calculates the 0.05 quantile only
+quantile(flq, 0.05)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1       2       3       4       5       6       7       8       9      
+    1 -35.608 -35.856 -36.326 -26.317 -30.189 -30.736 -29.418 -23.043 -28.902
+    2 -32.399 -27.285 -32.190 -31.416 -31.023 -42.163 -23.760 -27.438 -23.608
+     year
+quant 10     
+    1 -27.725
+    2 -23.872
+
+units:  NA 
+</div>
+<div class='input'>
+# creates an FLQuantPoint from previous FLQuant
+flp &lt;- FLQuantPoint(flq)
+# return each of the two quantiles (025 and 0.75)
+quantile(flp, 0.25)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1        2        3        4        5        6        7        8       
+    1 -11.5193  -9.3507 -13.0448 -10.3910 -12.1675  -3.6856 -10.8143  -8.1555
+    2 -14.3866 -12.9163 -15.2918 -13.9091 -12.5612 -15.8480  -6.9039 -15.1200
+     year
+quant 9        10      
+    1 -10.2711  -6.5711
+    2 -10.4132 -10.0309
+
+units:  NA 
+</div>
+<div class='input'>quantile(flp, 0.75)
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1      2      3      4      5      6      7      8      9      10    
+    1 13.868 18.684 14.406 18.759 16.177 22.788 16.675 12.306 17.383 18.985
+    2 19.498 13.039 11.669 20.638 16.984 14.296 16.803 15.188 19.113 19.660
+
+units:  NA 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>quantile,FLQuant-method</li><li>quantile,FLQuantPoint-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    <a href='http://www.inside-r.org/packages/cran/stats/docs/quantile'>quantile</a>, FLQuant, FLQuantPoint
+    
+    <h2>Author</h2>
+    The FLR Team
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
