@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>show. FLCore 2.5.20140616</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="The FLR Team">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">FLCore 2.5.20140616</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Method show</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Standard display of an object contents in an interactive session. Objects of class
+  <code>FLQuant</code> with length > 1 along the sixth dimension (<em>iter</em>)
+  are output in a summarised form, as <code>median (mad)</code>, where mad is the median 
+  absolute deviation. See <code><a href='http://www.inside-r.org/packages/cran/stats/docs/mad'>mad</a></code>.</p>
+  
+      <p>The same format is used for objects of class <code>FLPar</code> with length > 1
+  on the last dimension ('iter').</p>
+  
+    </div>
+
+    <div class="Generic function">
+      <h2>Generic function</h2>
+      
+      <p>show(object)</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><dl>
+<dt> signature(object=FLQuant) :</dt><dd>Describe method</dd>
+<dt> signature(object=FLQuantPoint) :</dt><dd>Describe method</dd>
+<dt> signature(object=FLQuants) :</dt><dd>Describe method</dd>
+<dt> signature(object=FLPar) :</dt><dd>Describe method</dd>
+</dl></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># no &#39;iter&#39;
+flq &lt;- FLQuant(rnorm(80), dim=c(4,20), quant=&#39;age&#39;, units=&#39;kg&#39;)
+flq
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 1          2          3          4          5          6         
+  1  0.3563724  0.4617158  0.5931104  1.2564716  1.1337453  0.4093131
+  2 -1.1022942 -0.5052282 -0.1846939 -0.8120066  1.2459421 -0.6981168
+  3 -1.4929577  0.3400715 -1.2918957 -0.0851248  0.7445189  0.1905393
+  4  3.3900772  1.0104775  0.3464582  0.6069031  0.2288660 -0.7097744
+   year
+age 7          8          9          10         11         12        
+  1  1.5269523  0.0790221 -0.1667817 -0.5453450 -0.6680727 -0.2345156
+  2 -1.5298283  1.2230269  1.1602917 -0.1078434 -0.5977978 -1.0338365
+  3  0.4335259  1.4490584 -0.0261084 -0.6214767 -1.0793701  0.5753463
+  4  0.2375098  0.9254247  1.5530494 -1.5855596 -0.2791439  0.5979052
+   year
+age 13         14         15         16         17         18        
+  1  0.3850304 -0.9768681  1.4926614 -1.2881842 -0.6025323  1.4253114
+  2 -0.6703269 -0.2995023 -1.3585440 -0.6626198 -0.0333809 -0.3864173
+  3 -1.4988343 -0.7296811 -2.1462474 -1.8333437 -0.6738071  1.0682902
+  4 -0.4169059 -0.5906688  0.5702641 -0.0084075 -1.9759798 -0.3626832
+   year
+age 19         20        
+  1 -1.3662823  0.5755557
+  2  0.1184903  1.0246225
+  3  1.0477196 -1.4202029
+  4 -0.6715446 -1.6122781
+
+units:  kg 
+</div>
+<div class='input'>
+# with &#39;iter&#39;
+flq &lt;- FLQuant(rnorm(800), dim=c(4,20,1,1,1,10), quant=&#39;age&#39;, units=&#39;kg&#39;)
+flq
+</div>
+<div class='output'>An object of class &quot;FLQuant&quot;
+iters:  10 
+
+, , unit = unique, season = all, area = unique
+
+   year
+age 1                2                3                4               
+  1  0.087940(0.599)  0.230066(1.914) -0.223750(1.025)  0.562994(1.370)
+  2 -0.229877(0.454)  0.563682(0.390)  0.125780(0.795)  0.351561(0.667)
+  3  0.021589(0.859) -0.319572(1.055)  0.242608(1.144)  0.522339(0.606)
+  4 -0.125041(0.768)  0.345654(0.401) -0.351260(0.867) -0.295200(1.071)
+   year
+age 5                6                7                8               
+  1 -0.287925(0.709) -0.073874(0.677) -0.012647(0.618) -0.223542(1.150)
+  2  0.243115(0.712) -0.102310(0.240)  0.035090(0.619) -0.299182(1.076)
+  3 -0.349222(1.259) -0.068815(0.977)  0.400969(0.663)  0.380011(0.269)
+  4  0.676108(0.649) -0.239856(0.961) -0.396356(0.769)  0.150468(0.547)
+   year
+age 9                10               11               12              
+  1 -0.466518(0.886) -0.370057(1.306) -0.349953(0.599) -0.134631(1.498)
+  2  0.337453(1.337) -0.253973(0.751)  0.528015(1.098)  0.333837(0.588)
+  3 -0.712612(0.905) -0.296777(1.077)  0.016488(0.963)  0.296415(1.102)
+  4  0.362553(0.556)  0.448157(0.364) -0.325802(1.226)  0.384066(0.372)
+   year
+age 13               14               15               16              
+  1 -0.069928(0.565)  0.233759(1.314) -0.685917(0.769)  0.821795(1.472)
+  2 -0.150495(0.375) -0.130859(0.584) -0.096372(0.577) -0.058402(0.984)
+  3  0.758542(0.953) -0.090542(0.787)  0.359661(0.474)  0.364765(1.205)
+  4 -0.115233(0.673)  0.123279(1.328)  0.055726(0.842)  0.036048(1.090)
+   year
+age 17               18               19               20              
+  1 -0.114404(1.565) -0.332522(1.235) -0.652352(1.168)  0.505315(0.670)
+  2  0.253431(0.623) -0.312313(0.183) -0.216397(0.901) -0.456585(0.893)
+  3  0.468323(1.206) -0.181108(0.968)  0.425864(1.129)  0.327303(0.540)
+  4 -0.261631(0.470)  0.825885(0.675) -0.188266(1.941)  0.460293(0.809)
+
+units:  kg 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>show,FLArray-method</li><li>show,FLQuant-method</li><li>show,FLQuantPoint-method</li><li>show,FLQuants-method</li><li>show,FLPar-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+     <a href='FLComp.html'>FLComp</a> 
+    
+    <h2>Author</h2>
+    The FLR Team
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
