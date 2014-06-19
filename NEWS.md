@@ -7,6 +7,7 @@
 - plot(FLStocks) now uses geom_ribbon for objects with multiple iters
 
 ## USER-VISIBLE CHANGES 
+- Default ribbons for plot(FLStocks) with iters have no borders
 
 ## BUG FIXES
 - Call to dcast had wrong argument name for value.var

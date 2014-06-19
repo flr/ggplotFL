@@ -19,7 +19,7 @@ gh-pages: $(HELP_FILES)
 	R --vanilla --silent -e "library(staticdocs);" \
   -e "build_site('../$(PKGNAME)/', site_path='gh-pages', launch=FALSE)"; \
 	rm Rplots.pdf  
-	#git subtree push --prefix gh-pages origin gh-pages
+	git subtree push --prefix gh-pages origin gh-pages
 
 NEWS: NEWS.md
 	sed -e 's/^-/  -/' -e 's/^## *//' -e 's/^#/\t\t/' <NEWS.md | fmt -80 >NEWS

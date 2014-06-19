@@ -203,8 +203,8 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock),
-			fill='red', alpha = .10)
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock,
+				colour=stock, fill=stock), alpha = .20, linetype = 0)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
 		return(p)
