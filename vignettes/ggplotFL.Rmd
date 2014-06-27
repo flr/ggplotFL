@@ -20,6 +20,8 @@ options(width=50)
 
 ```{r, load, echo=FALSE, results='hide', message=FALSE}
 library(ggplotFL)
+#library(ggthemes)
+#theme_set(theme_light())
 data(ple4)
 data(nsher)
 set.seed(1423)
