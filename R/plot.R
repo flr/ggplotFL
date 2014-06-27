@@ -39,7 +39,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		}
 		
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=`50%`)) + facet_grid(qname~., scales="free") +
+		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
+			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -49,9 +50,16 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
+			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
+				fill="red", alpha = .25) +
 			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),  fill="red", alpha = .10)
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
+				fill="red", alpha = .10) +
+			# .. and dotted lines
+			geom_line(aes(x=year, y = `10%`),
+				colour="red", alpha = .50, linetype=3) +
+			geom_line(aes(x=year, y = `90%`),
+				colour="red", alpha = .50, linetype=3)
 		}
 		
 		return(p)
@@ -96,7 +104,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		# basic plot data vs. year
 		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
 			# line + xlab + ylab + limits to include 0 +
-			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			geom_line(colour="black") + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
 			theme(legend.title = element_blank())
 
@@ -113,10 +121,17 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		# object w/ iters?
 		if(dims(x)$iter > 1) {
 			p <- p +
-			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
-			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),  fill="red", alpha = .10)
+				# 75% quantile ribbon in red, alpha=0.25
+				geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
+					fill="red", alpha = .20) +
+				# 90% quantile ribbon in red, aplha=0.10 ...
+				geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
+					fill="red", alpha = .10) +
+				# .. and dotted lines
+				geom_line(aes(x=year, y = `10%`),
+					colour="red", alpha = .50, linetype=3) +
+				geom_line(aes(x=year, y = `90%`),
+					colour="red", alpha = .50, linetype=3)
 		}
 		
 		return(p)

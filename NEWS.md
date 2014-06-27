@@ -8,6 +8,7 @@
 
 ## USER-VISIBLE CHANGES 
 - Default ribbons for plot(FLStocks) with iters have no borders
+- Ribbons for 90% intervals in plot for FLQuant and FQuants now have a dotted line added.
 
 ## BUG FIXES
 - Call to dcast had wrong argument name for value.var
