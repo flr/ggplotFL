@@ -274,11 +274,13 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		RecHat=fitted(x)))
 
 	uns <- units(x)
+	unr <- parse(text=paste0('Recruits (', sub('*', 'A', uns$rec, fixed=TRUE), ')'))
+	uns <- parse(text=paste0('SSB (', sub('*', '%*%', uns$ssb, fixed=TRUE), ')'))
 
 	# SSB vs. REC
 	p1 <- ggplot(data=dat, aes(x=SSB, y=Rec)) + geom_point() +
-		geom_smooth(method='loess') + xlab(paste0('SSB (', uns$ssb, ')')) +
-		ylab(paste0('Recruits (', uns$rec, ')'))
+		geom_smooth(method='loess') + xlab(uns) +
+		ylab(unr)
 
 	# model fit line
 	form <- as.list(model(x))[[3]]
@@ -290,25 +292,27 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	p1 <- p1 + geom_smooth(method="lm", formula=y~fmo(x), colour='red',
 		size=0.5, se=FALSE)
 
-	#
+	# P2
 	p2 <- ggplot(data=dat, aes(x=year, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
 
-	#
+	# P3
 	p3 <- ggplot(data=data.frame(res1=dat$Residuals[-length(dat$Residuals)],
-		res2=dat$Residuals[-1]), aes(x=res1, y=res2)) + geom_point()
+		res2=dat$Residuals[-1]), aes(x=res1, y=res2)) + geom_point() +
+		xlab(expression(Residuals[t])) + ylab(expression(Residuals[t + 1])) +
+	  geom_smooth(method='lm')
 
-	#
+	# P4
 	p4 <- ggplot(data=dat, aes(x=SSB, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
 
-	#
+	# P5
 	p5 <- ggplot(data=dat, aes(sample = Residuals)) + stat_qq(color="red",
 		alpha=1) + geom_abline(aes(intercept = mean(Residuals), slope = sd(Residuals)))
 
-	#
+	# P6
 	p6 <- ggplot(data=dat, aes(x=RecHat, y=Residuals)) + geom_point() + 	
-		geom_smooth(method='loess')
+		geom_smooth(method='loess') + xlab(expression(hat(Residuals)))
 	
 	p <- gridExtra::arrangeGrob(p1, p2, p3, p4, p5, p6, ncol=2)
 	
