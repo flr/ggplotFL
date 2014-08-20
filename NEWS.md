@@ -10,6 +10,7 @@
 - Default ribbons for plot(FLStocks) with iters have no borders
 - Ribbons for 90% intervals in plot for FLQuant and FQuants now have a dotted line added.
 - plot(FLSR) has been improved: axis labels, use of plotmath and regression line on residuals AR plot.
+- plot(FLQuant) now allows specification of quantiles
 
 ## BUG FIXES
 - Call to dcast had wrong argument name for value.var

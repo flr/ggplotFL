@@ -20,13 +20,16 @@
 #'
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, main="", xlab="", ylab="", ...) {
+	function(x, main="", xlab="", ylab="",
+	         probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
+	         na.rm=FALSE,
+	         type=7, ...) {
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 
 			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(lapply(x, quantile, c(0.10, 0.25, 0.50, 0.75, 0.90)))
+			df <- as.data.frame(lapply(x, quantile, probs=probs,na.rm=na.rm,type=type))
 		
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[c(1:5,8)], collapse='+'),
@@ -79,13 +82,16 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 #'   plot(catch.n(ple4))
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, main="", xlab="", ylab="", ...) {
+	function(x, main="", xlab="", ylab="",
+           probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
+           na.rm=FALSE,
+           type=7,...) {
 		
 		# object w/ iters? compute quantiles
 		if(dims(x)$iter > 1) {
 
 			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(quantile(x, c(0.10, 0.25, 0.50, 0.75, 0.90)))
+			df <- as.data.frame(quantile(x, probs=probs,na.rm=na.rm,type=type,...))
 		
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[1:5], collapse='+'),
