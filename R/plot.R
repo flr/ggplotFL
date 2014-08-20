@@ -14,7 +14,8 @@
 #' @docType methods
 #' @rdname plot
 #' @examples
-#'   # Plot anf FLQuants created from ple4 FLStock
+#'
+#'   # Plot an FLQuants created from ple4 FLStock
 #'   data(ple4)
 #'   plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
 #'
@@ -78,20 +79,36 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 #' @docType methods
 #' @rdname plot
 #' @examples
+#'
+#'   # Plot a single FLQuant
 #'   data(ple4)
 #'   plot(catch.n(ple4))
+#'
+#'   # Plot an FLQuant with iters, shows quantiles
+#'   flq <- rnorm(100, catch(ple4), 60000)
+#'   plot(flq)
+#'
+#'   # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
+#'   plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, main="", xlab="", ylab="",
-           probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-           na.rm=FALSE,
-           type=7,...) {
+	function(x, main="", xlab="", ylab="", na.rm=FALSE,
+    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7) {
+
 		
 		# object w/ iters? compute quantiles
 		if(dims(x)$iter > 1) {
+		
+			# check probs length is odd
+			if(is.integer(length(probs)/2))
+				stop("quantile probs can only be a vector of odd length")
+		
+			quans <- paste0(probs * 100, "%")
+			mid <- ceiling(length(quans)/2)
+			mquan <- quans[mid]
 
 			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(quantile(x, probs=probs,na.rm=na.rm,type=type,...))
+			df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type))
 		
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[1:5], collapse='+'),
@@ -101,6 +118,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		} else {
 			df <- as.data.frame(x)
 			names(df)[7] <- "50%"
+			mquan <- "50%"
 		}
 
 		# dims on facet or groups
@@ -108,7 +126,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		ldi <- names(x)[-c(2,6)][dx[-c(2,6)] > 1]
 
 		# basic plot data vs. year
-		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
+		p <- ggplot(data=df, aes_q(x=quote(year), y=as.name(mquan))) +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line(colour="black") + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -126,20 +144,23 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 		# object w/ iters?
 		if(dims(x)$iter > 1) {
+
 			p <- p +
-				# 75% quantile ribbon in red, alpha=0.25
-				geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
-					fill="red", alpha = .20) +
-				# 90% quantile ribbon in red, aplha=0.10 ...
-				geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
-					fill="red", alpha = .10) +
-				# .. and dotted lines
-				geom_line(aes(x=year, y = `10%`),
+				# extreme probs as dotted line
+				geom_line(aes_q(x=quote(year), y = as.name(quans[1])),
 					colour="red", alpha = .50, linetype=3) +
-				geom_line(aes(x=year, y = `90%`),
+				geom_line(aes_q(x=quote(year), y = as.name(quans[length(quans)])),
 					colour="red", alpha = .50, linetype=3)
+
+			# all others as ribbons of changing alpha
+			if(length(quans) > 3) {
+
+				ids <- seq(2, mid-1)
+				for(i in ids)
+					p <- p + geom_ribbon(aes_q(x=quote(year), ymin = as.name(quans[i]),
+						ymax = as.name(quans[length(quans)-i+1])), fill="red", alpha = probs[i])
+			}
 		}
-		
 		return(p)
 	}
 ) # }}}
