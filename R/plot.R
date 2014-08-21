@@ -1,95 +1,30 @@
-# plot.R - 
+# plot.R - ggplot2-based plot methods for FLCore classes
 # ggplotFL/R/plot.R
 
-# Copyright 2003-2007 FLR Team. Distributed under the GPL 2 or later
+# Copyright 2003-2014 FLR Team. Distributed under the GPL 2 or later
 # Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
-# $Id:  $
-
-# plot(FLQuants) {{{
-#' ggplot versions of FLR class plot() methods
-#'
-#' New basic plot for some FLR classes are defined in ggplotFL.
-#'
-#' @aliases plot,FLQuants,missing-method
-#' @docType methods
-#' @rdname plot
-#' @examples
-#'
-#'   # Plot an FLQuants created from ple4 FLStock
-#'   data(ple4)
-#'   plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
-#'
-
-setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, main="", xlab="", ylab="",
-	         probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-	         na.rm=FALSE,
-	         type=7, ...) {
-		
-		# object w/ iters? compute quantiles
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
-
-			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(lapply(x, quantile, probs=probs,na.rm=na.rm,type=type))
-		
-			# cast with quantiles in columns
-			df <- dcast(df, as.formula(paste(paste(names(df)[c(1:5,8)], collapse='+'),
-				'iter', sep='~')), value.var="data")
-			
-		# otherwise, rename 'data' as 'q50'
-		} else {
-			df <- as.data.frame(x)
-			names(df)[7] <- "50%"
-		}
-		
-		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
-			facet_grid(qname~., scales="free") +
-			# line + xlab + ylab + limits to include 0 +
-			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
-			# no legend
-			theme(legend.title = element_blank())
-		
-		# object w/ iters?
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
-			p <- p +
-			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
-				fill="red", alpha = .25) +
-			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
-				fill="red", alpha = .10) +
-			# .. and dotted lines
-			geom_line(aes(x=year, y = `10%`),
-				colour="red", alpha = .50, linetype=3) +
-			geom_line(aes(x=year, y = `90%`),
-				colour="red", alpha = .50, linetype=3)
-		}
-		
-		return(p)
-	}
-) # }}}
 
 # plot(FLQuant) {{{
 #' ggplot versions of FLR class plot() methods
 #'
-#' New basic plot for some FLR classes are defined in ggplotFL.
+#' New basic plot methods for some FLR classes are defined in ggplotFL.
 #'
 #' @aliases plot,FLQuants,missing-method
 #' @docType methods
 #' @rdname plot
 #' @examples
 #'
-#'   # Plot a single FLQuant
-#'   data(ple4)
-#'   plot(catch.n(ple4))
+#'  # Plot a single FLQuant
+#'  data(ple4)
+#'  plot(catch.n(ple4))
 #'
-#'   # Plot an FLQuant with iters, shows quantiles
-#'   flq <- rnorm(100, catch(ple4), 60000)
-#'   plot(flq)
+#'  # Plot an FLQuant with iters, shows quantiles
+#'  flq <- rnorm(100, catch(ple4), 60000)
+#'  plot(flq)
 #'
-#'   # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
-#'   plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
+#'  # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
+#'  plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
+#'  
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=FALSE,
@@ -165,17 +100,73 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 	}
 ) # }}}
 
-# plot(FLStock) {{{
-#' ggplot versions of FLR class plot() methods
-#'
-#' New basic plot for some FLR classes are defined in ggplotFL.
-#'
-#' @aliases plot,FLStock,missing-method
-#' @docType methods
+# plot(FLQuants) {{{
+#' @aliases plot,FLQuants,missing-method
 #' @rdname plot
 #' @examples
-#'   data(ple4)
-#'   plot(ple4)
+#'
+#'  # Plot an FLQuants created from ple4 FLStock
+#'  data(ple4)
+#'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
+#'  
+
+setMethod("plot", signature(x="FLQuants", y="missing"),
+	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
+	         na.rm=FALSE, type=7) {
+		
+		# object w/ iters? compute quantiles
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+
+			# compute quantiles on FLQs, then convert to df
+			df <- as.data.frame(lapply(x, quantile, probs=probs,na.rm=na.rm,type=type))
+		
+			# cast with quantiles in columns
+			df <- dcast(df, as.formula(paste(paste(names(df)[c(1:5,8)], collapse='+'),
+				'iter', sep='~')), value.var="data")
+			
+		# otherwise, rename 'data' as 'q50'
+		} else {
+			df <- as.data.frame(x)
+			names(df)[7] <- "50%"
+		}
+		
+		# plot data vs. year + facet on qname +
+		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
+			facet_grid(qname~., scales="free") +
+			# line + xlab + ylab + limits to include 0 +
+			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			# no legend
+			theme(legend.title = element_blank())
+		
+		# object w/ iters?
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+			p <- p +
+			# 75% quantile ribbon in red, alpha=0.25
+			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
+				fill="red", alpha = .25) +
+			# 90% quantile ribbon in red, aplha=0.10
+			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
+				fill="red", alpha = .10) +
+			# .. and dotted lines
+			geom_line(aes(x=year, y = `10%`),
+				colour="red", alpha = .50, linetype=3) +
+			geom_line(aes(x=year, y = `90%`),
+				colour="red", alpha = .50, linetype=3)
+		}
+		
+		return(p)
+	}
+) # }}}
+
+# plot(FLStock) {{{
+#' @aliases plot,FLStock,missing-method
+#' @rdname plot
+#' @examples
+#'
+#'  # plot of an FLStock
+#'  data(ple4)
+#'  plot(ple4)
+#'
 
 setMethod("plot", signature(x="FLStock", y="missing"),
 	function(x, main="", xlab="", ylab="", ...) {
@@ -190,16 +181,15 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 ) # }}}
 
 # plot(FLStocks) {{{
-#' ggplot versions of FLR class plot() methods
-#'
-#' New basic plot for some FLR classes are defined in ggplotFL.
-#'
 #' @aliases plot,FLStocks,missing-method
 #' @rdname plot
 #' @examples
-#'   data(ple4)
-#'   pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
-#'   plot(pls)
+#'
+#'  # plot for FLStocks
+#'  data(ple4)
+#'  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+#'  plot(pls)
+#'  
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, main="", xlab="", ylab="", ...) {
@@ -254,17 +244,15 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 ) # }}}
 
 # plot(FLStock, FLPar) {{{
-#' ggplot versions of FLR class plot() methods
-#'
-#' New basic plot for some FLR classes are defined in ggplotFL.
-#'
 #' @aliases plot,FLStock,FLPar-method
-#' @docType methods
 #' @rdname plot
 #' @examples
-#'   data(ple4)
-#'   rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
-#'   plot(ple4, rps)
+#'
+#'  # plot for FLStock, FLPar
+#'  data(ple4)
+#'  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
+#'  plot(ple4, rps)
+#'  
 
 setMethod("plot", signature(x="FLStock", y="FLPar"),
 	function(x, y, ...) {
@@ -291,8 +279,11 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #' @docType methods
 #' @rdname plot
 #' @examples
-#'   data(nsher)
-#'   plot(nsher)
+#'
+#'  # plot for FLSR
+#'  data(nsher)
+#'  plot(nsher)
+#'  
 
 setMethod('plot', signature(x='FLSR', y='missing'),
 	function(x, ...) {

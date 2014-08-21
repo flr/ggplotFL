@@ -1,6 +1,6 @@
-import("FLCore")
 importFrom("ggplot2",
   "ggplot")
+import("FLCore")
 import("gridExtra")
 importFrom("reshape2",
 	"dcast")

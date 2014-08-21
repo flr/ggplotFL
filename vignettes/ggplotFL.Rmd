@@ -1,11 +1,14 @@
-% Plotting FLR objects with ggplotFL and ggplot2
-% Iago Mosqueira, EC JRC\protect\thanks{
+---
+title:  Plotting FLR objects with ggplotFL and ggplot2
+author: Iago Mosqueira, EC JRC\protect\thanks{
 	European Commission\\
 	Joint Research Center\\
 	IPSC - Maritime Affairs Unit G04\\
 	Ispra, Italy\\
 	\url{https://fishreg.jrc.ec.europa.eu/}} - FLR Project
-% `r format(as.Date(system("git log -1 --format=%ci ggplotFL.Rmd", intern=TRUE)), "%B %Y")`
+date: `r format(as.Date(system("git log -1 --format=%ci ggplotFL.Rmd", intern=TRUE)), "%B %Y")`
+tags: [FLR, ggplot2]
+...
 
 <!--
 %\VignetteEngine{knitr::knitr}
@@ -45,6 +48,7 @@ Passing an `FLQuant` object to ggplot, we can specify the names of the dimension
 ```{r, ggflq, echo=TRUE, fig.cap="Combined line and point plot of a time series from an FLQuant object."}
 ggplot(data=catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("")
 ```
+
 where we pass directly an `FLQuant` object for the `data` argument in `ggplot`, specify an aesthetic mapping (`aes(year, data)`), and add both points (`geom_point()`) and lines (`geom_line()`), together with the appropriate axis labels.
 
 ## FLQuants
@@ -76,19 +80,25 @@ The standard `plot()` method for `FLQuant` defined in `ggplotFL` uses the faceti
 ```{r, dimflq, echo=TRUE}
 dim(catch.n(ple4))
 ```
+
 will generate a plot with a time series by year of the data it contains, with horizontal facets for the only dimension, other than `year`, of length greater than 1, `age`.
 
 ```{r, pflq, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple *year*s and *age*s."}
 plot(catch.n(ple4))
 ```
 
-For `FLQuant` objects with iterations, the `plot` method will calculate the 50% (median), 10%, 25%, 75% and 90% quantiles, to be plotted as a line and two coloured ribbons, respectively.
+For `FLQuant` objects with iterations, the `plot` method will calculate, by default, the 50% (median), 10%, 25%, 75% and 90% quantiles, to be plotted as a solid line (50%), a dotted line (90%) and a coloured ribbon (75%).
 
 ```{r, pflq2, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple iterations."}
-plot(
-		 rlnorm(200, fbar(ple4), 0.15)
-		 )
+plot(rlnorm(200, fbar(ple4), 0.15))
 ```
+
+Different quantiles can be specified using the `probs` arguments, and the alpha transparency of the ribbon will be proportional to the probability value. A vector of odd length must be passed, and the central point should be 0.50 so the central tendency line represents the median. The most extreme quantiles will be plotted as dotted lines, while all other will show up as ribbons.
+
+```{r, pflq3, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuant object with multiple iterations and user-specified quantiles."}
+plot(rlnorm(200, fbar(ple4), 0.15), probs=c(0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95))
+```
+
 ## FLQuants
 
 The `plot` method for `FLQuants` will now by default show each object in a horizontal panel, with indpendent scales, by using `facet_grid`. Objects with iterations will have, as with `plot` for `FLQuant`, their median, 10%, 25%, 75% and 90% quantiles shown as a black line and red ribbons with different levels of transparency, respectively.
@@ -114,6 +124,7 @@ Similarly, the standard `plot()` method for the `FLStocks` class now relies on g
 data(ple4sex)
 plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legend.position="top")
 ```
+
 ## FLSR
 
 The `ggplotFL` version of the class plot for `FLSR` contains the same six panels as before: (1) stock-recruit data, fitted model and lowess smoother, (2) residuals by year, (3) lag 1-correlated residuals, (4) residuals by SSB, (5) residuals qqplot and (6) residuals by fitted values. Blud lines are lo9wess smoothers, to better visualize trends in the data shown.
@@ -133,10 +144,12 @@ The methods shown above depend on conversion of *FLR* objects into `data.frame`,
 To have full control over a plot of the median (or mean) and the confidence or probability intervals of a simulated or randomized time series, i.e. an `FLQuant` object with iters, we need to arrange the different values computed from the object in separate columns of a `data.frame`.
 
 If we start with some random `FLQuant` object, such as
+
 ```{r, exsim1, echo=TRUE, cache=TRUE, fig.cap="Distribution of values of a simulated time series plotted using geom_boxplot()"}
 fla <- rlnorm(100, FLQuant(exp(cumsum(rnorm(25, 0, 0.1)))), 0.1) 
 ggplot(fla, aes(factor(year), data)) + geom_boxplot() + xlab("")
 ```
+
 we can first compute the necessary statistics on the object itself, as these operations are very efficient on an array. `quantile()` on an `FLQuant` will return the specified quantiles along the `iter` dimension. Let's extract the 10th, 25th, 50th, 75th and 90th quantiles.
 
 ```{r, exsim2, echo=TRUE, cache=TRUE}
@@ -147,6 +160,7 @@ The object can now be coerced to a `data.frame`
 ```{r, exsim3, echo=TRUE, cache=TRUE}
 fdf <- as.data.frame(flq)
 ```
+
 and inspected to see how the 100 `iters` have been now turned into the five requested quantiles in the iter column
 
 ```{r, exsim4, echo=FALSE, cache=TRUE, results='markup'}
