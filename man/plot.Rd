@@ -76,8 +76,6 @@ New basic plot methods for some FLR classes are defined in ggplotFL.
 
  # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
  plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
-
- #
 # Plot an FLQuants created from ple4 FLStock
  data(ple4)
  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))

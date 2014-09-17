@@ -255,24 +255,29 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 #'  
 
 setMethod("plot", signature(x="FLStock", y="FLPar"),
-	function(x, y, ...) {
+					function(x, y, ...) {
 
-		p <- plot(x, ...)
-		p <- plot(x)
+						p <- plot(x)
 
-		rpa <- as.data.frame(y)
-		names(rpa)[1] <- 'qname'
+						rpa <- y@.Data[1,,1]
+						rpa <- data.frame(data=rpa, qname=names(rpa), stringsAsFactors=FALSE)
 
-		# BUG BUT Catch is Yield in plot(FLStock)
-		qnames <- c("Rec", "SSB", "Catch", "Harvest")
-		idx <- pmatch(as.character(rpa$qname), qnames, duplicates.ok=TRUE)
-		rpa <- rpa[idx,c('qname', 'data')]
-		
-		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
-		
-		return(p)
-	}
-) # }}}
+						rpa$qname[rpa$qname == 'yield'] <- 'catch'
+
+						qnames <- c("Rec", "SSB", "Catch", "Harvest")
+						idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
+													duplicates.ok=TRUE)[1:4]
+						rpa <- rpa[idx,]
+						idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
+													duplicates.ok=TRUE)[1:4]
+						rpa[,'qname'] <- qnames[idx]
+						rownames(rpa) <- rpa[,'qname']
+
+						p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
+
+						return(p)
+					}
+					) # }}}
 
 # plot(FLSR) {{{
 #' @aliases plot,FLSR,missing-method
@@ -288,7 +293,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 setMethod('plot', signature(x='FLSR', y='missing'),
 	function(x, ...) {
 
-	dat <- model.frame(FLQuants(SSB=ssb(x), Rec=rec(x), Residuals=residuals(x), 	 
+	dat <- model.frame(FLQuants(SSB=ssb(x), Rec=rec(x), Residuals=residuals(x),
 		RecHat=fitted(x)))
 
 	uns <- units(x)
@@ -307,9 +312,8 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	fmo <- function(x)
 		eval(form, c(list(ssb=x), pars))
 	
-	p1 <- p1 + geom_smooth(method="lm", formula=y~fmo(x), colour='red',
-		size=0.5, se=FALSE)
-
+	p1 <- p1 + stat_function(fun=fmo,  colour='red', size=0.5)
+	
 	# P2
 	p2 <- ggplot(data=dat, aes(x=year, y=Residuals)) + geom_point() + 	
 		geom_smooth(method='loess')
@@ -336,6 +340,4 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	
 	return(p)
 	}
-) # }}}
-
-# plot(FLComps, list)
+) # }}}# plot(FLComps, list)
