@@ -297,8 +297,10 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		RecHat=fitted(x)))
 
 	uns <- units(x)
-	unr <- parse(text=paste0('Recruits (', sub('*', 'A', uns$rec, fixed=TRUE), ')'))
-	uns <- parse(text=paste0('SSB (', sub('*', '%*%', uns$ssb, fixed=TRUE), ')'))
+	unr <- ifelse(uns$rec == 'NA', '', parse(text=paste0('Recruits (',
+		sub('*', 'A', uns$rec, fixed=TRUE), ')')))
+	uns <- ifelse(uns$ssb == 'NA', '', parse(text=paste0('SSB (', sub('*',
+		'%*%', uns$ssb, fixed=TRUE), ')')))
 
 	# SSB vs. REC
 	p1 <- ggplot(data=dat, aes(x=SSB, y=Rec)) + geom_point() +
@@ -316,7 +318,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	
 	# P2
 	p2 <- ggplot(data=dat, aes(x=year, y=Residuals)) + geom_point() + 	
-		geom_smooth(method='loess')
+		geom_smooth(method='loess') + xlab("Year")
 
 	# P3
 	p3 <- ggplot(data=data.frame(res1=dat$Residuals[-length(dat$Residuals)],
@@ -330,11 +332,12 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# P5
 	p5 <- ggplot(data=dat, aes(sample = Residuals)) + stat_qq(color="red",
-		alpha=1) + geom_abline(aes(intercept = mean(Residuals), slope = sd(Residuals)))
+		alpha=1) + geom_abline(aes(intercept = mean(Residuals),
+		slope = sd(Residuals))) + xlab("Theoretical") + ylab("Sample")
 
 	# P6
 	p6 <- ggplot(data=dat, aes(x=RecHat, y=Residuals)) + geom_point() + 	
-		geom_smooth(method='loess') + xlab(expression(hat(Residuals)))
+		geom_smooth(method='loess') + xlab(expression(hat(Recruits)))
 	
 	p <- gridExtra::arrangeGrob(p1, p2, p3, p4, p5, p6, ncol=2)
 	
