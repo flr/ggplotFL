@@ -297,9 +297,9 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		RecHat=fitted(x)))
 
 	uns <- units(x)
-	unr <- ifelse(uns$rec == 'NA', '', parse(text=paste0('Recruits (',
+	unr <- ifelse(uns$rec == 'NA', 'Recruits', parse(text=paste0('Recruits (',
 		sub('*', 'A', uns$rec, fixed=TRUE), ')')))
-	uns <- ifelse(uns$ssb == 'NA', '', parse(text=paste0('SSB (', sub('*',
+	uns <- ifelse(uns$ssb == 'NA', 'SSB', parse(text=paste0('SSB (', sub('*',
 		'%*%', uns$ssb, fixed=TRUE), ')')))
 
 	# SSB vs. REC
