@@ -88,7 +88,7 @@ New basic plot methods for some FLR classes are defined in ggplotFL.
  plot(pls)
 # plot for FLStock, FLPar
  data(ple4)
- rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
+ rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
  plot(ple4, rps)
 # plot for FLSR
  data(nsher)

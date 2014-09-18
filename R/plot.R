@@ -43,38 +43,41 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			mquan <- quans[mid]
 
 			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type))
+			df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
+				date=TRUE)
 		
 			# cast with quantiles in columns
-			df <- dcast(df, as.formula(paste(paste(names(df)[1:5], collapse='+'),
+			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)], collapse='+'),
 				'iter', sep='~')), value.var="data")
 			
-		# otherwise, rename 'data' as 'q50'
+		# otherwise, rename 'data' as `50%`
 		} else {
-			df <- as.data.frame(x)
+			df <- as.data.frame(x, date=TRUE)
 			names(df)[7] <- "50%"
 			mquan <- "50%"
 		}
 
 		# dims on facet or groups
 		dx <- dim(x)
-		ldi <- names(x)[-c(2,6)][dx[-c(2,6)] > 1]
+		ldi <- names(x)[-c(2,4,6)][dx[-c(2,4,6)] > 1]
 
 		# basic plot data vs. year
-		p <- ggplot(data=df, aes_q(x=quote(year), y=as.name(mquan))) +
-			# line + xlab + ylab + limits to include 0 +
-			geom_line(colour="black") + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
-			# no legend
-			theme(legend.title = element_blank())
-
+		p <- ggplot(data=df, aes_q(x=quote(date), y=as.name(mquan))) +
+			# line + xlab + ylab +
+			geom_line(colour="black") + xlab(xlab) + ylab(ylab) +
+			# limits to include 0 +
+			expand_limits(y=0) +
+			# no legend +
+			theme(legend.title = element_blank()) 
+		
 		# build formula
 		if(length(ldi) == 1) {
 			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
 				labeller=label_both)
 		}
 		else if (length(ldi) > 1) {
-			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1], sep= "+"))),
-				scales="free", labeller=label_both)
+			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
+				sep= "+"))), scales="free", labeller=label_both)
 		}
 
 		# object w/ iters?
@@ -82,9 +85,9 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 			p <- p +
 				# extreme probs as dotted line
-				geom_line(aes_q(x=quote(year), y = as.name(quans[1])),
+				geom_line(aes_q(x=quote(date), y = as.name(quans[1])),
 					colour="red", alpha = .50, linetype=3) +
-				geom_line(aes_q(x=quote(year), y = as.name(quans[length(quans)])),
+				geom_line(aes_q(x=quote(date), y = as.name(quans[length(quans)])),
 					colour="red", alpha = .50, linetype=3)
 
 			# all others as ribbons of changing alpha
@@ -92,8 +95,10 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 				ids <- seq(2, mid-1)
 				for(i in ids)
-					p <- p + geom_ribbon(aes_q(x=quote(year), ymin = as.name(quans[i]),
-						ymax = as.name(quans[length(quans)-i+1])), fill="red", alpha = probs[i])
+					p <- p + geom_ribbon(aes_q(x=quote(date),
+						ymin = as.name(quans[i]),
+						ymax = as.name(quans[length(quans)-i+1])),
+						fill="red", alpha = probs[i])
 			}
 		}
 		return(p)
@@ -112,21 +117,22 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-	         na.rm=FALSE, type=7) {
+		na.rm=FALSE, type=7) {
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 
 			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(lapply(x, quantile, probs=probs,na.rm=na.rm,type=type))
+			df <- as.data.frame(lapply(x, quantile, probs=probs,
+				na.rm=na.rm,type=type), timestep=TRUE)
 		
 			# cast with quantiles in columns
-			df <- dcast(df, as.formula(paste(paste(names(df)[c(1:5,8)], collapse='+'),
-				'iter', sep='~')), value.var="data")
+			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)],
+				collapse='+'), 'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
-			df <- as.data.frame(x)
+			df <- as.data.frame(x, timestep=TRUE)
 			names(df)[7] <- "50%"
 		}
 		
@@ -250,34 +256,31 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 #'
 #'  # plot for FLStock, FLPar
 #'  data(ple4)
-#'  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.25e6)
+#'  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
 #'  plot(ple4, rps)
 #'  
 
 setMethod("plot", signature(x="FLStock", y="FLPar"),
-					function(x, y, ...) {
+	function(x, y, ...) {
+	
+		p <- plot(x)
 
-						p <- plot(x)
+		rpa <- data.frame(data=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
 
-						rpa <- y@.Data[1,,1]
-						rpa <- data.frame(data=rpa, qname=names(rpa), stringsAsFactors=FALSE)
+		# FIX mixmatch between refpts and FLStock slots naming
+		if('yield' %in% rpa$qname)
+			rpa$qname[rpa$qname == 'yield'] <- 'catch'
 
-						rpa$qname[rpa$qname == 'yield'] <- 'catch'
+		qnames <- c("Rec", "SSB", "Catch", "Harvest")
+		idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
+			duplicates.ok=TRUE)[1:4]
+		rpa <- rpa[idx,]
 
-						qnames <- c("Rec", "SSB", "Catch", "Harvest")
-						idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
-													duplicates.ok=TRUE)[1:4]
-						rpa <- rpa[idx,]
-						idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
-													duplicates.ok=TRUE)[1:4]
-						rpa[,'qname'] <- qnames[idx]
-						rownames(rpa) <- rpa[,'qname']
+		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
 
-						p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
-
-						return(p)
-					}
-					) # }}}
+		return(p)
+	}
+) # }}}
 
 # plot(FLSR) {{{
 #' @aliases plot,FLSR,missing-method
