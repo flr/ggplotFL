@@ -26,6 +26,7 @@ library(ggplotFL)
 #library(ggthemes)
 #theme_set(theme_light())
 data(ple4)
+data(ple4sex)
 data(nsher)
 set.seed(1423)
 ```
@@ -121,7 +122,6 @@ plot(ple4)
 Similarly, the standard `plot()` method for the `FLStocks` class now relies on ggplot. For example, we can create an example `FLStocks` object by splitting the female and male units of `ple4sex` and adding them as separate elements in the list. A call to `plot()` would give us the corresponding plot. Remember the object returned by `ggplot` can always be assigned to a variable in the workspace and modified as required.
 
 ```{r, pflss, echo=FALSE, fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to the sex-separated FLStock object `ple4sex`"}
-data(ple4sex)
 plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legend.position="top")
 ```
 

@@ -30,7 +30,6 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=FALSE,
     probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7) {
 
-		
 		# object w/ iters? compute quantiles
 		if(dims(x)$iter > 1) {
 		
@@ -117,14 +116,14 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-		na.rm=FALSE, type=7) {
+		na.rm=TRUE, type=7) {
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(lapply(x, quantile, probs=probs,
-				na.rm=na.rm,type=type), timestep=TRUE)
+				na.rm=na.rm, type=type), timestep=TRUE)
 		
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)],
@@ -140,7 +139,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
-			geom_line() + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			geom_line(na.rm=TRUE) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
 			theme(legend.title = element_blank())
 		
