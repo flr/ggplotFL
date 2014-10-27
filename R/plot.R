@@ -139,7 +139,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
-			geom_line(na.rm=TRUE) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			geom_path(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
 			theme(legend.title = element_blank())
 		
@@ -148,15 +148,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
 			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
-				fill="red", alpha = .25) +
+				fill="red", alpha = .25, na.rm=na.rm) +
 			# 90% quantile ribbon in red, aplha=0.10
 			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
-				fill="red", alpha = .10) +
+				fill="red", alpha = .10, na.rm=na.rm) +
 			# .. and dotted lines
-			geom_line(aes(x=year, y = `10%`),
-				colour="red", alpha = .50, linetype=3) +
-			geom_line(aes(x=year, y = `90%`),
-				colour="red", alpha = .50, linetype=3)
+			geom_path(aes(x=year, y = `10%`),
+				colour="red", alpha = .50, linetype=3, na.rm=na.rm) +
+			geom_path(aes(x=year, y = `90%`),
+				colour="red", alpha = .50, linetype=3, na.rm=na.rm)
 		}
 		
 		return(p)
