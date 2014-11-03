@@ -27,12 +27,12 @@
 #'  
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, main="", xlab="", ylab="", na.rm=FALSE,
+	function(x, main="", xlab="", ylab="", na.rm=TRUE,
     probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7) {
 
 		# object w/ iters? compute quantiles
 		if(dims(x)$iter > 1) {
-		
+			
 			# check probs length is odd
 			if(is.integer(length(probs)/2))
 				stop("quantile probs can only be a vector of odd length")
@@ -40,11 +40,11 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			quans <- paste0(probs * 100, "%")
 			mid <- ceiling(length(quans)/2)
 			mquan <- quans[mid]
-
+			
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
 				date=TRUE)
-		
+			
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)], collapse='+'),
 				'iter', sep='~')), value.var="data")
@@ -120,7 +120,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
-
+			
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(lapply(x, quantile, probs=probs,
 				na.rm=na.rm, type=type), timestep=TRUE)
