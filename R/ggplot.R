@@ -1,7 +1,7 @@
 # ggplot.R - Overloaded S4 ggplot methods for FLR classes
 # ggplotFL/R/ggplot.R
 
-# Copyright 2012-2013 FLR Team. Distributed under the GPL 2 or later
+# Copyright 2012-2014 FLR Team. Distributed under the GPL 2 or later
 # Maintainer: Laurie Kell, ICCAT & Iago Mosqueira, JRC
 # Notes:
 
@@ -28,7 +28,7 @@
 
 setMethod("ggplot", signature(data="FLQuant"),
   function(data, ...) {
-    data <- as.data.frame(data, cohort=TRUE)
+    data <- as.data.frame(data, cohort=TRUE, timestep=TRUE, date=TRUE)
 		ggplot(data, ...)
 	}
 ) # }}}
@@ -45,20 +45,20 @@ setMethod("ggplot", signature(data="FLQuant"),
 
 setMethod("ggplot", signature(data="FLQuants"),
   function(data, ...) {
-    data <- as.data.frame(data, cohort=TRUE)
+    data <- as.data.frame(data, cohort=TRUE, timestep=TRUE)
 		ggplot(data, ...)
 	}) # }}}
 
-# FLComp
+# FLComp {{{
 #' @rdname ggplot
 #' @aliases ggplot,FLComp-method
 setMethod("ggplot", signature(data="FLComp"),
   function(data, ...) {
     data <- as.data.frame(data, cohort=TRUE)
     ggplot(data, ...)
-	})
+	}) # }}}
 
-# FLComps
+# FLComps {{{
 #' @rdname ggplot
 #' @aliases ggplot,FLComps-method
 setMethod("ggplot", signature(data="FLComps"),
@@ -67,4 +67,4 @@ setMethod("ggplot", signature(data="FLComps"),
 
     try(data$cohort <- data$year - data$age)
     ggplot(data, ...)
-	})
+	}) # }}}

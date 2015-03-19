@@ -1,7 +1,7 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.5.20140627
-Date: 2014-06-27
+Version: 2.5.20141027
+Date: 2014-10-27
 Author: Laurie T. Kell <laurie@kell.es>,
 	Iago Mosqueira <iago.mosqueira-sanchez@jrc.ec.europa.eu>
 Maintainer: Laurie T. Kell <laurie@kell.es>,
@@ -11,7 +11,7 @@ Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
     various FLR pkgs.
 Depends:
 	R(>= 3.0.0),
-  ggplot2,
+  ggplot2(>= 1.0.0),
   FLCore,
 	gridExtra,
 	reshape2

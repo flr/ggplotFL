@@ -11,6 +11,7 @@ cleanall: clean
 
 %.pdf: %.tex
 	pdflatex $*.tex
+	pdflatex $*.tex
 
 %.tex: %.md
 	pandoc -o $*.tex --template=$(TEMPLATE) $*.md

@@ -5,8 +5,6 @@
 # figure chunck names to modify as figure*
 export FIGS=ggfls
 
-# figure chunck names to modify as figure
-
 # FIND lines for FIGS
 export FIGSLN=`grep -n "figure\/$FIGS.pdf" ggplotFL.tex | awk -F: '{print $1}'`
 

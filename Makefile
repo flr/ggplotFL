@@ -46,4 +46,4 @@ check: NEWS README.md roxygen gh-pages build
 
 clean:
 	cd ..;\
-	rm -r $(PKGNAME).Rcheck $(PKGNAME)_$(PKGVERS).tar.gz
+	rm -rf $(PKGNAME).Rcheck $(PKGNAME)_$(PKGVERS).tar.gz
