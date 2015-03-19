@@ -47,7 +47,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)], collapse='+'),
-				'iter', sep='~')), value.var="data", fun.aggregate=mean)
+				'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as `50%`
 		} else {
@@ -118,19 +118,16 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7) {
 		
-		# object w/ iters?
-		iters <- any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)
-
-		# then compute quantiles
-		if(iters) {
+		# object w/ iters? compute quantiles
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(lapply(x, quantile, probs=probs,
-				na.rm=na.rm, type=type), timestep=TRUE, date=TRUE)
+				na.rm=na.rm, type=type), timestep=TRUE)
 		
 			# cast with quantiles in columns
 			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)],
-				collapse='+'), 'iter', sep='~')), value.var="data", fun.aggregate=mean)
+				collapse='+'), 'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as 'q50'
 		} else {
@@ -146,8 +143,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			# no legend
 			theme(legend.title = element_blank())
 		
-		# object w/ iters? then plot quantiles
-		if(iters) {
+		# object w/ iters?
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
 			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
@@ -214,7 +211,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		{
 			# quantiles
 			fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile,
-				c(0.10, 0.50, 0.90), na.rm=na.rm)))
+				c(0.10, 0.50, 0.90), na.rm=TRUE)))
 		} else {
 			fqs <- lapply(fqs, as.data.frame)
 			fqs <- lapply(fqs, function(x) {x$iter <- "50%"; return(x)})
@@ -234,17 +231,17 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +
 			facet_grid(qname~., scales="free") +
-			# line + xlab + ylab + limits to include 0 +
-			geom_line(aes(colour=stock)) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
-			# no legend
-			theme(legend.title = element_blank())
+			# line + xlab + ylab +
+			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
+			# limits to include 0 +  no legend
+			expand_limits(y=0) + theme(legend.title = element_blank())
 		
 		# object w/ iters?
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
 			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock,
-				colour=stock, fill=stock), alpha = .20, linetype = 0)
+				colour=stock, fill=stock), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
 		return(p)
@@ -297,9 +294,10 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 
 setMethod('plot', signature(x='FLSR', y='missing'),
 	function(x, ...) {
-	
+
 	dat <- model.frame(FLQuants(SSB=ssb(x), Rec=rec(x), Residuals=residuals(x),
 		RecHat=fitted(x)))
+
 	uns <- units(x)
 	unr <- ifelse(uns$rec == 'NA', 'Recruits', parse(text=paste0('Recruits (',
 		sub('*', 'A', uns$rec, fixed=TRUE), ')')))
