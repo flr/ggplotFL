@@ -117,6 +117,12 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7) {
+
+		# check names not repeated
+		dup <- duplicated(names(x))
+		if(any(dup)) {
+			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
+		}
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
@@ -198,8 +204,12 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE, ...) {
-		
-		cos <- c('red', 'blue')
+	
+		# check names not repeated
+		dup <- duplicated(names(x))
+		if(any(dup)) {
+			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
+		}
 		
 		# extract slots by stock
 		fqs <- lapply(x, function(y) FLQuants(Rec=rec(y), SSB=ssb(y),
