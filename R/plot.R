@@ -122,6 +122,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		dup <- duplicated(names(x))
 		if(any(dup)) {
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
+			warning('Duplicated names in object, changed to differentiate')
 		}
 		
 		# object w/ iters? compute quantiles
@@ -209,6 +210,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		dup <- duplicated(names(x))
 		if(any(dup)) {
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
+			warning('Duplicated names in object, changed to differentiate')
 		}
 		
 		# extract slots by stock
