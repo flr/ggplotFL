@@ -9,27 +9,29 @@
 
 #' ggplot method for various FLR classes
 #'
-#' The \code{\link{ggplot}()} method has been conveniently overloaded for various
+#' The \code{\link[ggplot2]{ggplot}()} method has been conveniently overloaded for various
 #' FLR classes. A call to \code{\link{as.data.frame}} takes place on \code{data}
-#' before passing all arguments to the original \code{ggplot} method.
+#' before passing all arguments to the original \code{\link[ggplot2]{ggplot}} function.
 #'
 #' Please look at the relevant \code{as.data.frame} method for each class to
 #' understand the naming conventions used in the resulting \code{data.frame}
 #'
 #' @param data An \code{FLQuant} object
-#' @param ... Other arguments to \link{ggplot}
+#' @param mapping An aesthetic mapping, from a call to \code{\link[ggplot2]{aes}}
+#' @param ... Other arguments to be passod on to \code{\link[ggplot2]{ggplot}}
+#' @param environment Where to look for an undefined plot variable.
 #' @rdname ggplot
 #' @aliases ggplot,FLQuant-method
 #' @docType methods
 #' @examples
 #'    dat <- rnorm(1, FLQuant(1, dim=c(5,10)), 0.5)
 #'    ggplot(data=dat, aes(data, year)) + geom_point() 
-#' @seealso \link{ggplot}, \url{http://github.com/flr/ggplotFL/}
+#' @seealso \link[ggplot2]{ggplot}, \url{http://github.com/flr/ggplotFL/}
 
 setMethod("ggplot", signature(data="FLQuant"),
-  function(data, ...) {
+  function(data, mapping=aes(), ..., environment=parent.frame()) {
     data <- as.data.frame(data, cohort=TRUE, timestep=TRUE, date=TRUE)
-		ggplot(data, ...)
+	return(ggplot(data, mapping, ...))
 	}
 ) # }}}
 
@@ -44,27 +46,27 @@ setMethod("ggplot", signature(data="FLQuant"),
 #'    ggplot(data=dat, aes(data, year)) + geom_point() + facet_wrap(~qname)
 
 setMethod("ggplot", signature(data="FLQuants"),
-  function(data, ...) {
+  function(data, mapping=aes(), ..., environment=parent.frame()) {
     data <- as.data.frame(data, cohort=TRUE, timestep=TRUE)
-		ggplot(data, ...)
+		ggplot(data, mapping, ...)
 	}) # }}}
 
 # FLComp {{{
 #' @rdname ggplot
 #' @aliases ggplot,FLComp-method
 setMethod("ggplot", signature(data="FLComp"),
-  function(data, ...) {
+  function(data, mapping=aes(), ..., environment=parent.frame()) {
     data <- as.data.frame(data, cohort=TRUE)
-    ggplot(data, ...)
+    ggplot(data, mapping, ...)
 	}) # }}}
 
 # FLComps {{{
 #' @rdname ggplot
 #' @aliases ggplot,FLComps-method
 setMethod("ggplot", signature(data="FLComps"),
-  function(data, ...) {
+  function(data, mapping=aes(), ..., environment=parent.frame()) {
     data <- as.data.frame(data)
 
     try(data$cohort <- data$year - data$age)
-    ggplot(data, ...)
+    ggplot(data, mapping, ...)
 	}) # }}}

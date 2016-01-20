@@ -1,5 +1,5 @@
-importFrom("ggplot2",
-  "ggplot")
+import("methods")
+import("ggplot2")
 import("FLCore")
 import("gridExtra")
 importFrom("reshape2",
@@ -8,4 +8,4 @@ importFrom("plyr",
   "is.formula")
 exportMethods(
   "ggplot",
-	"plot")
+  "plot")

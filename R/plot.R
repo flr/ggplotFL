@@ -9,6 +9,19 @@
 #'
 #' New basic plot methods for some FLR classes are defined in ggplotFL.
 #'
+#' @param x Variable on x axis.
+#' @param y Variable on y axis.
+#' @param main Title of plot.
+#' @param xlab Label of x axis.
+#' @param ylab Label of y axis.
+#' @param na.rm Should NAs be deleted in quantile calculations?, defaults to TRUE.
+#' @param probs Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).
+#' @param type Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.
+#' @param fill Colour to be used for filling of quantile poligons, defaults to 'red'.
+#' @param colour Colour to be used for last quantile lines, defaults to fill.
+#' @param ... Other arguments to be passed to the corresponding ggplot call.
+#' @param foo FlQuants computed from complex objects (e.g. FLStock)
+#'
 #' @aliases plot,FLQuants,missing-method
 #' @docType methods
 #' @rdname plot
@@ -46,7 +59,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 				date=TRUE)
 			
 			# cast with quantiles in columns
-			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)], collapse='+'),
+			df <- reshape2::dcast(df, as.formula(paste(paste(names(df)[-c(6,7)], collapse='+'),
 				'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as `50%`
@@ -133,7 +146,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 				na.rm=na.rm, type=type), timestep=TRUE)
 		
 			# cast with quantiles in columns
-			df <- dcast(df, as.formula(paste(paste(names(df)[-c(6,7)],
+			df <- reshape2::dcast(df, as.formula(paste(paste(names(df)[-c(6,7)],
 				collapse='+'), 'iter', sep='~')), value.var="data")
 			
 		# otherwise, rename 'data' as 'q50'
@@ -141,9 +154,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			df <- as.data.frame(x, timestep=TRUE)
 			names(df)[7] <- "50%"
 		}
-		
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=`50%`)) +
+		p <- ggplot(data=df, aes_string(x='year', y='`50%`')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
 			geom_path(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
@@ -154,15 +166,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`),
+			geom_ribbon(aes_string(x='year', ymin = '`25%`', ymax = '`75%`'),
 				fill=fill, alpha = .25, na.rm=na.rm) +
 			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`),
+			geom_ribbon(aes_string(x='year', ymin = '`10%`', ymax = '`90%`'),
 				fill=fill, alpha = .10, na.rm=na.rm) +
 			# .. and dotted lines
-			geom_path(aes(x=year, y = `10%`),
+			geom_path(aes_string(x='year', y = '`10%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-			geom_path(aes(x=year, y = `90%`),
+			geom_path(aes_string(x='year', y = '`90%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
 		}
 		
@@ -238,10 +250,10 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		fqs <- transform(fqs, stock=stk)
 
 		# cast with quantiles in columns
-		df <- dcast(fqs, age+year+unit+season+area+qname+stock~iter, value.var="data")
+		df <- reshape2::dcast(fqs, age+year+unit+season+area+qname+stock~iter, value.var="data")
 
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +
+		p <- ggplot(data=df, aes_string(x='`year`', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
 			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
@@ -252,8 +264,8 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock,
-				colour=stock, fill=stock), alpha = .20, linetype = 0, na.rm=na.rm)
+			geom_ribbon(aes_string(x='year', ymin = '`10%`', ymax = '`90%`', group='stock',
+				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
 		return(p)
@@ -307,13 +319,13 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		fqs <- transform(fqs, stock=stk)
 
 		# cast with quantiles in columns
-		df <- dcast(fqs, age+year+unit+season+area+qname+stock~iter, value.var="data")
+		df <- reshape2::dcast(fqs, age+year+unit+season+area+qname+stock~iter, value.var="data")
 
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes(x=year, y=`50%`, group=stock)) +
+		p <- ggplot(data=df, aes_string(x='year', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
-			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
+			geom_line(aes_string(colour='stock'), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
 			# limits to include 0 +  no legend
 			expand_limits(y=0) + theme(legend.title = element_blank())
 		
@@ -321,8 +333,8 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`, group=stock,
-				colour=stock, fill=stock), alpha = .20, linetype = 0, na.rm=na.rm)
+			geom_ribbon(aes_string(x='year', ymin = '`10%`', ymax = '`90%`', group='stock',
+				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
 		return(p)
@@ -386,7 +398,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		'%*%', uns$ssb, fixed=TRUE), ')')))
 
 	# SSB vs. REC
-	p1 <- ggplot(data=dat, aes(x=SSB, y=Rec)) + geom_point() +
+	p1 <- ggplot(data=dat, aes_string(x='SSB', y='Rec')) + geom_point() +
 		geom_smooth(method='loess') + xlab(uns) + ylab(unr) +
 		expand_limits(y=0) + expand_limits(x=0)
 
@@ -400,26 +412,26 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	p1 <- p1 + stat_function(fun=fmo,  colour='red', size=0.5)
 	
 	# P2
-	p2 <- ggplot(data=dat, aes(x=year, y=Residuals)) + geom_point() + 	
+	p2 <- ggplot(data=dat, aes_string(x='year', y='Residuals')) + geom_point() + 	
 		geom_smooth(method='loess') + xlab("Year")
 
 	# P3
 	p3 <- ggplot(data=data.frame(res1=dat$Residuals[-length(dat$Residuals)],
-		res2=dat$Residuals[-1]), aes(x=res1, y=res2)) + geom_point() +
+		res2=dat$Residuals[-1]), aes_string(x='res1', y='res2')) + geom_point() +
 		xlab(expression(Residuals[t])) + ylab(expression(Residuals[t + 1])) +
 	  geom_smooth(method='lm')
 
 	# P4
-	p4 <- ggplot(data=dat, aes(x=SSB, y=Residuals)) + geom_point() + 	
+	p4 <- ggplot(data=dat, aes_string(x='SSB', y='Residuals')) + geom_point() + 	
 		geom_smooth(method='loess')
 
 	# P5
-	p5 <- ggplot(data=dat, aes(sample = Residuals)) + stat_qq(color="red",
-		alpha=1) + geom_abline(aes(intercept = mean(Residuals),
-		slope = sd(Residuals))) + xlab("Theoretical") + ylab("Sample")
+	p5 <- ggplot(data=dat, aes_string(sample = 'Residuals')) + stat_qq(color="red",
+		alpha=1) + geom_abline(aes_q(intercept = quote(mean(Residuals)),
+		slope = quote(sd(Residuals)))) + xlab("Theoretical") + ylab("Sample")
 
 	# P6
-	p6 <- ggplot(data=dat, aes(x=RecHat, y=Residuals)) + geom_point() + 	
+	p6 <- ggplot(data=dat, aes_string(x='RecHat', y='Residuals')) + geom_point() + 	
 		geom_smooth(method='loess') + xlab(expression(hat(Recruits)))
 	
 

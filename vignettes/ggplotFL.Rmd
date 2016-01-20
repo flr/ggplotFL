@@ -1,30 +1,25 @@
 ---
-title:  Plotting FLR objects with ggplotFL and ggplot2
-author: Iago Mosqueira, EC JRC\protect\thanks{
-	European Commission\\
-	Joint Research Center\\
-	IPSC - Maritime Affairs Unit G04\\
-	Ispra, Italy\\
-	\url{https://fishreg.jrc.ec.europa.eu/}} - FLR Project
-date: `r format(as.Date(system("git log -1 --format=%ci ggplotFL.Rmd", intern=TRUE)), "%B %Y")`
+title:  "Plotting FLR objects with ggplotFL and ggplot2"
+author: Iago Mosqueira - European Commission Joint Research Center
+date: "`r format(as.Date(system('git log -1 --format=%ci ggplotFL.Rmd', intern=TRUE)), '%B %Y')`"
 tags: [FLR, ggplot2]
-...
-
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Plotting FLR objects with ggplot2 and ggplotFL}
--->
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{ggplotFL}
+  %\VignetteDepends{reshape2}
+  \usepackage[utf8]{inputenc}
+---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
 library(knitr)
-opts_chunk$set(dev='pdf', cache=TRUE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
+library(reshape2)
+opts_chunk$set(dev='png', cache=TRUE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
 options(width=50)
 ```
 
 ```{r, load, echo=FALSE, results='hide', message=FALSE}
 library(ggplotFL)
-#library(ggthemes)
-#theme_set(theme_light())
 data(ple4)
 data(ple4sex)
 data(nsher)
@@ -205,7 +200,7 @@ This is easy to do in `ggplot2` by adding an extra element on top of the previou
 
 ## Example: Using FLQuants
 
-Coercion using `as.data.frame`, combined with the use of `dcast` and `melt` (from the `reshape2` package^[<http://cran.r-project.org/web/packages/reshape2/index.html>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
+Coercion using `as.data.frame`, combined with the use of `dcast` and `melt` (from the `reshape2` package^[<http://cran.r-project.org/package=reshape2>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
 
 **TODO**: ADD text & example
 
@@ -244,7 +239,7 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 * The latest version of `ggplotFL` can always be installed using the `devtools` package, by calling
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
-	install_github('ggplotFL', 'flr')
+	install_github('flr/ggplotFL')
 ```
 
 ## Software Versions
@@ -256,7 +251,6 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 * **Compiled**: `r date()`
 * **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
-## `knitr` options
+## Author information
 
-```{r inif, ref.label='ini', echo=2, eval=FALSE}
-```
+**Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy.

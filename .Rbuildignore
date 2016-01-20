@@ -1,1 +1,5 @@
 .travis.yml
+NEWS.md
+gh-pages/
+Makefile
+.git/
