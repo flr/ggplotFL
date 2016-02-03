@@ -21,6 +21,7 @@ Imports:
 Suggests:
   knitr,
   rmarkdown
+Additional_repositories: http://flr-project.org/R
 SystemRequirements: git
 Collate:
   'allGenerics.R'
