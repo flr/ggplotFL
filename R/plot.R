@@ -443,3 +443,50 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 #	return(p)
 	}
 ) # }}}
+
+# plot(FLSRs)
+setMethod("plot", signature(x="FLSRs"),
+  function(x, ...) {
+
+    # DIFFERENT data
+    # dat <- lapply(x, function(x) FLQuants(ssb=ssb(x), rec=rec(x)))
+
+    # EQUAL data
+    dat <- FLQuants(ssb=ssb(x[[1]]), rec=rec(x[[1]]))
+
+    # EXTRACT models & pars
+    mods <- lapply(x, model)
+    pars <- lapply(x, params)
+    inp <- data.frame(ssb=seq(0, max(dat$ssb), length=100), rec=NA)
+
+    # CREATE model labels
+    labs <- sapply(names(mods), function(x) deparse(do.call(substitute, list(mods[[x]],
+      env=lapply(as(pars[[x]], 'list'), format, digits=4)))), USE.NAMES=TRUE)
+    labs <- lapply(labs, function(x) gsub('"', '', x))
+    labs <- lapply(labs, function(x) gsub('~', '%~%', x))
+    labs <- lapply(labs, function(x) gsub('\\*', '%.%', x))
+
+    labs <- lapply(labs, function(x) parse(text=x))
+      
+    # RESULTS
+    res <- lapply(names(mods), function(x) {
+      data.frame(sr=x, ssb=inp$ssb,
+        rec=eval(as.list(mods[[x]])[[3]], c(list(ssb=inp$ssb), as(pars[[x]], 'list')))
+        )
+    })
+
+    res <- do.call('rbind', res)
+
+    # GET plot
+    p <- ggplot(res, aes(x=ssb, y=rec)) + geom_line(aes(group=sr, color=sr)) +
+      geom_point(data=model.frame(dat)) + 
+      xlab(parse(text=paste0("SSB (", sub('\\*', '%*%', units(dat$ssb)), ")"))) +
+      ylab(parse(text=paste0("Recruits (", sub('\\*', '%*%', units(dat$rec)), ")"))) +
+      scale_color_discrete(name="", breaks=names(x), labels=labs) +
+      theme(legend.position="bottom") +
+      guides(color=guide_legend(nrow=length(labs), byrow=TRUE))
+ 
+    return(p)
+  }
+
+)
