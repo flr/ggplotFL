@@ -2,7 +2,11 @@
 # ggplotFL/R/plot.R
 
 # Copyright 2003-2015 FLR Team. Distributed under the GPL 2 or later
-# Maintainer: Iago Mosqueira, JRC, Laurie Kell, ICCAT
+# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@jrc.ec.europa.eu>
+#
+# Distributed under the terms of the GPL-2
+
+
 
 # plot(FLQuant) {{{
 #' ggplot versions of FLR class plot() methods
@@ -444,9 +448,28 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	}
 ) # }}}
 
-# plot(FLSRs)
+# plot(FLSRs) {{{
+#' @aliases plot,FLSRs,missing-method
+#' @docType methods
+#' @rdname plot
+#' @param legend_label function to create the legend labels
+#' @examples
+#'
+#'  # plot for FLSRs
+#'  data(nsher)
+#'  srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
+#'    y <- nsher
+#'    model(y) <- x
+#'    return(fmle(y))
+#'  }))
+#'  plot(srs)
+#'  
+#'  plot(srs, legend_label=modlabel)
+#'
+
+
 setMethod("plot", signature(x="FLSRs"),
-  function(x, ...) {
+  function(x, legend_label=eqlabel, ...) {
 
     # DIFFERENT data
     # dat <- lapply(x, function(x) FLQuants(ssb=ssb(x), rec=rec(x)))
@@ -455,19 +478,10 @@ setMethod("plot", signature(x="FLSRs"),
     dat <- FLQuants(ssb=ssb(x[[1]]), rec=rec(x[[1]]))
 
     # EXTRACT models & pars
-    mods <- lapply(x, model)
-    pars <- lapply(x, params)
+    mods <- lapply(x, 'model')
+    pars <- lapply(x, 'params')
     inp <- data.frame(ssb=seq(0, max(dat$ssb), length=100), rec=NA)
 
-    # CREATE model labels
-    labs <- sapply(names(mods), function(x) deparse(do.call(substitute, list(mods[[x]],
-      env=lapply(as(pars[[x]], 'list'), format, digits=4)))), USE.NAMES=TRUE)
-    labs <- lapply(labs, function(x) gsub('"', '', x))
-    labs <- lapply(labs, function(x) gsub('~', '%~%', x))
-    labs <- lapply(labs, function(x) gsub('\\*', '%.%', x))
-
-    labs <- lapply(labs, function(x) parse(text=x))
-      
     # RESULTS
     res <- lapply(names(mods), function(x) {
       data.frame(sr=x, ssb=inp$ssb,
@@ -480,13 +494,16 @@ setMethod("plot", signature(x="FLSRs"),
     # GET plot
     p <- ggplot(res, aes(x=ssb, y=rec)) + geom_line(aes(group=sr, color=sr)) +
       geom_point(data=model.frame(dat)) + 
-      xlab(parse(text=paste0("SSB (", sub('\\*', '%*%', units(dat$ssb)), ")"))) +
-      ylab(parse(text=paste0("Recruits (", sub('\\*', '%*%', units(dat$rec)), ")"))) +
-      scale_color_discrete(name="", breaks=names(x), labels=labs) +
+      xlab(parse(text=paste0("SSB (", sub('\\*', '%.%', units(dat$ssb)), ")"))) +
+      ylab(parse(text=paste0("Recruits (", sub('\\*', '%.%', units(dat$rec)), ")"))) +
+      scale_color_discrete(name="", breaks=names(x),
+        labels=do.call(legend_label, list(model=mods, param=pars))) +
       theme(legend.position="bottom") +
-      guides(color=guide_legend(nrow=length(labs), byrow=TRUE))
+      guides(color=guide_legend(nrow=length(mods), byrow=TRUE))
  
     return(p)
   }
 
-)
+) # }}}
+
+

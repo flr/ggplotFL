@@ -124,11 +124,40 @@ plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legen
 
 The `ggplotFL` version of the class plot for `FLSR` contains the same six panels as before: (1) stock-recruit data, fitted model and lowess smoother, (2) residuals by year, (3) lag 1-correlated residuals, (4) residuals by SSB, (5) residuals qqplot and (6) residuals by fitted values. Blud lines are lo9wess smoothers, to better visualize trends in the data shown.
 
-```{r, pflsr, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSR."}
+```{r, pflsr, echo=TRUE, fig.cap="Standard ggplot2-based plot for an object of class FLSR."}
 plot(nsher)
 ```
 
-# Using ggplot2 by converting to data.frame
+## FLSRs
+
+A class plot also exists for `FLSRs` objects, lists with `FLSR` elements. The comparison shown involves only the model fit across the different model functions or formulations, but not the residuals diagnostics available for `FLSR`. The default legend contains the formula of each of the fitted models and the parameter values (or the median if multiple iterations exist).
+
+```{r, flsrs, echo=TRUE, messages=FALSE, results='hide'}
+srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
+  y <- nsher
+  model(y) <- x
+  return(fmle(y))
+}))
+```
+
+```{r, pflsrs, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSRs object, using default legend labels."}
+plot(srs)
+```
+
+An alternative labeller function exists (`modlabel`) that returns the name of the SR model function and the parameter values, by using the *legend_label* argument.
+
+```{r, pflsrs2, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSRs object, using model names as legend labels."}
+plot(srs, legend_label=modlabel) 
+```
+
+As is common in `ggplot2`, the labels can be specified directly, overwriting those included in the method. You should ignore the warning about scale for *colour* being replaced.
+
+```{r, pflsrs3, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSRs object, using model names as legend labels."}
+plot(srs) + scale_color_discrete(name="SR models", breaks=c('ricker', 'bevholt'),
+        labels=c("Ricker", "Beverton & Holt"))
+```
+
+# Using ggplot2 directly by converting to data.frame
 
 The methods shown above depend on conversion of *FLR* objects into `data.frame`, which can then be passed to `ggplot()`. Calling `ggplot` on an *FLR* object takes care of this conversion behind the scenes, but to obtain full control and develop certains plots, it is best to explicitely convert the *FLR* objects into a `data.frame`. Different conventions are used in the naming of the data.frame columns created from various *FLR* classes, which need to be used when the plot is specified. For further information, please see the help pages for each `data.frame()` method ^[For example `method?as.data.frame('FLQuants')`].
 

@@ -1,6 +1,6 @@
 import("methods")
-import("ggplot2")
 import("FLCore")
+import("ggplot2")
 import("gridExtra")
 importFrom("reshape2",
 	"dcast")
@@ -9,3 +9,6 @@ importFrom("plyr",
 exportMethods(
   "ggplot",
   "plot")
+export(
+  "eqlabel",
+  "modlabel")

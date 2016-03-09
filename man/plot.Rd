@@ -5,6 +5,8 @@
 \alias{plot,FLQuant,missing-method}
 \alias{plot,FLQuants,missing-method}
 \alias{plot,FLSR,missing-method}
+\alias{plot,FLSRs,ANY-method}
+\alias{plot,FLSRs,missing-method}
 \alias{plot,FLStock,FLPar-method}
 \alias{plot,FLStock,missing-method}
 \alias{plot,FLStocks,FLPar-method}
@@ -31,6 +33,8 @@
 \S4method{plot}{FLStock,FLPar}(x, y, ...)
 
 \S4method{plot}{FLSR,missing}(x, y, ...)
+
+\S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
 }
 \arguments{
 \item{x}{Variable on x axis.}
@@ -56,6 +60,8 @@
 \item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
 
 \item{y}{Variable on y axis.}
+
+\item{legend_label}{function to create the legend labels}
 }
 \description{
 New basic plot methods for some FLR classes are defined in ggplotFL.
@@ -106,5 +112,17 @@ New basic plot methods for some FLR classes are defined in ggplotFL.
  data(nsher)
  plot(nsher)
  
+
+ # plot for FLSRs
+ data(nsher)
+ srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
+   y <- nsher
+   model(y) <- x
+   return(fmle(y))
+ }))
+ plot(srs)
+ 
+ plot(srs, legend_label=modlabel)
+
 }
 

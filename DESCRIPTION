@@ -1,11 +1,10 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.5.20160119
-Date: 2016-01-19
+Version: 2.5.20160309
+Date: 2016-03-09
 Author: Laurie T. Kell <laurie@kell.es>,
     Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>
-Maintainer: Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>,
-    Laurie T. Kell <laurie@kell.es>
+Maintainer: Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>
 Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
     various FLR classes, and (2) ggplot-based versions of standard plots in
     various FLR pkgs.
@@ -22,9 +21,9 @@ Suggests:
   knitr,
   rmarkdown
 Additional_repositories: http://flr-project.org/R
-SystemRequirements: git
 Collate:
   'allGenerics.R'
+  'functions.R'
   'ggplot.R'
   'plot.R'
 License: GPL-2
