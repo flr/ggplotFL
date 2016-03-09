@@ -1,7 +1,9 @@
 import("methods")
 import("FLCore")
 import("ggplot2")
-import("gridExtra")
+importFrom("gridExtra",
+  "arrangeGrob",
+  "grid.arrange")
 importFrom("reshape2",
 	"dcast")
 importFrom("plyr",
