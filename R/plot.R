@@ -6,8 +6,6 @@
 #
 # Distributed under the terms of the GPL-2
 
-
-
 # plot(FLQuant) {{{
 #' ggplot versions of FLR class plot() methods
 #'
@@ -61,11 +59,13 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
 				date=TRUE)
-			
-			# cast with quantiles in columns
-			df <- reshape2::dcast(df, as.formula(paste(paste(names(df)[-c(6,7)], collapse='+'),
-				'iter', sep='~')), value.var="data")
-			
+
+      # turn to wide
+      df <- reshape(df, timevar="iter", direction="wide",
+      idvar=c(names(df)[1:5], "date"))
+      
+      names(df) <- gsub("data.", "", names(df))
+
 		# otherwise, rename 'data' as `50%`
 		} else {
 			df <- as.data.frame(x, date=TRUE)
@@ -148,11 +148,12 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(lapply(x, quantile, probs=probs,
 				na.rm=na.rm, type=type), timestep=TRUE)
-		
-			# cast with quantiles in columns
-			df <- reshape2::dcast(df, as.formula(paste(paste(names(df)[-c(6,7)],
-				collapse='+'), 'iter', sep='~')), value.var="data")
-			
+
+      df <- reshape(df, timevar="iter", direction="wide",
+        idvar=c(names(x[[1]])[1:5], "timestep", "qname"))
+      
+      names(df) <- gsub("data.", "", names(df))
+
 		# otherwise, rename 'data' as 'q50'
 		} else {
 			df <- as.data.frame(x, timestep=TRUE)
@@ -208,6 +209,39 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 	}
 ) # }}}
 
+# plot(FLStock, FLPar) {{{
+#' @aliases plot,FLStock,FLPar-method
+#' @rdname plot
+#' @examples
+#'
+#'  # plot for FLStock, FLPar
+#'  data(ple4)
+#'  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
+#'  plot(ple4, rps)
+#'  
+
+setMethod("plot", signature(x="FLStock", y="FLPar"),
+	function(x, y, ...) {
+	
+		p <- plot(x)
+
+		rpa <- data.frame(data=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
+
+		# FIX mixmatch between refpts and FLStock slots naming
+		if('yield' %in% rpa$qname)
+			rpa$qname[rpa$qname == 'yield'] <- 'catch'
+
+		qnames <- c("Rec", "SSB", "Catch", "Harvest")
+		idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
+			duplicates.ok=TRUE)[1:4]
+		rpa <- rpa[idx,]
+
+		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
+
+		return(p)
+	}
+) # }}}
+
 # plot(FLStocks) {{{
 #' @aliases plot,FLStocks,missing-method
 #' @rdname plot
@@ -253,8 +287,11 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		# add stock names
 		fqs <- transform(fqs, stock=stk)
 
-		# cast with quantiles in columns
-		df <- reshape2::dcast(fqs, age+year+unit+season+area+qname+stock~iter, value.var="data")
+    # compute quantiles
+    df <- reshape(fqs, timevar="iter", direction="wide",
+      idvar=c(names(fqs)[1:5], "qname", "stock"))
+      
+    names(df) <- gsub("data.", "", names(df))
 
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x='`year`', y='`50%`', group='stock')) +
@@ -322,8 +359,11 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		# add stock names
 		fqs <- transform(fqs, stock=stk)
 
-		# cast with quantiles in columns
-		df <- reshape2::dcast(fqs, age+year+unit+season+area+qname+stock~iter, value.var="data")
+    # compute quantiles
+    df <- reshape(fqs, timevar="iter", direction="wide",
+      idvar=c(names(fqs)[1:5], "qname", "stock"))
+      
+    names(df) <- gsub("data.", "", names(df))
 
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x='year', y='`50%`', group='stock')) +
@@ -341,39 +381,6 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
-		return(p)
-	}
-) # }}}
-
-# plot(FLStock, FLPar) {{{
-#' @aliases plot,FLStock,FLPar-method
-#' @rdname plot
-#' @examples
-#'
-#'  # plot for FLStock, FLPar
-#'  data(ple4)
-#'  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
-#'  plot(ple4, rps)
-#'  
-
-setMethod("plot", signature(x="FLStock", y="FLPar"),
-	function(x, y, ...) {
-	
-		p <- plot(x)
-
-		rpa <- data.frame(data=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
-
-		# FIX mixmatch between refpts and FLStock slots naming
-		if('yield' %in% rpa$qname)
-			rpa$qname[rpa$qname == 'yield'] <- 'catch'
-
-		qnames <- c("Rec", "SSB", "Catch", "Harvest")
-		idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
-			duplicates.ok=TRUE)[1:4]
-		rpa <- rpa[idx,]
-
-		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
-
 		return(p)
 	}
 ) # }}}
@@ -505,5 +512,3 @@ setMethod("plot", signature(x="FLSRs"),
   }
 
 ) # }}}
-
-

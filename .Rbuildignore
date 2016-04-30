@@ -1,4 +1,5 @@
 .travis.yml
+appveyor.yml
 NEWS.md
 gh-pages/
 Makefile

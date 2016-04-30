@@ -26,7 +26,7 @@
 #' @examples
 #'    dat <- rnorm(1, FLQuant(1, dim=c(5,10)), 0.5)
 #'    ggplot(data=dat, aes(data, year)) + geom_point() 
-#' @seealso \link[ggplot2]{ggplot}, \url{http://github.com/flr/ggplotFL/}
+#' @seealso \link[ggplot2]{ggplot}, \url{https://github.com/flr/ggplotFL/}
 
 setMethod("ggplot", signature(data="FLQuant"),
   function(data, mapping=aes(), ..., environment=parent.frame()) {

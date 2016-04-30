@@ -46,6 +46,6 @@ understand the naming conventions used in the resulting \code{data.frame}
    ggplot(data=dat, aes(data, year)) + geom_point() + facet_wrap(~qname)
 }
 \seealso{
-\link[ggplot2]{ggplot}, \url{http://github.com/flr/ggplotFL/}
+\link[ggplot2]{ggplot}, \url{https://github.com/flr/ggplotFL/}
 }
 

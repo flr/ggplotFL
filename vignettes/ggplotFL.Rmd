@@ -2,7 +2,7 @@
 title:  "Plotting FLR objects with ggplotFL and ggplot2"
 author: Iago Mosqueira - European Commission Joint Research Center
 date: "`r format(as.Date(system('git log -1 --format=%ci ggplotFL.Rmd', intern=TRUE)), '%B %Y')`"
-tags: [FLR, ggplot2]
+tags: [FLR, ggplot2, ggplotFL]
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,14 +11,14 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-```{r, ini, echo=FALSE, results='hide', message=FALSE}
-library(knitr)
+```{r, ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 library(reshape2)
-opts_chunk$set(dev='png', cache=TRUE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
+library(knitr)
+opts_chunk$set(dev='png', cache=FALSE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
 options(width=50)
 ```
 
-```{r, load, echo=FALSE, results='hide', message=FALSE}
+```{r, load, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 library(ggplotFL)
 data(ple4)
 data(ple4sex)
@@ -222,7 +222,8 @@ If the result of an stochastic simulation is summarised by showing credibility i
 ```{r, exspa, echo=TRUE, cache=TRUE, fig.cap="Spaghetti plot of an stochastic simulation, by calling geom_line on top of the stored ribbon plot."}
 fds  <- as.data.frame(iter(fla, c(1, 4, 23)))
 
-p + geom_line(data=fds, aes(year, data, colour=iter), size=1) + theme(legend.position = "none")
+p + geom_line(data=fds, aes(year, data, colour=iter), size=0.5) +
+  theme(legend.position = "none")
 ```
 
 This is easy to do in `ggplot2` by adding an extra element on top of the previous plot, stored in the `p` object from the code above.

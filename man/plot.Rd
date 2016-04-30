@@ -22,6 +22,8 @@
 
 \S4method{plot}{FLStock,missing}(x, main = "", xlab = "", ylab = "", ...)
 
+\S4method{plot}{FLStock,FLPar}(x, y, ...)
+
 \S4method{plot}{FLStocks,missing}(x, main = "", xlab = "", ylab = "",
   na.rm = TRUE, foo = function(y) FLQuants(Rec = rec(y), SSB = ssb(y), Catch
   = catch(y), Harvest = fbar(y)))
@@ -29,8 +31,6 @@
 \S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "", ylab = "",
   na.rm = TRUE, foo = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F =
   fbar(x)/y[, "harvest", ], Catch = catch(x)))
-
-\S4method{plot}{FLStock,FLPar}(x, y, ...)
 
 \S4method{plot}{FLSR,missing}(x, y, ...)
 
@@ -57,9 +57,9 @@
 
 \item{...}{Other arguments to be passed to the corresponding ggplot call.}
 
-\item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
-
 \item{y}{Variable on y axis.}
+
+\item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
 
 \item{legend_label}{function to create the legend labels}
 }
@@ -90,22 +90,22 @@ New basic plot methods for some FLR classes are defined in ggplotFL.
  plot(ple4)
 
 
- # plot for FLStocks
- data(ple4)
- pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
- plot(pls)
- 
-
- # plot for FLStocks
- data(ple4)
- pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
- plot(pls)
- 
-
  # plot for FLStock, FLPar
  data(ple4)
  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
  plot(ple4, rps)
+ 
+
+ # plot for FLStocks
+ data(ple4)
+ pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+ plot(pls)
+ 
+
+ # plot for FLStocks
+ data(ple4)
+ pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+ plot(pls)
  
 
  # plot for FLSR
