@@ -29,6 +29,7 @@ on_failure:
 artifacts:
   - path: '*.Rcheck\**\*.log'
     name: Logs
+    type: WebDeployPackage
 
   - path: '\*_*.tar.gz'
     name: Bits
