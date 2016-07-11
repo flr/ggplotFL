@@ -30,8 +30,7 @@ set.seed(1423)
 
 The `ggplot2` package provides a powerful alternative paradigm for creating both simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13).]
 
-To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that take directly certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
-
+To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that directly accept certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
 # The overloaded 'ggplot` method
 
@@ -150,7 +149,7 @@ An alternative labeller function exists (`modlabel`) that returns the name of th
 plot(srs, legend_label=modlabel) 
 ```
 
-As is common in `ggplot2`, the labels can be specified directly, overwriting those included in the method. You should ignore the warning about scale for *colour* being replaced.
+As is common in `ggplot2`, labels can be specified directly, overwriting those included in the method. You should ignore the warning about scale for *colour* being replaced.
 
 ```{r, pflsrs3, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSRs object, using model names as legend labels."}
 plot(srs) + scale_color_discrete(name="SR models", breaks=c('ricker', 'bevholt'),
