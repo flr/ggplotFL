@@ -1,6 +1,10 @@
 import("methods")
 import("ggplot2")
 import("FLCore")
+importFrom("stats",
+  "as.formula",
+  "reshape")
+  importFrom("utils", "data")
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")

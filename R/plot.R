@@ -225,7 +225,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 	
 		p <- plot(x)
 
-		rpa <- data.frame(data=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
+		rpa <- data.frame(`data`=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
 
 		# FIX mixmatch between refpts and FLStock slots naming
 		if('yield' %in% rpa$qname)

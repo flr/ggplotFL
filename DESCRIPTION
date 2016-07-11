@@ -14,7 +14,8 @@ Depends:
   FLCore
 Imports:
   methods,
-  gridExtra
+  gridExtra,
+  stats
 Suggests:
   knitr,
   rmarkdown,
