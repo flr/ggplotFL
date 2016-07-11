@@ -24,12 +24,21 @@ test_script:
   - travis-tool.sh run_tests
 
 on_failure:
-  - travis-tool.sh dump_logs
+  - 7z a failure.zip *.Rcheck\*
+  - appveyor PushArtifact failure.zip
 
 artifacts:
   - path: '*.Rcheck\**\*.log'
     name: Logs
-    type: WebDeployPackage
+
+  - path: '*.Rcheck\**\*.out'
+    name: Logs
+
+  - path: '*.Rcheck\**\*.fail'
+    name: Logs
+
+  - path: '*.Rcheck\**\*.Rout'
+    name: Logs
 
   - path: '\*_*.tar.gz'
     name: Bits
