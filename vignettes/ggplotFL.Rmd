@@ -99,8 +99,15 @@ plot(rlnorm(200, fbar(ple4), 0.15), probs=c(0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 
 The `plot` method for `FLQuants` will now by default show each object in a horizontal panel, with indpendent scales, by using `facet_grid`. Objects with iterations will have, as with `plot` for `FLQuant`, their median, 10%, 25%, 75% and 90% quantiles shown as a black line and red ribbons with different levels of transparency, respectively.
 
 ```{r, pflqs, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
-fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4))
+fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4), Catch=catch(ple4))
 plot(fqs)
+```
+
+Plots of multiple `FLQuant` objects use by default `facet_grid` with multiple plots stack on top of each other. To have the plots on a grid, for example 2x2, you can add a call to `facet_wrap` to change it, for example,
+
+```{r, pflqsg, echo=TRUE, fig.cap="Wrap-based ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
+fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4), Catch=catch(ple4))
+plot(fqs) + facet_wrap(~qname, scales="free")
 ```
 
 ## FLStock
