@@ -147,20 +147,20 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			
 			# compute quantiles on FLQs, then convert to df
 			df <- as.data.frame(lapply(x, quantile, probs=probs,
-				na.rm=na.rm, type=type), timestep=TRUE)
+				na.rm=na.rm, type=type), date=TRUE)
 
       df <- reshape(df, timevar="iter", direction="wide",
-        idvar=c(names(x[[1]])[1:5], "timestep", "qname"))
+        idvar=c(names(x[[1]])[1:5], "date", "qname"))
       
       names(df) <- gsub("data.", "", names(df))
 
 		# otherwise, rename 'data' as 'q50'
 		} else {
-			df <- as.data.frame(x, timestep=TRUE)
-			names(df)[7] <- "50%"
+			df <- as.data.frame(x, date=TRUE)
+			names(df)[names(df) == "data"] <- "50%"
 		}
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes_string(x='year', y='`50%`')) +
+		p <- ggplot(data=df, aes_string(x='date', y='`50%`')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab + limits to include 0 +
 			geom_path(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
@@ -171,15 +171,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x='year', ymin = '`25%`', ymax = '`75%`'),
+			geom_ribbon(aes_string(x='date', ymin = '`25%`', ymax = '`75%`'),
 				fill=fill, alpha = .25, na.rm=na.rm) +
 			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes_string(x='year', ymin = '`10%`', ymax = '`90%`'),
+			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`'),
 				fill=fill, alpha = .10, na.rm=na.rm) +
 			# .. and dotted lines
-			geom_path(aes_string(x='year', y = '`10%`'),
+			geom_path(aes_string(x='date', y = '`10%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-			geom_path(aes_string(x='year', y = '`90%`'),
+			geom_path(aes_string(x='date', y = '`90%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
 		}
 		
@@ -273,7 +273,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		{
 			# quantiles
 			fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile,
-				c(0.10, 0.50, 0.90), na.rm=TRUE)))
+				c(0.10, 0.50, 0.90), na.rm=TRUE), date=TRUE))
 		} else {
 			fqs <- lapply(fqs, as.data.frame)
 			fqs <- lapply(fqs, function(x) {x$iter <- "50%"; return(x)})
@@ -305,7 +305,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x='year', ymin = '`10%`', ymax = '`90%`', group='stock',
+			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`', group='stock',
 				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
@@ -366,7 +366,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
     names(df) <- gsub("data.", "", names(df))
 
 		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes_string(x='year', y='`50%`', group='stock')) +
+		p <- ggplot(data=df, aes_string(x='date', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
 			geom_line(aes_string(colour='stock'), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
@@ -377,7 +377,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x='year', ymin = '`10%`', ymax = '`90%`', group='stock',
+			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`', group='stock',
 				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
@@ -512,3 +512,9 @@ setMethod("plot", signature(x="FLSRs"),
   }
 
 ) # }}}
+
+# plot(FLBiol) {{{
+
+# rec, tsb, 
+
+# }}}

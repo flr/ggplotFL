@@ -47,7 +47,7 @@ setMethod("ggplot", signature(data="FLQuant"),
 
 setMethod("ggplot", signature(data="FLQuants"),
   function(data, mapping=aes(), ..., environment=parent.frame()) {
-    data <- as.data.frame(data, cohort=TRUE, timestep=TRUE)
+    data <- as.data.frame(data, cohort=TRUE, timestep=TRUE, date=TRUE)
 		ggplot(data, mapping, ...)
 	}) # }}}
 
@@ -56,7 +56,7 @@ setMethod("ggplot", signature(data="FLQuants"),
 #' @aliases ggplot,FLComp-method
 setMethod("ggplot", signature(data="FLComp"),
   function(data, mapping=aes(), ..., environment=parent.frame()) {
-    data <- as.data.frame(data, cohort=TRUE)
+    data <- as.data.frame(data, cohort=TRUE, date=TRUE)
     ggplot(data, mapping, ...)
 	}) # }}}
 
@@ -65,8 +65,7 @@ setMethod("ggplot", signature(data="FLComp"),
 #' @aliases ggplot,FLComps-method
 setMethod("ggplot", signature(data="FLComps"),
   function(data, mapping=aes(), ..., environment=parent.frame()) {
-    data <- as.data.frame(data)
-
+    data <- as.data.frame(data, date=TRUE)
     try(data$cohort <- data$year - data$age)
     ggplot(data, mapping, ...)
 	}) # }}}
