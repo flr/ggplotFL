@@ -7,6 +7,7 @@
 # Distributed under the terms of the GPL-2
 
 # plot(FLQuant) {{{
+
 #' ggplot versions of FLR class plot() methods
 #'
 #' New basic plot methods for some FLR classes are defined in ggplotFL.
