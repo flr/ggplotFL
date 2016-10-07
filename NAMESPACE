@@ -4,7 +4,8 @@ import("FLCore")
 importFrom("stats",
   "as.formula",
   "reshape")
-  importFrom("utils", "data")
+importFrom("utils",
+  "data")
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")

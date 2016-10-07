@@ -12,7 +12,6 @@ vignette: >
 ---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-library(reshape2)
 library(knitr)
 opts_chunk$set(dev='png', cache=FALSE, fig.width=4.5, fig.height=4.5, tidy=TRUE)
 options(width=50)
@@ -188,7 +187,7 @@ flq <- quantile(fla, c(0.10, 0.25, 0.50, 0.75, 0.90))
 
 The object can now be coerced to a `data.frame`
 ```{r, exsim3, echo=TRUE, cache=TRUE}
-fdf <- as.data.frame(flq)
+fdf <- as.data.frame(flq, drop=TRUE)
 ```
 
 and inspected to see how the 100 `iters` have been now turned into the five requested quantiles in the iter column
@@ -197,10 +196,10 @@ and inspected to see how the 100 `iters` have been now turned into the five requ
 head(fdf, 3)
 ```
 
-The long format `data.frame` can be reshaped into a wide format one so that we can instruct `ggplot` to use the quantiles, now in separate columns, to provide limits for the shaded areas in `geom_ribbon`. To do this we can use `reshape2::dcast`, as follows
+The long format `data.frame` can be reshaped into a wide format one so that we can instruct `ggplot` to use the quantiles, now in separate columns, to provide limits for the shaded areas in `geom_ribbon`. To do this we can use `reshape`, as follows
 
 ```{r, exsim5, echo=TRUE, cache=TRUE}
-fdw <- dcast(fdf, quant+year+unit+season+area~iter, value="data")
+fdw <- reshape(fdf, timevar = "iter", idvar = c("year"), direction = "wide")
 ```
 
 This creates a wide `data.frame` in which the `iter` column is spread into five columns named as the levels of its conversion into factor
@@ -212,9 +211,9 @@ levels(fdf[,'iter'])
 We can now use those five quantile columns when plotting shaded areas using `geom_ribbon`. Please note that the column names returned by `quantile()` need to be quoted using backticks.
 
 ```{r, exsim7, echo=TRUE, cache=TRUE, fig.cap="Time series with 75% and 90% credibility intervals plotted using geom_ribbon."}
-p <- ggplot(data=fdw, aes(x=year, y=`50%`)) +
-	geom_ribbon(aes(x=year, ymin = `10%`, ymax = `90%`), fill="red", alpha = .15) +
-	geom_ribbon(aes(x=year, ymin = `25%`, ymax = `75%`), fill="red", alpha = .25) +
+p <- ggplot(data=fdw, aes(x=year, y=`data.50%`)) +
+	geom_ribbon(aes(x=year, ymin = `data.10%`, ymax = `data.90%`), fill="red", alpha = .15) +
+	geom_ribbon(aes(x=year, ymin = `data.25%`, ymax = `data.75%`), fill="red", alpha = .25) +
 	geom_line() + ylab("data")
 print(p)
 ```
@@ -236,7 +235,7 @@ This is easy to do in `ggplot2` by adding an extra element on top of the previou
 
 ## Example: Using FLQuants
 
-Coercion using `as.data.frame`, combined with the use of `dcast` and `melt` (from the `reshape2` package^[<http://cran.r-project.org/package=reshape2>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
+Coercion using `as.data.frame`, combined with the use of `reshape`, or `dcast` and `melt` (from the `reshape2` package^[<http://cran.r-project.org/package=reshape2>]), provides the *FLR* user with the tools required to create a large range of `ggplot`s out of any *FLR* object.
 
 **TODO**: ADD text & example
 

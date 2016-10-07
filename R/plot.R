@@ -78,7 +78,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		dx <- dim(x)
 		ldi <- names(x)[-c(2,4,6)][dx[-c(2,4,6)] > 1]
 
-		# basic plot data vs. year
+		# basic plot data vs. date
 		p <- ggplot(data=df, aes_q(x=quote(date), y=as.name(mquan))) +
 			# line + xlab + ylab +
 			geom_line(colour="black") + xlab(xlab) + ylab(ylab) +
@@ -142,6 +142,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
 			warning('Duplicated names in object, changed to differentiate')
 		}
+
+    units <- unlist(lapply(x, units))
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
@@ -160,9 +162,13 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			df <- as.data.frame(x, date=TRUE)
 			names(df)[names(df) == "data"] <- "50%"
 		}
+    # CREATE facet labels
+    units <- attr(df, "units")
+    lablr <- as_labeller(unitsLabels(units), label_parsed)
+
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x='date', y='`50%`')) +
-			facet_grid(qname~., scales="free") +
+			facet_grid(qname~., scales="free", labeller=lablr) +
 			# line + xlab + ylab + limits to include 0 +
 			geom_path(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -189,6 +195,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 ) # }}}
 
 # plot(FLStock) {{{
+
 #' @aliases plot,FLStock,missing-method
 #' @rdname plot
 #' @examples
@@ -276,7 +283,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 			fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile,
 				c(0.10, 0.50, 0.90), na.rm=TRUE), date=TRUE))
 		} else {
-			fqs <- lapply(fqs, as.data.frame)
+			fqs <- lapply(fqs, as.data.frame, date=TRUE)
 			fqs <- lapply(fqs, function(x) {x$iter <- "50%"; return(x)})
 		}
 
@@ -290,12 +297,12 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 
     # compute quantiles
     df <- reshape(fqs, timevar="iter", direction="wide",
-      idvar=c(names(fqs)[1:5], "qname", "stock"))
+      idvar=c(names(fqs)[1:5], "qname", "stock", "date"))
       
     names(df) <- gsub("data.", "", names(df))
 
-		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes_string(x='`year`', y='`50%`', group='stock')) +
+		# plot data vs. date + facet on qname +
+		p <- ggplot(data=df, aes_string(x='`date`', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
 			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
@@ -362,11 +369,11 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 
     # compute quantiles
     df <- reshape(fqs, timevar="iter", direction="wide",
-      idvar=c(names(fqs)[1:5], "qname", "stock"))
+      idvar=c(names(fqs)[1:5], "qname", "stock", "date"))
       
     names(df) <- gsub("data.", "", names(df))
 
-		# plot data vs. year + facet on qname +
+		# plot data vs. date + facet on qname +
 		p <- ggplot(data=df, aes_string(x='date', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
@@ -374,7 +381,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 			# limits to include 0 +  no legend
 			expand_limits(y=0) + theme(legend.title = element_blank())
 		
-		# object w/ iters?
+    # object w/ iters?
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25

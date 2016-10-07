@@ -56,7 +56,7 @@ setMethod("ggplot", signature(data="FLQuants"),
 #' @aliases ggplot,FLComp-method
 setMethod("ggplot", signature(data="FLComp"),
   function(data, mapping=aes(), ..., environment=parent.frame()) {
-    data <- as.data.frame(data, cohort=TRUE, date=TRUE)
+    data <- as.data.frame(data, cohort=TRUE)
     ggplot(data, mapping, ...)
 	}) # }}}
 

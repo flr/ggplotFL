@@ -71,3 +71,18 @@ modlabel <- function(model, param) {
 
   return(labs)
 } # }}}
+
+# unitsLabels {{{
+unitsLabels <- function(units, drop=c("NA", "NC", "f", "m", "z", "prop")) {
+
+    # DROP certain units
+    units[units %in% drop] <- ""
+
+    # FORMAT
+    idx <- units !=""
+    units[idx] <- paste0(" (", units[idx], ")")
+
+    units[] <- paste0(names(units), units)
+
+    return(units)
+} # }}}
