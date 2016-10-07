@@ -14,4 +14,5 @@ exportMethods(
   "plot")
 export(
   "eqlabel",
-  "modlabel")
+  "modlabel",
+  "labelFLQuants")

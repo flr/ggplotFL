@@ -162,13 +162,10 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			df <- as.data.frame(x, date=TRUE)
 			names(df)[names(df) == "data"] <- "50%"
 		}
-    # CREATE facet labels
-    units <- attr(df, "units")
-    lablr <- as_labeller(unitsLabels(units), label_parsed)
 
 		# plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x='date', y='`50%`')) +
-			facet_grid(qname~., scales="free", labeller=lablr) +
+			facet_grid(qname~., scales="free", labeller=labelFLQuants(x)) +
 			# line + xlab + ylab + limits to include 0 +
 			geom_path(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend

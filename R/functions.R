@@ -72,17 +72,22 @@ modlabel <- function(model, param) {
   return(labs)
 } # }}}
 
-# unitsLabels {{{
-unitsLabels <- function(units, drop=c("NA", "NC", "f", "m", "z", "prop")) {
+# labelFLQuants {{{
+labelFLQuants <- function(x, drop=c("NA", "NC", "m", "z", "prop")) {
+		
+    units <- unlist(lapply(x, attr, 'units'))
 
     # DROP certain units
     units[units %in% drop] <- ""
 
+    # UPPERCASE for f
+    units[units %in% "f"] <- "F"
+
     # FORMAT
     idx <- units !=""
-    units[idx] <- paste0(" (", units[idx], ")")
+    units[idx] <- paste0("~(", units[idx], ")")
 
     units[] <- paste0(names(units), units)
-
-    return(units)
+    
+    return(as_labeller(units, label_parsed))
 } # }}}
