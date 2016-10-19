@@ -272,6 +272,9 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		# extract slots by stock
 		fqs <- lapply(x, foo)
 
+    # get labels
+    labeller <- labelFLQuants(fqs[[1]])
+
 		# get median & 85% quantiles if iters
 		its <- unlist(lapply(x, function(x) dims(x)$iter))
 		if(any(its > 1))
@@ -300,7 +303,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 
 		# plot data vs. date + facet on qname +
 		p <- ggplot(data=df, aes_string(x='`date`', y='`50%`', group='stock')) +
-			facet_grid(qname~., scales="free") +
+			facet_grid(qname~., scales="free", labeller=labeller) +
 			# line + xlab + ylab +
 			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
 			# limits to include 0 +  no legend
