@@ -19,7 +19,6 @@ cache:
 environment:
       
   matrix:
-
   - R_VERSION: release
 
 build_script:

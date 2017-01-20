@@ -1,7 +1,7 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.5.20161007
-Date: 2016-10-07
+Version: 2.5.20170120
+Date: 2017-01-20
 Author: Laurie T. Kell <laurie@kell.es>,
     Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>
 Maintainer: Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>

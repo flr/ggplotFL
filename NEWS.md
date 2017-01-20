@@ -16,6 +16,7 @@
 - Call to dcast had wrong argument name for value.var
 - FIXED Plotted model line in panel 1 is wrong #3
 - FIXED Better labels in plot(FLSR) #4
+- CHANGED back to geom_line to avoid sorting data.frame
 
 ## UTILITIES
 
