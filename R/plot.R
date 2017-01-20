@@ -25,9 +25,10 @@
 #' @param ... Other arguments to be passed to the corresponding ggplot call.
 #' @param foo FlQuants computed from complex objects (e.g. FLStock)
 #'
-#' @aliases plot,FLQuants,missing-method
+#' @aliases plot,FLQuant,missing-method
 #' @docType methods
 #' @rdname plot
+#' @name ggplotFL plot methods
 #' @examples
 #'
 #'  # Plot a single FLQuant
@@ -142,8 +143,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
 			warning('Duplicated names in object, changed to differentiate')
 		}
-
-    units <- unlist(lapply(x, units))
+    
+    units <- unlist(lapply(x, FLCore::units))
 		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
@@ -167,7 +168,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		p <- ggplot(data=df, aes_string(x='date', y='`50%`')) +
 			facet_grid(qname~., scales="free", labeller=labelFLQuants(x)) +
 			# line + xlab + ylab + limits to include 0 +
-			geom_path(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			geom_line(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
 			theme(legend.title = element_blank())
 		
@@ -181,9 +182,9 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`'),
 				fill=fill, alpha = .10, na.rm=na.rm) +
 			# .. and dotted lines
-			geom_path(aes_string(x='date', y = '`10%`'),
+			geom_line(aes_string(x='date', y = '`10%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-			geom_path(aes_string(x='date', y = '`90%`'),
+			geom_line(aes_string(x='date', y = '`90%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
 		}
 		
