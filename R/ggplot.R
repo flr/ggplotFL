@@ -38,6 +38,7 @@ setMethod("ggplot", signature(data="FLQuant"),
 # FLQuants {{{
 
 # FLQuants
+
 #' @rdname ggplot
 #' @aliases ggplot,FLQuants-method
 #' @examples

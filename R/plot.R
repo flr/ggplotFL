@@ -59,8 +59,8 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			mquan <- quans[mid]
 			
 			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
-				date=TRUE)
+		  df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
+        date=TRUE)
 
       # turn to wide
       df <- reshape(df, timevar="iter", direction="wide",
