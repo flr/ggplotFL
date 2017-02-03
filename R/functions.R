@@ -73,6 +73,31 @@ modlabel <- function(model, param) {
 } # }}}
 
 # labelFLQuants {{{
+
+#' A ggplot2 labeller for FLQuants
+#'
+#' Plots of \code{\link{FLQuants}} objects use by default \code{\link{facet_grid}}
+#' to separate the different elements. This function generates facet labels that
+#' have both the element name and the units of measurement of each, as stored
+#' in the 'units' slot of each \code{\link{FLQuant}}.
+#'
+#' Certain *units* are dropped from the label, as being uninformative: "NA", "NC",
+#' "m", "z", and "prop". This can be selected with the *drop* argument.
+#'
+#' @param x An object of class \code{FLQuants}
+#' @param drop Character string to be dropped from the label shen found in the
+#' *units* slot. Defaults to c("NA", "NC", "m", "z", "prop")
+#'
+#' @return A ggplot2 labeller function
+#'
+#' @name labelFLQuants
+#' @rdname labelFLQuants
+#' @aliases labelFLQuants
+#'
+#' @author Iago Mosqueira (EC JRC)
+#' @seealso \link[ggplot2]{labeller}
+#' @keywords dplot
+
 labelFLQuants <- function(x, drop=c("NA", "NC", "m", "z", "prop")) {
 		
     units <- unlist(lapply(x, attr, 'units'))
@@ -86,8 +111,8 @@ labelFLQuants <- function(x, drop=c("NA", "NC", "m", "z", "prop")) {
     # FORMAT
     idx <- units !=""
     units[idx] <- paste0("~(", units[idx], ")")
-
+    
     units[] <- paste0(names(units), units)
     
-    return(as_labeller(units, label_parsed))
+    return(labeller(units))
 } # }}}

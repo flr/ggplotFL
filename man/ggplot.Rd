@@ -2,10 +2,10 @@
 % Please edit documentation in R/ggplot.R
 \docType{methods}
 \name{ggplot,FLQuant-method}
-\alias{ggplot,FLComp-method}
-\alias{ggplot,FLComps-method}
 \alias{ggplot,FLQuant-method}
 \alias{ggplot,FLQuants-method}
+\alias{ggplot,FLComp-method}
+\alias{ggplot,FLComps-method}
 \title{ggplot method for various FLR classes}
 \usage{
 \S4method{ggplot}{FLQuant}(data = NULL, mapping = aes(), ...,
@@ -48,4 +48,3 @@ understand the naming conventions used in the resulting \code{data.frame}
 \seealso{
 \link[ggplot2]{ggplot}, \url{https://github.com/flr/ggplotFL/}
 }
-

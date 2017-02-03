@@ -33,4 +33,3 @@ example, on the legend of the ggplot-based plot method for FLSRs
    param=lapply(srs, params))
 
 }
-

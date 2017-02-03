@@ -1,15 +1,15 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.5.20170120
+Version: 2.5.9.9000
 Date: 2017-01-20
-Author: Laurie T. Kell <laurie@kell.es>,
-    Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>
-Maintainer: Iago Mosqueira <iago.mosqueira@jrc.ec.europa.eu>
+Authors@R: c(
+  person("Iago", "Mosqueira", email = "iago.mosqueira@jrc.ec.europa.eu", role = "cre"),
+  person("Laurence T.", "Kell", email = "laurie.kell@iccat.int", role = "aut"))
 Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
     various FLR classes, and (2) ggplot-based versions of standard plots in
     various FLR pkgs.
 Depends:
-  R(>= 3.0.0),
+  R(>= 3.2.0),
   ggplot2(>= 2.0.0),
   FLCore
 Imports:
@@ -30,4 +30,4 @@ License: GPL-2
 VignetteBuilder: knitr
 LazyLoad: Yes
 LazyData: Yes
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0

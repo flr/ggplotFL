@@ -5,13 +5,13 @@
 \alias{ggplotFL plot methods}
 \alias{plot,FLQuant,missing-method}
 \alias{plot,FLQuants,missing-method}
+\alias{plot,FLStock,missing-method}
+\alias{plot,FLStock,FLPar-method}
+\alias{plot,FLStocks,missing-method}
+\alias{plot,FLStocks,FLPar-method}
 \alias{plot,FLSR,missing-method}
 \alias{plot,FLSRs,ANY-method}
 \alias{plot,FLSRs,missing-method}
-\alias{plot,FLStock,FLPar-method}
-\alias{plot,FLStock,missing-method}
-\alias{plot,FLStocks,FLPar-method}
-\alias{plot,FLStocks,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
 \S4method{plot}{FLQuant,missing}(x, main = "", xlab = "", ylab = "",
@@ -126,4 +126,3 @@ New basic plot methods for some FLR classes are defined in ggplotFL.
  plot(srs, legend_label=modlabel)
 
 }
-
