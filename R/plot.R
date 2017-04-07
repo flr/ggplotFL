@@ -2,7 +2,7 @@
 # ggplotFL/R/plot.R
 
 # Copyright 2003-2015 FLR Team. Distributed under the GPL 2 or later
-# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@jrc.ec.europa.eu>
+# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu>
 #
 # Distributed under the terms of the GPL-2
 
@@ -11,6 +11,22 @@
 #' ggplot versions of FLR class plot() methods
 #'
 #' New basic plot methods for some FLR classes are defined in ggplotFL.
+#'
+#' The coertion to *data.frame* that is carried out in the plot methods sets
+#' the argument `date=TRUE`. This generates a new column of class `POSIXct` for
+#' the first day of the first month of each season. If the `season` dimension of
+#' the object being plotted is of length greater than one, `date` will be used
+#' as variable on the x axis of the plot. Otherwise, it will be `year`. Keep this
+#' in mind when adding extra elements to the plot (see examples below).
+#' 
+#' A similar mechanism is used for the *y* axis, depending on the length of the
+#' `iter` dimension. For objects with no *iters*, a single line is plotted for
+#' each *FLQuant*, and the *y* axis is mapped to the `data` column of the
+#' *data.frame*. For objects with iterations, i.e. with length greater than 1 on
+#' the `iter` dimension, the default plots show the quantiles of the distribution
+#' and the *y* axis is mapped to the middle quantile, by default `50%`. See the
+#' examples below on how to refer to these variables when adding elements to the
+#' plot.
 #'
 #' @param x Variable on x axis.
 #' @param y Variable on y axis.
@@ -41,7 +57,18 @@
 #'
 #'  # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
 #'  plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
-#'  
+#'
+#'  # Adding extra elements to an FLQuant plot, with seasons
+#'  flq <- FLQuant(runif(200), dim=c(1,15,1,4))
+#'  plot(flq) + geom_point(aes(x=date, y=data, colour=season))
+#'
+#' # or without them
+#'  flq <- FLQuant(runif(200), dim=c(1,15))
+#'  plot(flq) + geom_point(aes(x=year, y=data))
+#'
+#' # For an object with iter, the y axis is called `50%`
+#'  flq <- rlnorm(100, flq, 0.4)
+#'  plot(flq) + geom_point(aes(x=year, y=`50%`))
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE,
@@ -71,16 +98,21 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		# otherwise, rename 'data' as `50%`
 		} else {
 			df <- as.data.frame(x, date=TRUE)
-			names(df)[7] <- "50%"
-			mquan <- "50%"
+			mquan <- "data"
 		}
 
 		# dims on facet or groups
 		dx <- dim(x)
 		ldi <- names(x)[-c(2,4,6)][dx[-c(2,4,6)] > 1]
 
-		# basic plot data vs. date
-		p <- ggplot(data=df, aes_q(x=quote(date), y=as.name(mquan))) +
+    # CHOOSE x axis
+    if (length(levels(df$season)) == 1)
+      xaxis <- 'year'
+    else
+      xaxis <- 'date'
+		
+    # basic plot data vs. date
+		p <- ggplot(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan))) +
 			# line + xlab + ylab +
 			geom_line(colour="black") + xlab(xlab) + ylab(ylab) +
 			# limits to include 0 +
@@ -103,9 +135,9 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 			p <- p +
 				# extreme probs as dotted line
-				geom_line(aes_q(x=quote(date), y = as.name(quans[1])),
+				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[1])),
 					colour="red", alpha = .50, linetype=3) +
-				geom_line(aes_q(x=quote(date), y = as.name(quans[length(quans)])),
+				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[length(quans)])),
 					colour="red", alpha = .50, linetype=3)
 
 			# all others as ribbons of changing alpha
@@ -113,7 +145,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 				ids <- seq(2, mid-1)
 				for(i in ids)
-					p <- p + geom_ribbon(aes_q(x=quote(date),
+					p <- p + geom_ribbon(aes_q(x=as.name(xaxis),
 						ymin = as.name(quans[i]),
 						ymax = as.name(quans[length(quans)-i+1])),
 						fill="red", alpha = probs[i])
@@ -158,14 +190,25 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       
       names(df) <- gsub("data.", "", names(df))
 
-		# otherwise, rename 'data' as 'q50'
+		# otherwise
 		} else {
 			df <- as.data.frame(x, date=TRUE)
-			names(df)[names(df) == "data"] <- "50%"
 		}
 
-		# plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes_string(x='date', y='`50%`')) +
+    # CHOOSE x axis
+    if (length(levels(df$season) == 1))
+      xaxis <- 'year'
+    else
+      xaxis <- 'date'
+
+    # and y axis
+    if("data" %in% names(df))
+      yaxis <- "data"
+    else
+      yaxis <- "`50%`"
+		
+    # plot data vs. year + facet on qname +
+		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis)) +
 			facet_grid(qname~., scales="free", labeller=labelFLQuants(x)) +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
@@ -176,15 +219,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x='date', ymin = '`25%`', ymax = '`75%`'),
+			geom_ribbon(aes_string(x=xaxis, ymin = '`25%`', ymax = '`75%`'),
 				fill=fill, alpha = .25, na.rm=na.rm) +
 			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`'),
+			geom_ribbon(aes_string(x=xaxis, ymin = '`10%`', ymax = '`90%`'),
 				fill=fill, alpha = .10, na.rm=na.rm) +
 			# .. and dotted lines
-			geom_line(aes_string(x='date', y = '`10%`'),
+			geom_line(aes_string(x=xaxis, y = '`10%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-			geom_line(aes_string(x='date', y = '`90%`'),
+			geom_line(aes_string(x=xaxis, y = '`90%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
 		}
 		
@@ -207,7 +250,7 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 	function(x, main="", xlab="", ylab="", ...) {
 		
 		# extract info to plot: rec, ssb, catch and fbar
-		fqs <- FLQuants(Rec=rec(x), SSB=ssb(x), Catch=catch(x), Harvest=fbar(x))
+		fqs <- metrics(x)
 
 		p <- plot(fqs)
 
@@ -249,6 +292,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 ) # }}}
 
 # plot(FLStocks) {{{
+
 #' @aliases plot,FLStocks,missing-method
 #' @rdname plot
 #' @examples
@@ -261,7 +305,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-		foo= function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y), Harvest=fbar(y))) {
+		metrics=function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y), Harvest=fbar(y)), ...) {
 	
 		# check names not repeated
 		dup <- duplicated(names(x))
@@ -271,7 +315,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		}
 		
 		# extract slots by stock
-		fqs <- lapply(x, foo)
+		fqs <- lapply(x, metrics)
 
     # get labels
     labeller <- labelFLQuants(fqs[[1]])
@@ -527,3 +571,13 @@ setMethod("plot", signature(x="FLSRs"),
 # rec, tsb, 
 
 # }}}
+
+setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
+  function(x, ...) {
+
+    flqs <- FLQuants(Index=index(x))
+    ggplot(as.data.frame(flqs, date=TRUE), aes(x=date, y=data)) +
+      geom_line() + facet_grid(qname~.) + geom_smooth()
+
+  }
+)

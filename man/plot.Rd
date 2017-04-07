@@ -26,8 +26,8 @@
 \S4method{plot}{FLStock,FLPar}(x, y, ...)
 
 \S4method{plot}{FLStocks,missing}(x, main = "", xlab = "", ylab = "",
-  na.rm = TRUE, foo = function(y) FLQuants(Rec = rec(y), SSB = ssb(y), Catch
-  = catch(y), Harvest = fbar(y)))
+  na.rm = TRUE, metrics = function(y) FLQuants(Rec = rec(y), SSB = ssb(y),
+  Catch = catch(y), Harvest = fbar(y)), ...)
 
 \S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "", ylab = "",
   na.rm = TRUE, foo = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F =
@@ -67,6 +67,23 @@
 \description{
 New basic plot methods for some FLR classes are defined in ggplotFL.
 }
+\details{
+The coertion to *data.frame* that is carried out in the plot methods sets
+the argument `date=TRUE`. This generates a new column of class `POSIXct` for
+the first day of the first month of each season. If the `season` dimension of
+the object being plotted is of length greater than one, `date` will be used
+as variable on the x axis of the plot. Otherwise, it will be `year`. Keep this
+in mind when adding extra elements to the plot (see examples below).
+
+A similar mechanism is used for the *y* axis, depending on the length of the
+`iter` dimension. For objects with no *iters*, a single line is plotted for
+each *FLQuant*, and the *y* axis is mapped to the `data` column of the
+*data.frame*. For objects with iterations, i.e. with length greater than 1 on
+the `iter` dimension, the default plots show the quantiles of the distribution
+and the *y* axis is mapped to the middle quantile, by default `50%`. See the
+examples below on how to refer to these variables when adding elements to the
+plot.
+}
 \examples{
 
  # Plot a single FLQuant
@@ -79,7 +96,18 @@ New basic plot methods for some FLR classes are defined in ggplotFL.
 
  # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
  plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
- 
+
+ # Adding extra elements to an FLQuant plot, with seasons
+ flq <- FLQuant(runif(200), dim=c(1,15,1,4))
+ plot(flq) + geom_point(aes(x=date, y=data, colour=season))
+
+# or without them
+ flq <- FLQuant(runif(200), dim=c(1,15))
+ plot(flq) + geom_point(aes(x=year, y=data))
+
+# For an object with iter, the y axis is called `50\%`
+ flq <- rlnorm(100, flq, 0.4)
+ plot(flq) + geom_point(aes(x=year, y=`50\%`))
 
  # Plot an FLQuants created from ple4 FLStock
  data(ple4)
