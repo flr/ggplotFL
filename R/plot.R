@@ -42,6 +42,7 @@
 #' @param foo FlQuants computed from complex objects (e.g. FLStock)
 #'
 #' @aliases plot,FLQuant,missing-method
+#' @seealso \code{\link{ISOdate}}\code{\link{ggplot}} 
 #' @docType methods
 #' @rdname plot
 #' @name ggplotFL plot methods
@@ -72,7 +73,7 @@
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7) {
+    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=NULL) {
 
 		# object w/ iters? compute quantiles
 		if(dims(x)$iter > 1) {
@@ -95,7 +96,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
       
       names(df) <- gsub("data.", "", names(df))
 
-		# otherwise, rename 'data' as `50%`
+		# otherwise, plot on 'data'
 		} else {
 			df <- as.data.frame(x, date=TRUE)
 			mquan <- "data"
@@ -151,6 +152,15 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 						fill="red", alpha = probs[i])
 			}
 		}
+
+    # plot some iters?
+    if(!is.null(iter)) {
+      df <- as.data.frame(iter(x, iter), date=TRUE)
+      names(df)[names(df) == "data"] <- mquan
+      df$iter <- as.integer(df$iter)
+      p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan),
+        group=as.name("iter"), colour=as.name("iter"))) + theme(legend.position="none")
+    }
 		return(p)
 	}
 ) # }}}
@@ -167,7 +177,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-		na.rm=TRUE, type=7, fill="red", colour=fill) {
+		na.rm=TRUE, type=7, fill="red", colour=fill, iter=NULL) {
 
 		# check names not repeated
 		dup <- duplicated(names(x))
@@ -230,6 +240,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			geom_line(aes_string(x=xaxis, y = '`90%`'),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
 		}
+
+    # plot some iters?
+    if(!is.null(iter)) {
+      df <- as.data.frame(iter(x, iter), date=TRUE)
+      names(df)[names(df) == "data"] <- yaxis
+      df$iter <- as.integer(df$iter)
+      p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(yaxis),
+        group=as.name("iter"), colour=as.name("iter"))) + theme(legend.position="none")
+    }
 		
 		return(p)
 	}
@@ -252,7 +271,27 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 		# extract info to plot: rec, ssb, catch and fbar
 		fqs <- metrics(x)
 
-		p <- plot(fqs)
+		p <- plot(fqs, ...)
+
+		return(p)
+	}
+) # }}}
+
+# plot(FLStock, FLStock) {{{
+
+#' @aliases plot,FLStock,FLStock-method
+#' @rdname plot
+
+setMethod("plot", signature(x="FLStock", y="FLStock"),
+	function(x, y, main="", xlab="", ylab="", ..., iter=NULL) {
+
+    args <- list(...)
+
+    sts <- do.call("FLStocks", c(list(x, y), args))
+
+    names(sts) <- unlist(lapply(sts, name))
+
+    p <- plot(sts, iter=NULL)
 
 		return(p)
 	}

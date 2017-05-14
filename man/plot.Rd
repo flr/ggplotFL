@@ -154,3 +154,6 @@ plot.
  plot(srs, legend_label=modlabel)
 
 }
+\seealso{
+\code{\link{ISOdate}}\code{\link{ggplot}}
+}
