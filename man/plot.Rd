@@ -6,6 +6,7 @@
 \alias{plot,FLQuant,missing-method}
 \alias{plot,FLQuants,missing-method}
 \alias{plot,FLStock,missing-method}
+\alias{plot,FLStock,FLStock-method}
 \alias{plot,FLStock,FLPar-method}
 \alias{plot,FLStocks,missing-method}
 \alias{plot,FLStocks,FLPar-method}
@@ -15,13 +16,17 @@
 \title{ggplot versions of FLR class plot() methods}
 \usage{
 \S4method{plot}{FLQuant,missing}(x, main = "", xlab = "", ylab = "",
-  na.rm = TRUE, probs = c(0.1, 0.25, 0.5, 0.75, 0.9), type = 7)
+  na.rm = TRUE, probs = c(0.1, 0.25, 0.5, 0.75, 0.9), type = 7,
+  iter = NULL)
 
 \S4method{plot}{FLQuants,missing}(x, main = "", xlab = "", ylab = "",
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9), na.rm = TRUE, type = 7,
-  fill = "red", colour = fill)
+  fill = "red", colour = fill, iter = NULL)
 
 \S4method{plot}{FLStock,missing}(x, main = "", xlab = "", ylab = "", ...)
+
+\S4method{plot}{FLStock,FLStock}(x, y, main = "", xlab = "", ylab = "",
+  ..., iter = NULL)
 
 \S4method{plot}{FLStock,FLPar}(x, y, ...)
 
