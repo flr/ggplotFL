@@ -27,7 +27,7 @@ set.seed(1423)
 
 # Using ggplot2 with *FLR* objects
 
-The `ggplot2` package provides a powerful alternative paradigm for creating both simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13).]
+The `ggplot2` package provides a powerful alternative paradigm for creating both simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13)].
 
 To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that directly accept certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
@@ -95,19 +95,26 @@ plot(rlnorm(200, fbar(ple4), 0.15), probs=c(0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 
 
 ## FLQuants
 
-The `plot` method for `FLQuants` will now by default show each object in a horizontal panel, with indpendent scales, by using `facet_grid`. Objects with iterations will have, as with `plot` for `FLQuant`, their median, 10%, 25%, 75% and 90% quantiles shown as a black line and red ribbons with different levels of transparency, respectively.
+The `plot` method for `FLQuants` will now by default show each object in a horizontal panel, with indpendent scales, using ggplot2's `facet_grid`. Objects with iterations will have, as with `plot` for `FLQuant`, their median, 10%, 25%, 75% and 90% quantiles shown as a black line and red ribbons with different levels of transparency, respectively. The quantiles used can be specified with the `probs` argument, which must be a vector of length 5 with values between 0 and 1 (see `?quantile`).
 
 ```{r, pflqs, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
 fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4), Catch=catch(ple4))
 plot(fqs)
 ```
 
-Plots of multiple `FLQuant` objects use by default `facet_grid` with multiple plots stack on top of each other. To have the plots on a grid, for example 2x2, you can add a call to `facet_wrap` to change it, for example,
+To have the subplots placed ona  different style, for example a 2x2 grid, you can add a call to `facet_wrap` to change it, for example,
 
 ```{r, pflqsg, echo=TRUE, fig.cap="Wrap-based ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
 fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4), Catch=catch(ple4))
 plot(fqs) + facet_wrap(~qname, scales="free")
 ```
+
+When plotting object quantiles, it is sometimes useful to show a reduced numnber of individual iterations to better present the expected trajectories of individual realisations. These `worm plots` can be overlaid using rhe `iter` argument, as in
+
+```{r, pflqsgi, echo=TRUE, fig.cap="Wrap-based ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
+plot(fqs, iter=1:3)
+```
+
 
 ## FLStock
 

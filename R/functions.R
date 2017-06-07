@@ -1,10 +1,8 @@
 # functions.R - DESC
 # ggplotFL/R/functions.R
 
-# Copyright European Union, 2016
-# Author: Iago Mosqueira (EC JRC) <iago.mosqueira@jrc.ec.europa.eu>
-#
-# Distributed under the terms of the GPL-2
+# Copyright 2012-2017 FLR Team. Distributed under the GPL 2
+# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
 # eqlabel {{{
 
@@ -72,7 +70,7 @@ modlabel <- function(model, param) {
   return(labs)
 } # }}}
 
-# labelFLQuants {{{
+# label_flqs {{{
 
 #' A ggplot2 labeller for FLQuants
 #'
@@ -90,29 +88,27 @@ modlabel <- function(model, param) {
 #'
 #' @return A ggplot2 labeller function
 #'
-#' @name labelFLQuants
-#' @rdname labelFLQuants
-#' @aliases labelFLQuants
+#' @name label_flqs
+#' @rdname label_flqs
+#' @aliases label_flqs
 #'
 #' @author Iago Mosqueira (EC JRC)
 #' @seealso \link[ggplot2]{labeller}
 #' @keywords dplot
 
-labelFLQuants <- function(x, drop=c("NA", "NC", "m", "z", "prop")) {
+label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 		
     units <- unlist(lapply(x, attr, 'units'))
 
     # DROP certain units
     units[units %in% drop] <- ""
 
-    # UPPERCASE for f
-    units[units %in% "f"] <- "F"
-
     # FORMAT
     idx <- units !=""
     units[idx] <- paste0("~(", units[idx], ")")
     
-    units[] <- paste0(names(units), units)
+    units[] <- paste0(names(units), as.expression(units))
+
     
-    return(labeller(units))
+    return(as_labeller(units, label_parsed))
 } # }}}

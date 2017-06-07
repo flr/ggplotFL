@@ -15,4 +15,4 @@ exportMethods(
 export(
   "eqlabel",
   "modlabel",
-  "labelFLQuants")
+  "label_flqs")

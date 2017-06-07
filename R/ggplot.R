@@ -1,9 +1,8 @@
 # ggplot.R - Overloaded S4 ggplot methods for FLR classes
 # ggplotFL/R/ggplot.R
 
-# Copyright 2012-2014 FLR Team. Distributed under the GPL 2 or later
-# Maintainer: Laurie Kell, ICCAT & Iago Mosqueira, JRC
-# Notes:
+# Copyright 2012-2017 FLR Team. Distributed under the GPL 2
+# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
 # FLQuant {{{
 

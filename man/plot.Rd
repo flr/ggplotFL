@@ -23,7 +23,7 @@
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9), na.rm = TRUE, type = 7,
   fill = "red", colour = fill, iter = NULL)
 
-\S4method{plot}{FLStock,missing}(x, main = "", xlab = "", ylab = "", ...)
+\S4method{plot}{FLStock,missing}(x, y, ...)
 
 \S4method{plot}{FLStock,FLStock}(x, y, main = "", xlab = "", ylab = "",
   ..., iter = NULL)
@@ -57,13 +57,15 @@
 
 \item{type}{Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.}
 
+\item{iter}{Individual iterations to show as worm plots over the quantiles.}
+
 \item{fill}{Colour to be used for filling of quantile poligons, defaults to 'red'.}
 
 \item{colour}{Colour to be used for last quantile lines, defaults to fill.}
 
-\item{...}{Other arguments to be passed to the corresponding ggplot call.}
-
 \item{y}{Variable on y axis.}
+
+\item{...}{Other arguments to be passed to the corresponding ggplot call.}
 
 \item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
 

@@ -1,10 +1,8 @@
 # plot.R - ggplot2-based plot methods for FLCore classes
 # ggplotFL/R/plot.R
 
-# Copyright 2003-2015 FLR Team. Distributed under the GPL 2 or later
-# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu>
-#
-# Distributed under the terms of the GPL-2
+# Copyright 2012-2017 FLR Team. Distributed under the GPL 2
+# Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
 # plot(FLQuant) {{{
 
@@ -40,6 +38,7 @@
 #' @param colour Colour to be used for last quantile lines, defaults to fill.
 #' @param ... Other arguments to be passed to the corresponding ggplot call.
 #' @param foo FlQuants computed from complex objects (e.g. FLStock)
+#' @param iter Individual iterations to show as worm plots over the quantiles.
 #'
 #' @aliases plot,FLQuant,missing-method
 #' @seealso \code{\link{ISOdate}}\code{\link{ggplot}} 
@@ -179,6 +178,10 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7, fill="red", colour=fill, iter=NULL) {
 
+    # check probs
+    if(!length(probs) %in% c(5))
+      stop("quantile probs need to be 5 values (e.g. c(0.10, 0.25, 0.50, 0.75, 0.90))")
+
 		# check names not repeated
 		dup <- duplicated(names(x))
 		if(any(dup)) {
@@ -186,8 +189,6 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			warning('Duplicated names in object, changed to differentiate')
 		}
     
-    units <- unlist(lapply(x, FLCore::units))
-		
 		# object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			
@@ -210,16 +211,18 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       xaxis <- 'year'
     else
       xaxis <- 'date'
-
+    
     # and y axis
     if("data" %in% names(df))
       yaxis <- "data"
-    else
-      yaxis <- "`50%`"
+    else {
+      ylabs <- paste0("`", round(probs * 100), "%`")
+      yaxis <- ylabs[3]
+    }
 		
     # plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis)) +
-			facet_grid(qname~., scales="free", labeller=labelFLQuants(x)) +
+			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
 			# line + xlab + ylab + limits to include 0 +
 			geom_line(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
@@ -229,15 +232,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x=xaxis, ymin = '`25%`', ymax = '`75%`'),
+			geom_ribbon(aes_string(x=xaxis, ymin = ylabs[2], ymax = ylabs[4]),
 				fill=fill, alpha = .25, na.rm=na.rm) +
 			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes_string(x=xaxis, ymin = '`10%`', ymax = '`90%`'),
+			geom_ribbon(aes_string(x=xaxis, ymin = ylabs[1], ymax = ylabs[5]),
 				fill=fill, alpha = .10, na.rm=na.rm) +
 			# .. and dotted lines
-			geom_line(aes_string(x=xaxis, y = '`10%`'),
+			geom_line(aes_string(x=xaxis, y = ylabs[1]),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-			geom_line(aes_string(x=xaxis, y = '`90%`'),
+			geom_line(aes_string(x=xaxis, y = ylabs[5]),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
 		}
 
@@ -266,12 +269,9 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 #'
 
 setMethod("plot", signature(x="FLStock", y="missing"),
-	function(x, main="", xlab="", ylab="", ...) {
-		
-		# extract info to plot: rec, ssb, catch and fbar
-		fqs <- metrics(x)
-
-		p <- plot(fqs, ...)
+	function(x, ...) {
+    
+    p <- plot(metrics(x), ...)
 
 		return(p)
 	}
@@ -357,7 +357,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		fqs <- lapply(x, metrics)
 
     # get labels
-    labeller <- labelFLQuants(fqs[[1]])
+    labeller <- label_flqs(fqs[[1]])
 
 		# get median & 85% quantiles if iters
 		its <- unlist(lapply(x, function(x) dims(x)$iter))
@@ -611,6 +611,7 @@ setMethod("plot", signature(x="FLSRs"),
 
 # }}}
 
+# plot(FLIndexBiomass) {{{
 setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
   function(x, ...) {
 
@@ -619,4 +620,4 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
       geom_line() + facet_grid(qname~.) + geom_smooth()
 
   }
-)
+) # }}}
