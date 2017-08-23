@@ -17,7 +17,7 @@
 \usage{
 \S4method{plot}{FLQuant,missing}(x, main = "", xlab = "", ylab = "",
   na.rm = TRUE, probs = c(0.1, 0.25, 0.5, 0.75, 0.9), type = 7,
-  iter = NULL)
+  iter = missing)
 
 \S4method{plot}{FLQuants,missing}(x, main = "", xlab = "", ylab = "",
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9), na.rm = TRUE, type = 7,

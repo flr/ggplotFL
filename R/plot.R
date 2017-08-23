@@ -72,10 +72,10 @@
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=NULL) {
+    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=missing) {
 
 		# object w/ iters? compute quantiles
-		if(dims(x)$iter > 1) {
+		if(dims(x)$iter > 1 & !is.null(probs)) {
 			
 			# check probs length is odd
 			if(is.integer(length(probs)/2))
@@ -119,6 +119,11 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			expand_limits(y=0) +
 			# no legend +
 			theme(legend.title = element_blank()) 
+
+    # SHOW NAs in x axis
+		if(dims(x)$iter == 1 & sum(is.na(df$data)) > 0) {
+      p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey', data=subset(df, is.na(data)))
+    }
 		
 		# build formula
 		if(length(ldi) == 1) {
@@ -131,7 +136,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		}
 
 		# object w/ iters?
-		if(dims(x)$iter > 1) {
+		if(dims(x)$iter > 1 & !is.null(probs)) {
 
 			p <- p +
 				# extreme probs as dotted line
@@ -153,13 +158,14 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		}
 
     # plot some iters?
-    if(!is.null(iter)) {
+    if(is.numeric(iter)) {
       df <- as.data.frame(iter(x, iter), date=TRUE)
       names(df)[names(df) == "data"] <- mquan
       df$iter <- as.integer(df$iter)
       p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan),
         group=as.name("iter"), colour=as.name("iter"))) + theme(legend.position="none")
     }
+
 		return(p)
 	}
 ) # }}}
