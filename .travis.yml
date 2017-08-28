@@ -9,6 +9,9 @@ matrix:
   - os: osx
     r: release
 
+repos:
+  flr: http://flr-project.org/R
+
 sudo: false
 
 cache: packages
