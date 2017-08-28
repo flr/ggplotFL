@@ -1,10 +1,11 @@
- CHANGES IN ggplotFL VERSION 2.6
+ CHANGES IN ggplotFL VERSION 2.6.1
 
  NEW FEATURES
 - New package vignette
 - plot() method for FLQuants, reused by plot(FLStock)
 - plot() method for FLQuant
 - plot(FLStocks) now uses geom_ribbon for objects with multiple iters
+- Initial plot(FLIndex)
 
  USER-VISIBLE CHANGES 
 - Default ribbons for plot(FLStocks) with iters have no borders
