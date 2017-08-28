@@ -10,6 +10,9 @@ matrix:
   - os: osx
     r: release
 
+r_github_packages:
+  - flr/FLCore
+
 sudo: false
 
 cache: packages
