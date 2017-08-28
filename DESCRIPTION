@@ -20,7 +20,6 @@ Suggests:
   knitr,
   rmarkdown,
   reshape2
-Remotes: flr/FLCore
 Additional_repositories: http://flr-project.org/R
 Collate:
   'allGenerics.R'
