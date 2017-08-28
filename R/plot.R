@@ -515,8 +515,9 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	form <- as.list(model(x))[[3]]
 	pars <- as(params(x), 'list')
 
-	fmo <- function(x)
+	fmo <- function(x) {
 		eval(form, c(list(ssb=x), pars))
+  }
 	
 	p1 <- p1 + stat_function(fun=fmo,  colour='red', size=0.5)
 	
