@@ -1,3 +1,4 @@
+
 warnings_are_errors: false
 
 language: r
@@ -8,9 +9,6 @@ matrix:
     r: release
   - os: osx
     r: release
-
-repos:
-  flr: http://flr-project.org/R
 
 sudo: false
 
@@ -26,7 +24,7 @@ all_branches: true
 deploy:
   provider: releases
   api_key:
-    secure: hd/AVHdIxPFEYvx66wCgXHfm0mFr/SGgiwRks8q9vSVHZwTrKoOyutt80p5lbPLSOaLIb818ZBAaxYuaKACoxZWblS/Rm+VfR3q/ct+y5Mx9EUQItuHTWbD/Y7wwcoa9myvh45U72ubve+UWbBjJUDNYrGrlX/OaJcIMu8QfGx4=
+    secure: hyuRWAEALFCTxbCVUCBuvearIBShVng3//mrAc1R8D/HvToPFQ6LqO6rvV+kCejQiRL5DVmLX9F6PR8bQSVxrnsL4MeSTmO2hLSAAfyd3Ly46oukUMhCb35wdJZinOm7dJMzXdw2qJiNKtDTVUMmVar6PHpewmg3MXDer0JIC8Y=
   skip_cleanup: true
   file_glob: true
   file: ggplotFL_*.t*gz
