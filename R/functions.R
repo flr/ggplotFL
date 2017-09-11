@@ -102,9 +102,13 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 
     # DROP certain units
     units[units %in% drop] <- ""
+    
+    # DROP NAs and empty characters
+    units <- gsub("NA", "", units)
+    units <- gsub(" ", "", units)
 
     # FORMAT
-    idx <- units !=""
+    idx <- units != ""
     units[idx] <- paste0("~(", units[idx], ")")
     
     units[] <- paste0(names(units), as.expression(units))

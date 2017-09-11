@@ -13,6 +13,7 @@
 \alias{plot,FLSR,missing-method}
 \alias{plot,FLSRs,ANY-method}
 \alias{plot,FLSRs,missing-method}
+\alias{plot,FLIndexBiomass,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
 \S4method{plot}{FLQuant,missing}(x, main = "", xlab = "", ylab = "",
@@ -41,6 +42,8 @@
 \S4method{plot}{FLSR,missing}(x, y, ...)
 
 \S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
+
+\S4method{plot}{FLIndexBiomass,missing}(x, y, ...)
 }
 \arguments{
 \item{x}{Variable on x axis.}
@@ -66,6 +69,8 @@
 \item{y}{Variable on y axis.}
 
 \item{...}{Other arguments to be passed to the corresponding ggplot call.}
+
+\item{metrics}{function returning an FLQuants for each FLStock}
 
 \item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
 

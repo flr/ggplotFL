@@ -340,6 +340,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 
 #' @aliases plot,FLStocks,missing-method
 #' @rdname plot
+#' @param metrics function returning an FLQuants for each FLStock
 #' @examples
 #'
 #'  # plot for FLStocks
@@ -555,6 +556,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 ) # }}}
 
 # plot(FLSRs) {{{
+
 #' @aliases plot,FLSRs,missing-method
 #' @docType methods
 #' @rdname plot
@@ -572,7 +574,6 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 #'  
 #'  plot(srs, legend_label=modlabel)
 #'
-
 
 setMethod("plot", signature(x="FLSRs"),
   function(x, legend_label=eqlabel, ...) {
@@ -619,6 +620,10 @@ setMethod("plot", signature(x="FLSRs"),
 # }}}
 
 # plot(FLIndexBiomass) {{{
+
+#' @aliases plot,FLIndexBiomass,missing-method
+#' @docType methods
+#' @rdname plot
 setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
   function(x, ...) {
 
