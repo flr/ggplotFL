@@ -1,26 +1,37 @@
-# Sample .travis.yml for R projects.
-#
-# See README.md for instructions, or for more configuration options,
-# see the wiki:
-# https://github.com/craigcitro/r-travis/wiki
 
-language: c
+warnings_are_errors: false
 
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
+language: r
 
-install:
-  - ./travis-tool.sh install_github flr/FLCore
-  - ./travis-tool.sh install_deps
+matrix:
+  include:
+  - os: linux
+    r: release
+  - os: osx
+    r: release
 
-script: ./travis-tool.sh run_tests
+r_github_packages:
+  - flr/FLCore
 
-after_failure:
-  - ./travis-tool.sh dump_logs
+sudo: false
+
+cache: packages
 
 notifications:
   email:
     on_success: change
     on_failure: change
+    
+all_branches: true
+
+deploy:
+  provider: releases
+  api_key:
+    secure: hyuRWAEALFCTxbCVUCBuvearIBShVng3//mrAc1R8D/HvToPFQ6LqO6rvV+kCejQiRL5DVmLX9F6PR8bQSVxrnsL4MeSTmO2hLSAAfyd3Ly46oukUMhCb35wdJZinOm7dJMzXdw2qJiNKtDTVUMmVar6PHpewmg3MXDer0JIC8Y=
+  skip_cleanup: true
+  file_glob: true
+  file: ggplotFL_*.t*gz
+  on:
+    branch: master
+    repo: flr/ggplotFL
+    tags: true
