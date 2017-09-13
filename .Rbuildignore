@@ -1,7 +1,7 @@
 ^.travis.yml$
 appveyor.yml
 NEWS.md
-gh-pages/
+docs/
 Makefile
 .git/
 _pkgdown.yml
