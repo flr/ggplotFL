@@ -1,4 +1,10 @@
- CHANGES IN ggplotFL VERSION 2.6.1
+ ggplotFL 2.6.2
+
+ BUG FIXES
+
+- labeller failed on some empty units, now drops NA and ' '
+
+ ggplotFL 2.6.1
 
  NEW FEATURES
 - New package vignette
