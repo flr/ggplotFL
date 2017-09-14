@@ -7,7 +7,6 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{ggplotFL}
-  %\VignetteDepends{reshape2}
   \usepackage[utf8]{inputenc}
 ---
 

@@ -18,8 +18,7 @@ Imports:
   stats
 Suggests:
   knitr,
-  rmarkdown,
-  reshape2
+  rmarkdown
 Additional_repositories: http://flr-project.org/R
 Collate:
   'allGenerics.R'
