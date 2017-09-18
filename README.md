@@ -21,7 +21,6 @@ or download from the [ggplotFL releases page](https://github.com/flr/ggplotFL/re
 ## Build Status
 [![Travis Build Status](https://travis-ci.org/flr/ggplotFL.svg?branch=master)](https://travis-ci.org/flr/ggplotFL)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/flr/ggplotFL?branch=master&svg=true)](https://ci.appveyor.com/project/flr/ggplotFL)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ggplotFL)](https://cran.r-project.org/package=ggplotFL)
 
 ## Releases
 - [All releases](https://github.com/flr/ggplotFL/releases/)
