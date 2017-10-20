@@ -4,6 +4,10 @@
 
 - labeller failed on some empty units, now drops NA and ' '
 
+ UTILITIES
+
+- %+% operator redefined here to account for ggplot2 use of it.
+
  ggplotFL 2.6.1
 
  NEW FEATURES
@@ -26,7 +30,6 @@
 - FIXED Better labels in plot(FLSR) #4
 - CHANGED back to geom_line to avoid sorting data.frame
 
- UTILITIES
 
  DOCUMENTATION
 	- Added mention to plot(FLStocks) to vignette

@@ -183,7 +183,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7, fill="red", colour=fill, iter=NULL) {
-
+    
     # check probs
     if(!length(probs) %in% c(5))
       stop("quantile probs need to be 5 values (e.g. c(0.10, 0.25, 0.50, 0.75, 0.90))")
@@ -211,7 +211,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		} else {
 			df <- as.data.frame(x, date=TRUE)
 		}
-
+    
     # CHOOSE x axis
     if (length(levels(df$season) == 1))
       xaxis <- 'year'
@@ -225,7 +225,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       ylabs <- paste0("`", round(probs * 100), "%`")
       yaxis <- ylabs[3]
     }
-		
+
     # plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis)) +
 			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
@@ -234,8 +234,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			# no legend
 			theme(legend.title = element_blank())
 		
-		# object w/ iters?
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+    # object w/ iters?
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1) & !is.na(probs)) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
 			geom_ribbon(aes_string(x=xaxis, ymin = ylabs[2], ymax = ylabs[4]),
