@@ -108,7 +108,7 @@ fqs <- FLQuants(F=rlnorm(200, fbar(ple4), 0.15), SSB=ssb(ple4), Rec=rec(ple4), C
 plot(fqs) + facet_wrap(~qname, scales="free")
 ```
 
-When plotting object quantiles, it is sometimes useful to show a reduced numnber of individual iterations to better present the expected trajectories of individual realisations. These `worm plots` can be overlaid using rhe `iter` argument, as in
+When plotting object quantiles, it is sometimes useful to show a reduced number of individual iterations to better present the expected trajectories of individual realisations. These `worm plots` can be overlaid using rhe `iter` argument, as in
 
 ```{r, pflqsgi, echo=TRUE, fig.cap="Wrap-based ggplot2-based plot for an FLQuants object with multiple iterations, and consisting of three elements."}
 plot(fqs, iter=1:3)
@@ -143,7 +143,7 @@ plot(nsher)
 
 A class plot also exists for `FLSRs` objects, lists with `FLSR` elements. The comparison shown involves only the model fit across the different model functions or formulations, but not the residuals diagnostics available for `FLSR`. The default legend contains the formula of each of the fitted models and the parameter values (or the median if multiple iterations exist).
 
-```{r, flsrs, echo=TRUE, messages=FALSE, results='hide'}
+```{r, flsrs, echo=TRUE, messages=FALSE, warnings=FALSE, results='hide'}
 srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
   y <- nsher
   model(y) <- x
