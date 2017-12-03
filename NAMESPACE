@@ -10,6 +10,7 @@ importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")
 exportMethods(
+  "%+%",
   "ggplot",
   "plot")
 export(

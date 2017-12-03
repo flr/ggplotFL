@@ -226,6 +226,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       yaxis <- ylabs[3]
     }
     
+
     # plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis, group="unit")) +
 			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
