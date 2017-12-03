@@ -182,11 +182,11 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-		na.rm=TRUE, type=7, fill="red", colour=fill, iter=NULL) {
-
+		na.rm=TRUE, type=7, fill="red", colour="black", iter=NULL) {
+    
     # check probs
     if(!length(probs) %in% c(5))
-      stop("quantile probs need to be 5 values (e.g. c(0.10, 0.25, 0.50, 0.75, 0.90))")
+      stop("quantile 'probs' argument must be of length 5")
 
 		# check names not repeated
 		dup <- duplicated(names(x))
@@ -194,8 +194,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
 			warning('Duplicated names in object, changed to differentiate')
 		}
-    
-		# object w/ iters? compute quantiles
+		
+    # object w/ iters? compute quantiles
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 			
 			# compute quantiles on FLQs, then convert to df
@@ -211,7 +211,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		} else {
 			df <- as.data.frame(x, date=TRUE)
 		}
-
+    
     # CHOOSE x axis
     if (length(levels(df$season) == 1))
       xaxis <- 'year'
@@ -225,17 +225,19 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       ylabs <- paste0("`", round(probs * 100), "%`")
       yaxis <- ylabs[3]
     }
-		
+    
     # plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis)) +
+		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis, group="unit")) +
 			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
-			# line + xlab + ylab + limits to include 0 +
-			geom_line(na.rm=na.rm) + xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
+			# line +
+			geom_line(colour=colour, na.rm=na.rm) +
+			# xlab + ylab + limits to include 0 +
+      xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
-			theme(legend.title = element_blank())
+      theme(legend.position="none")
 		
-		# object w/ iters?
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
+    # object w/ iters?
+		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1) & !all(is.na(probs))) {
 			p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
 			geom_ribbon(aes_string(x=xaxis, ymin = ylabs[2], ymax = ylabs[4]),
@@ -247,16 +249,23 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			geom_line(aes_string(x=xaxis, y = ylabs[1]),
 				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
 			geom_line(aes_string(x=xaxis, y = ylabs[5]),
-				colour=colour, alpha = .50, linetype=3, na.rm=na.rm)
+				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
+      scale_fill_manual(values=c("red"))
 		}
 
     # plot some iters?
     if(!is.null(iter)) {
       df <- as.data.frame(iter(x, iter), date=TRUE)
-      names(df)[names(df) == "data"] <- yaxis
+      idx <- unlist(lapply(x, function(x) dims(x)$iter)) > 1
+      df <- subset(df, qname == names(x)[idx])
+      
       df$iter <- as.integer(df$iter)
-      p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(yaxis),
-        group=as.name("iter"), colour=as.name("iter"))) + theme(legend.position="none")
+      df$time <- df[, xaxis]
+
+      p <- p + geom_line(data=df, aes(x=time, y=data,
+        group=interaction(iter, unit), colour=interaction(iter, unit))) +
+        # colours
+        scale_color_manual(values=.flpalette[-1])
     }
 		
 		return(p)

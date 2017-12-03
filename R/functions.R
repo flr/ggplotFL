@@ -116,3 +116,7 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
     
     return(as_labeller(units, label_parsed))
 } # }}}
+
+# .flpalette, colour blind-friendly.
+# <http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/>
+.flpalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
