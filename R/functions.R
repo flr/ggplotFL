@@ -113,9 +113,8 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
     idx <- units != ""
     units[idx] <- paste0("~(", units[idx], ")")
     
-    units[] <- paste0(names(units), as.expression(units))
+    units[] <- paste0("`", names(units), "`", as.expression(units))
 
-    
     return(as_labeller(units, label_parsed))
 } # }}}
 
