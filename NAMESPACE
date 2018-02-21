@@ -16,4 +16,6 @@ exportMethods(
 export(
   "eqlabel",
   "modlabel",
-  "label_flqs")
+  "label_flqs",
+  "stat_flquantiles",
+  "geom_flquantiles")

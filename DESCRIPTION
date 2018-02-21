@@ -1,7 +1,7 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.6.2.9003
-Date: 2018-01-22
+Version: 2.6.2.9004
+Date: 2018-02-21
 Authors@R: c(
   person("Iago", "Mosqueira", email = "iago.mosqueira@ec.europa.eu", role = "cre"),
   person("Laurence T.", "Kell", email = "laurie.kell@iccat.int", role = "aut"))
@@ -22,6 +22,7 @@ Suggests:
 Additional_repositories: http://flr-project.org/R
 Collate:
   'allGenerics.R'
+  'geom.R'
   'functions.R'
   'ggplot.R'
   'plot.R'
