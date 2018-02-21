@@ -43,9 +43,7 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
     grid$group <- unique(data$group)
     grid$colour <- unique(data$colour)
     grid$fill <- unique(data$fill)
-
-    grid$x <- as.numeric(rownames(grid))
-    row.names(grid) <- NULL
+    grid$x <- unique(data$x)
 
     grid$ymax <- grid[,1]
     grid$ymin <- grid[,3]
@@ -105,14 +103,16 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
 #' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
 #'   geom_flquantiles(probs=c(0.25, 0.75))
 #' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75)) +
-#'   geom_flquantiles(probs=c(0.10, 0.90), alpha=c(0.15))
-#' ggplot(rnorm(250, catch.n(ple4), 200000), aes(x=year, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75)) + facet_wrap(~age)
+#'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
+#'   geom_flquantiles(probs=c(0.10, 0.90), alpha=c(0.15), fill="red")
+#' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
+#'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
+#'   geom_flquantiles(probs=c(0.10, 0.90), alpha=c(0.15), fill="red") +
+#'   facet_wrap(~age)
 #' ggplot(FLQuants(A=rnorm(250, catch(ple4), 200000),
 #'    B=rnorm(250, catch(ple4), 200000)), aes(x=year, y=data)) +
 #'   geom_flquantiles(probs=c(0.25, 0.75), fill="red", alpha=0.25) +
 #'   geom_flquantiles(probs=c(0.10, 0.90), fill="red", alpha=0.10)
 #' ggplot(FLQuants(A=rnorm(250, catch(ple4), 200000),
 #'   B=rnorm(250, stock(ple4), 200000)), aes(x=year, y=data, group=qname)) +
-#'  geom_flquantiles(probs=c(0.10, 0.90), aes(colour=qname), alpha=c(0.30))
+#'  geom_flquantiles(probs=c(0.10, 0.90), aes(fill=qname), alpha=c(0.30))
