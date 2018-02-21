@@ -27,7 +27,6 @@
 #'    alpha=0.25, linetype=0) +
 #'  stat_flquantiles(probs=c(0.25, 0.50, 0.75), geom = "line") 
 
-
 StatFLQuantiles <- ggproto("StatFLQuantiles", Stat, 
   required_aes = c("x", "y"),
   
@@ -93,6 +92,8 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
+    check.aes = FALSE,
+    check.param = FALSE,
     params = list(...)
   )
   )
@@ -101,11 +102,11 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
 #' @examples
 #' data(ple4)
 #' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75))
+#'   geom_flquantiles(probs=c(0.25, 0.75), fill="cyan", alpha=0.40)
 #' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
 #'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
 #'   geom_flquantiles(probs=c(0.10, 0.90), alpha=c(0.15), fill="red")
-#' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
+#' ggplot(rnorm(250, catch.n(ple4), 200000), aes(x=year, y=data)) +
 #'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
 #'   geom_flquantiles(probs=c(0.10, 0.90), alpha=c(0.15), fill="red") +
 #'   facet_wrap(~age)
