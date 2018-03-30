@@ -122,7 +122,8 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
     # SHOW NAs in x axis
 		if(dims(x)$iter == 1 & sum(is.na(df$data)) > 0) {
-      p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey', data=subset(df, is.na(data)))
+      p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
+        data=subset(df, is.na(data)))
     }
 		
 		# build formula
@@ -163,7 +164,8 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
       names(df)[names(df) == "data"] <- mquan
       df$iter <- as.integer(df$iter)
       p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan),
-        group=as.name("iter"), colour=as.name("iter"))) + theme(legend.position="none")
+        group=as.name("iter"), colour=as.name("iter"))) +
+        theme(legend.position="none")
     }
 
 		return(p)
@@ -494,6 +496,19 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 	}
 ) # }}}
 
+# plot(FLStock, FLStocks) {{{
+
+#' @aliases plot,FLStock,FLStocks,missing-method
+#' @rdname plot
+
+setMethod("plot", signature(x="FLStock", y="FLStocks"),
+	function(x, y, ...) {
+    
+    plot(FLStocks(c(x, y)))
+    
+	}
+) # }}}
+
 # plot(FLSR) {{{
 #' @aliases plot,FLSR,missing-method
 #' @docType methods
@@ -527,7 +542,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	pars <- as(params(x), 'list')
 
 	fmo <- function(x) {
-		eval(form, c(list(ssb=x), pars))
+		c(eval(form, c(list(ssb=FLQuant(x)), pars)))
   }
 	
 	p1 <- p1 + stat_function(fun=fmo,  colour='red', size=0.5)

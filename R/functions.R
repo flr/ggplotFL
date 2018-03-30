@@ -30,7 +30,8 @@ utils::globalVariables(c("qname", "time"))
 eqlabel <- function(model, param) {
 
   # CREATE model formula labels
-  labs <- sapply(names(model), function(x) deparse(do.call(substitute, list(model[[x]],
+  labs <- sapply(names(model),
+    function(x) deparse(do.call(substitute, list(model[[x]],
     env=lapply(as(param[[x]], 'list'), format, digits=4)))))
   # DROP "
   labs <- lapply(labs, function(x) gsub('"', '', x))
@@ -62,7 +63,8 @@ modlabel <- function(model, param) {
  
   # ASSEMBLE param string
   par <- lapply(param, function(x)
-    paste0("(", paste(format(c(iterMedians(x)), digits=4, trim=TRUE), collapse=", "), ")"))
+    paste0("(", paste(format(c(iterMedians(x)), digits=4, trim=TRUE),
+      collapse=", "), ")"))
  
   labs <- sapply(names(model), function(x) paste0(modn[[x]], par[[x]]))
 
@@ -120,5 +122,6 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 
 # .flpalette {{{
 # <http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/>
-.flpalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+.flpalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+  "#0072B2", "#D55E00", "#CC79A7")
 # }}

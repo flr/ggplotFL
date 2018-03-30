@@ -6,31 +6,91 @@
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
-# stat_flquantiles {{{
+# geom_flquantiles {{{
 
+#' Sampling quantiles
+#'
+#' This `geom` calculates sampling quantiles and draws a ribbon for the quantile
+#' range plus a line for the median (50\% quantile).
+#'
+#' As this `geom` outputs two layers, although based on different `geoms`,
+#' interactions between common parameters need to be considered. The `fill` parameter
+#' will only affect the quantile range `ribbon`, but `colour` will be passed to
+#' both the `ribbon` and median `line` layers. The defaults are no lines on the quantiles
+#' and "black" for the median line. The `alpha` value has been hard coded to 1
+#' for the median line, so only affects the quantile `ribbon`. To change this,
+#' call `stat_flquantiles` directly, as in the examples below.
+#'
+#' @name geom_flquantiles
+#' @section Aesthetics:
+#' `geom_flquantiles` understands the following aesthetics (required aesthetics are in bold):
+#' - `*x*`
+#' - `*y*`
+#' - `alpha`
+#' - `colour`
+#' - `fill`
+#' - `group`
+#' - `linetype`
+#' - `size`
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_line
+#' @inheritParams ggplot2::geom_ribbon
+#' @param probs Quantiles to compute and draw, defaults to c(0.10, 0.90).
+#' @param alpha Transparency for quantile ribbon.
 #' @examples
 #' data(ple4)
-#' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
-#'  stat_flquantiles(probs=c(0.10, 0.90), geom = "ribbon",
-#'    fill="red", alpha=0.10) +
-#'  stat_flquantiles(probs=c(0.10), geom = "line",
-#'    colour = "red", linetype=3) +
-#'  stat_flquantiles(probs=c(0.90), geom = "line",
-#'    colour = "red", linetype=3) +
-#'  stat_flquantiles(probs=c(0.25, 0.75), geom = "ribbon",
-#'    fill="red", alpha=0.30) +
-#'  stat_flquantiles(probs=c(0.50), geom = "line",
-#'    colour = "black") 
-#' # FLQuants
-#' ggplot(FLQuants(A=rnorm(250, catch(ple4), 200000),
-#'   B=rnorm(250, stock(ple4), 200000)),
-#'   aes(x=year, y=data, group=qname, colour=qname, fill=qname)) +
-#'  stat_flquantiles(probs=c(0.10, 0.90), geom = "ribbon",
-#'    alpha=0.25, linetype=0) +
-#'  stat_flquantiles(probs=c(0.25, 0.50, 0.75), geom = "line") 
-#' #
-#' ggplot(rnorm(250, catch(ple4), 200000), aes(x=year, y=data)) +
-#'  stat_flquantiles(probs=c(0.50), geom = "line")
+#' flq <- rnorm(250, catch(ple4), 200000)
+#' ggplot(flq, aes(x=date, y=data)) +
+#'   geom_flquantiles(probs=c(0.25, 0.75), fill="red", alpha=0.25)
+#' # Draw two quantiles with two calls to geom_flquantiles
+#' ggplot(flq, aes(x=date, y=data)) +
+#'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
+#'   geom_flquantiles(probs=c(0.10, 0.90), alpha=0.15, fill="red")
+#' # Use it on an FLQuants, colouring by their name
+#' flqs <- FLQuants(A=rnorm(250, catch(ple4), 200000),
+#'   B=rnorm(250, stock(ple4), 200000))
+#' ggplot(flqs, aes(x=date, y=data, group=qname)) +
+#'   geom_flquantiles(probs=c(0.10, 0.90), aes(fill=qname), alpha=c(0.30))
+#' # Or facet them
+#' ggplot(flqs, aes(x=date, y=data)) +
+#'   geom_flquantiles(probs=c(0.10, 0.90), fill="red", alpha=c(0.30)) +
+#'   facet_grid(qname~.)
+
+geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
+  position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = TRUE,
+  probs=c(0.10, 0.90), alpha=0.5, ...) {
+
+  list(
+
+  # Quantile ribbon
+  layer(
+    geom = GeomRibbon,
+    mapping = mapping,
+    data = data,
+    stat = stat,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(probs=probs[c(1, length(probs))], alpha=alpha, ...)
+  ),
+       
+  # Median line
+  layer(
+    geom = GeomLine,
+    mapping = mapping,
+    data = data,
+    stat = stat,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    check.aes = FALSE,
+    check.param = FALSE,
+    params = list(probs=0.50, alpha=1, ...)
+  )
+  )
+} # }}}
+
+# stat_flquantiles {{{
 
 StatFLQuantiles <- ggproto("StatFLQuantiles", Stat, 
   required_aes = c("x", "y"),
@@ -61,7 +121,37 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
   grid
   }
 )
-    
+ 
+#' @section Computed variables:
+#' \describe{
+#'   \item{y}{quantile, if only one requested or central one when if three}
+#'   \item{ymin}{lower quantile, if two or three requested}
+#'   \item{ymax}{upper quantile, if two or three requested}
+#' }
+#' @rdname geom_flquantiles
+#' @details
+#' `stat_flquantiles` will return between one and three `y` values depending on
+#' the number of quantiles requested. If two quantiles are to be calculated, it
+#' will return the corresponding `ymin` and `ymax`, to be used with, for example,
+#' `geom_ribbon`. If only one quantile is to be calculated, it will be returned
+#' as `y`, to be used typically by `geom_line`. Finally, if three values are passed
+#' in the `probs` argument, all of the above will be returned, in the right order.
+#' @examples
+#' # For greater control, call stat_flquantiles directly with a geom
+#' ggplot(flq, aes(x=year, y=data)) +
+#'  stat_flquantiles(probs=c(0.10, 0.90), geom = "ribbon",
+#'    fill="yellowgreen", alpha=0.30) +
+#'  stat_flquantiles(probs=c(0.01), geom = "line",
+#'    colour = "green4", linetype=3) +
+#'  stat_flquantiles(probs=c(0.99), geom = "line",
+#'    colour = "green4", linetype=3) +
+#'  stat_flquantiles(probs=c(0.25, 0.75), geom = "ribbon",
+#'    fill="green4", alpha=0.30) +
+#'  stat_flquantiles(probs=c(0.50), geom = "line", size=1.5,
+#'    colour = "lightgreen") +
+#'  stat_flquantiles(probs=c(0.50), geom = "line",
+#'    colour = "darkgreen")
+
 stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = TRUE, show.legend = NA, 
   inherit.aes = TRUE, ...) {
@@ -72,58 +162,3 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
     params = list(na.rm = na.rm, ...)
   )
 } # }}}
-
-# geom_flquantiles {{{
-
-geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
-  position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = TRUE,
-  probs=c(0.10, 0.90), ...) {
-  
-  list(
-
-  # Quantile ribbon
-  layer(
-    geom = GeomRibbon,
-    mapping = mapping,
-    data = data,
-    stat = stat,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(probs=probs, ...)
-  ),
-       
-  # Median line
-  layer(
-    geom = GeomLine,
-    mapping = mapping,
-    data = data,
-    stat = stat,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    check.aes = FALSE,
-    check.param = FALSE,
-    params = list(probs=0.50, ...)
-  )
-  )
-}
-
-#' @examples
-#' data(ple4)
-#' ggplot(rnorm(250, catch(ple4), 200000), aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75), fill="red", alpha=0.25)
-#' ggplot(rnorm(250, catch(ple4), 200000), aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
-#'   geom_flquantiles(probs=c(0.10, 0.90), alpha=0.15, fill="red")
-#' ggplot(rnorm(250, catch.n(ple4), 200000), aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
-#'   geom_flquantiles(probs=c(0.10, 0.90), alpha=0.15, fill="red") +
-#'   facet_wrap(~age)
-#' ggplot(FLQuants(A=rnorm(250, catch(ple4), 200000),
-#'   B=rnorm(250, stock(ple4), 200000)), aes(x=date, y=data, group=qname)) +
-#'   geom_flquantiles(probs=c(0.10, 0.90), aes(fill=qname), alpha=c(0.30))
-#' ggplot(FLQuants(A=rnorm(250, catch(ple4), 200000),
-#'   B=rnorm(250, stock(ple4), 200000)), aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.10, 0.90), fill="red", alpha=c(0.30)) +
-#'   facet_grid(qname~.)
