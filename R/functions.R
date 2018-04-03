@@ -108,8 +108,11 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
     units[units %in% drop] <- ""
     
     # DROP NAs and empty characters
-    # units <- gsub("NA", "", units)
+    units <- gsub("NA", "", units)
     units <- gsub(" ", "", units)
+
+    # DROP unparseable units (w/o any alnum & not in uomTable)
+    units[!uomUnits(units) & !grepl("[[:alnum:]]", units)]  <- character(1)
 
     # FORMAT
     idx <- units != ""
