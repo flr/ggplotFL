@@ -155,7 +155,7 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
 stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = TRUE, show.legend = NA, 
   inherit.aes = TRUE, ...) {
-
+  
   layer(
     stat = StatFLQuantiles, data = data, mapping = mapping, geom = geom, 
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
