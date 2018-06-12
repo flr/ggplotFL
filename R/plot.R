@@ -527,11 +527,9 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	uns <- units(x)
   
-  parse(text=paste0('Recruits (', sub('*', 'A', uns$rec, fixed=TRUE), ')'))
-	
-  unr <- ifelse(uns$rec == 'NA', 'Recruits', parse(text=paste0('Recruits (',
+  unr <- ifelse(uns$rec == 'NA', 'Recruits', as.expression(paste0('Recruits (',
 		sub('*', 'A', uns$rec, fixed=TRUE), ')')))
-	uns <- ifelse(uns$ssb == 'NA', 'SSB', parse(text=paste0('SSB (', sub('*',
+	uns <- ifelse(uns$ssb == 'NA', 'SSB', as.expression(paste0('SSB (', sub('*',
 		'%*%', uns$ssb, fixed=TRUE), ')')))
 
 	# SSB vs. REC
@@ -634,8 +632,8 @@ setMethod("plot", signature(x="FLSRs"),
     p <- ggplot(res, aes(x=ssb, y=rec, colour=sr)) +
       geom_line(aes(group=sr, color=sr)) +
       geom_point(data=dat) + 
-      xlab(parse(text=paste0("SSB (", sub('\\*', '%.%', uns$ssb), ")"))) +
-      ylab(parse(text=paste0("Recruits (", sub('\\*', '%.%', uns$rec), ")"))) +
+      xlab(as.expression(paste0("SSB (", sub('\\*', '%.%', uns$ssb), ")"))) +
+      ylab(as.expression(paste0("Recruits (", sub('\\*', '%.%', uns$rec), ")"))) +
       scale_color_discrete(name="", breaks=names(x),
         labels=do.call(legend_label, list(model=mods, param=pars))) +
       theme(legend.position="bottom") +
