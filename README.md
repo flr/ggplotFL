@@ -1,5 +1,5 @@
 # ggplotFL
-- Version: 2.6.2.9010
+- Version: 2.6.3.9001
 - Date: 
 - Author: FLR Team and various contributors.
 - Maintainer: Iago Mosqueira <iago.mosqueira@ec.europa.eu>
