@@ -185,7 +185,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7, fill="red", colour="black", iter=NULL) {
-browser()    
+    
     # check probs
     if(!length(probs) %in% c(5))
       stop("quantile 'probs' argument must be of length 5")
@@ -526,7 +526,10 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		RecHat=fitted(x)))
 
 	uns <- units(x)
-	unr <- ifelse(uns$rec == 'NA', 'Recruits', parse(text=paste0('Recruits (',
+  
+  parse(text=paste0('Recruits (', sub('*', 'A', uns$rec, fixed=TRUE), ')'))
+	
+  unr <- ifelse(uns$rec == 'NA', 'Recruits', parse(text=paste0('Recruits (',
 		sub('*', 'A', uns$rec, fixed=TRUE), ')')))
 	uns <- ifelse(uns$ssb == 'NA', 'SSB', parse(text=paste0('SSB (', sub('*',
 		'%*%', uns$ssb, fixed=TRUE), ')')))
@@ -602,8 +605,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 setMethod("plot", signature(x="FLSRs"),
   function(x, legend_label=eqlabel, ...) {
 
-    ussb <- units(ssb(x[[1]]))
-    urec <- units(rec(x[[1]]))
+    uns <- units(x[[1]])
 
     # DIFFERENT data?
     if(all(unlist(lapply(x[-1],
@@ -632,8 +634,8 @@ setMethod("plot", signature(x="FLSRs"),
     p <- ggplot(res, aes(x=ssb, y=rec, colour=sr)) +
       geom_line(aes(group=sr, color=sr)) +
       geom_point(data=dat) + 
-      xlab(parse(text=paste0("SSB (", sub('\\*', '%.%', ussb), ")"))) +
-      ylab(parse(text=paste0("Recruits (", sub('\\*', '%.%', urec), ")"))) +
+      xlab(parse(text=paste0("SSB (", sub('\\*', '%.%', uns$ssb), ")"))) +
+      ylab(parse(text=paste0("Recruits (", sub('\\*', '%.%', uns$rec), ")"))) +
       scale_color_discrete(name="", breaks=names(x),
         labels=do.call(legend_label, list(model=mods, param=pars))) +
       theme(legend.position="bottom") +
