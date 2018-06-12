@@ -185,7 +185,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7, fill="red", colour="black", iter=NULL) {
-    
+browser()    
     # check probs
     if(!length(probs) %in% c(5))
       stop("quantile 'probs' argument must be of length 5")
@@ -228,7 +228,6 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       yaxis <- ylabs[3]
     }
     
-
     # plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis, group="unit")) +
 			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
@@ -603,12 +602,18 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 setMethod("plot", signature(x="FLSRs"),
   function(x, legend_label=eqlabel, ...) {
 
-    # DIFFERENT data
-    # dat <- lapply(x, function(x) FLQuants(ssb=ssb(x), rec=rec(x)))
+    ussb <- units(ssb(x[[1]]))
+    urec <- units(rec(x[[1]]))
 
-    # EQUAL data
-    dat <- FLQuants(ssb=ssb(x[[1]]), rec=rec(x[[1]]))
-
+    # DIFFERENT data?
+    if(all(unlist(lapply(x[-1],
+      function(y) isTRUE(all.equal(rec(y), rec(x[[1]])))))))
+      dat <- cbind(sr=NA, model.frame(FLQuants(ssb=ssb(x[[1]]), rec=rec(x[[1]]))))
+    else
+      dat <- Reduce(rbind, Map(function(x, i)
+        cbind(sr=i, model.frame(FLQuants(ssb=ssb(x), rec=rec(x)), drop=TRUE)),
+        x, names(x)))
+    
     # EXTRACT models & pars
     mods <- lapply(x, 'model')
     pars <- lapply(x, 'params')
@@ -621,13 +626,14 @@ setMethod("plot", signature(x="FLSRs"),
         )
     })
 
-    res <- do.call('rbind', res)
+    res <- Reduce('rbind', res)
 
     # GET plot
-    p <- ggplot(res, aes(x=ssb, y=rec)) + geom_line(aes(group=sr, color=sr)) +
-      geom_point(data=model.frame(dat)) + 
-      xlab(parse(text=paste0("SSB (", sub('\\*', '%.%', units(dat$ssb)), ")"))) +
-      ylab(parse(text=paste0("Recruits (", sub('\\*', '%.%', units(dat$rec)), ")"))) +
+    p <- ggplot(res, aes(x=ssb, y=rec, colour=sr)) +
+      geom_line(aes(group=sr, color=sr)) +
+      geom_point(data=dat) + 
+      xlab(parse(text=paste0("SSB (", sub('\\*', '%.%', ussb), ")"))) +
+      ylab(parse(text=paste0("Recruits (", sub('\\*', '%.%', urec), ")"))) +
       scale_color_discrete(name="", breaks=names(x),
         labels=do.call(legend_label, list(model=mods, param=pars))) +
       theme(legend.position="bottom") +
