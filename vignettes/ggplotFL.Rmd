@@ -1,13 +1,13 @@
 ---
-title: ggplotFL
-author: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu>
+title: "ggplotFL"
+author: "Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu>"
 date: 2017-09-22
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{ggplotFL}
   %\VignetteEncoding{UTF-8}
-tags: FLR
+tags: [FLR ggplot2]
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
 

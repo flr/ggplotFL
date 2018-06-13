@@ -10,6 +10,8 @@
 \alias{plot,FLStock,FLPar-method}
 \alias{plot,FLStocks,missing-method}
 \alias{plot,FLStocks,FLPar-method}
+\alias{plot,FLStock,FLStocks-method}
+\alias{plot,FLStock,FLStocks,missing-method}
 \alias{plot,FLSR,missing-method}
 \alias{plot,FLSRs,ANY-method}
 \alias{plot,FLSRs,missing-method}
@@ -38,6 +40,8 @@
 \S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "", ylab = "",
   na.rm = TRUE, foo = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F =
   fbar(x)/y[, "harvest", ], Catch = catch(x)))
+
+\S4method{plot}{FLStock,FLStocks}(x, y, ...)
 
 \S4method{plot}{FLSR,missing}(x, y, ...)
 
