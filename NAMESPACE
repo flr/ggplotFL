@@ -15,7 +15,8 @@ exportMethods(
   "plot")
 export(
   "eqlabel",
-  "modlabel",
+  "human_numbers",  
   "label_flqs",
+  "modlabel",
   "stat_flquantiles",
   "geom_flquantiles")
