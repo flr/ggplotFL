@@ -101,9 +101,12 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			mquan <- "data"
 		}
 
+    # DROP NAs
+    df <- df[!is.na(df$data),]
+
 		# dims on facet or groups
 		dx <- dim(x)
-		ldi <- names(x)[-c(2,4,6)][dx[-c(2,4,6)] > 1]
+		ldi <- names(x)[-c(2,3,4,6)][dx[-c(2,3,4,6)] > 1]
 
     # CHOOSE x axis
     if (length(levels(df$season)) == 1)
@@ -113,12 +116,18 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		
     # basic plot data vs. date
 		p <- ggplot(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan))) +
-			# line + xlab + ylab +
-			geom_line(colour="black") + xlab(xlab) + ylab(ylab) +
+			# xlab + ylab +
+			xlab(xlab) + ylab(ylab) +
 			# limits to include 0 +
 			expand_limits(y=0) +
 			# no legend +
 			theme(legend.title = element_blank()) 
+
+    # LINE by unit
+		p <- p + if(dim(x)[3] ==1) {
+        geom_line(colour="black")}
+      else {
+        geom_line(aes(colour=unit))}
 
     # SHOW NAs in x axis
 		if(dims(x)$iter == 1 & sum(is.na(df$data)) > 0) {
@@ -213,6 +222,9 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		} else {
 			df <- as.data.frame(x, date=TRUE)
 		}
+
+    # DROP NAs
+    df <- df[!is.na(df$data),]
     
     # CHOOSE x axis
     if (length(levels(df$season) == 1))
@@ -237,6 +249,13 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
       theme(legend.position="none")
+
+    # LINE by unit
+    uts <- unlist(lapply(x, function(x) dim(x)[3]))
+		p <- p + if(any(uts == 1)) {
+        geom_line(colour=colour, na.rm=na.rm)}
+      else {
+        geom_line(aes(colour=unit))}
 		
     # object w/ iters?
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1) & !all(is.na(probs))) {
