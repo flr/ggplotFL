@@ -1,6 +1,6 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.6.3.9002
+Version: 2.6.3.9003
 Authors@R: c(
   person("Iago", "Mosqueira", email = "iago.mosqueira@ec.europa.eu", role = "cre"),
   person("Laurence T.", "Kell", email = "laurie.kell@iccat.int", role = "aut"))
