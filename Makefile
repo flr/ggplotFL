@@ -49,7 +49,11 @@ install: ../$(PKGNAME)_$(PKGVERS).tar.gz
 	cd ..;\
 	R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
 
-check: buildNV
+test: buildNV
+	cd ..;\
+	R CMD check $(PKGNAME)_$(PKGVERS).tar.gz
+
+check: build
 	cd ..;\
 	R CMD check $(PKGNAME)_$(PKGVERS).tar.gz
 

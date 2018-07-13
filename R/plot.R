@@ -91,7 +91,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
       # turn to wide
       df <- reshape(df, timevar="iter", direction="wide",
-      idvar=c(names(df)[1:5], "date"))
+        idvar=c(names(df)[1:5], "date"))
       
       names(df) <- gsub("data.", "", names(df))
 
@@ -101,8 +101,6 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			mquan <- "data"
 		}
 
-    # DROP NAs
-    df <- df[!is.na(df$data),]
 
 		# dims on facet or groups
 		dx <- dim(x)
@@ -130,9 +128,11 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
         geom_line(aes(colour=unit))}
 
     # SHOW NAs in x axis
-		if(dims(x)$iter == 1 & sum(is.na(df$data)) > 0) {
-      p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
-        data=subset(df, is.na(data)))
+		if(dims(x)$iter == 1) {
+      if(sum(is.na(df$data)) > 0) {
+        p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
+          data=subset(df, is.na(data)))
+      }
     }
 		
 		# build formula

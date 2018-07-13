@@ -130,6 +130,23 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 # }}}
 
 # human_numbers {{{
+#' A ggplot2 number formatter
+#'
+#' This function formats numbers for output in a 'human' way.
+#'
+#' @param x An object of class \code{numeric}
+#' @param smbl A character or symbol to be added prior to the number, e.g. an euro sign.
+#' @param signif Number of significant figures
+#'
+#' @return A formatted character vector
+#'
+#' @name human_numbers
+#' @rdname human_numbers
+#'
+#' @author Iago Mosqueira (EC JRC)
+#' @seealso \link[ggplot2]{labeller}
+#' @keywords dplot
+
 human_numbers <- function(x = NULL, smbl ="", signif = 1){
 
    # humanity
