@@ -679,7 +679,8 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
 
     flqs <- FLQuants(Index=index(x))
     ggplot(as.data.frame(flqs, date=TRUE), aes(x=date, y=data)) +
-      geom_line() + facet_grid(qname~.) + geom_smooth()
+      geom_line() + geom_smooth(na.rm=TRUE, method="loess") +
+      facet_grid(qname~.) + xlab("") + ylab("")
 
   }
 ) # }}}

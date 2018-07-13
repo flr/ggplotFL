@@ -2,6 +2,6 @@
 appveyor.yml
 NEWS.md
 docs/
-Makefile
+^Makefile$
 .git/
 _pkgdown.yml

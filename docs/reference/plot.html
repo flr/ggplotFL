@@ -11,26 +11,41 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
+
+
+<meta property="og:title" content="ggplot versions of FLR class plot() methods — ggplotFL plot methods" />
+
+<meta property="og:description" content="New basic plot methods for some FLR classes are defined in ggplotFL." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -44,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">ggplotFL</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">ggplotFL</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.6.4</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -71,6 +90,7 @@
   <a href="http://flr-project.org/">FLR</a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -78,17 +98,21 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>ggplot versions of FLR class plot() methods</h1>
+    
+    <div class="hidden name"><code>plot.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>New basic plot methods for some FLR classes are defined in ggplotFL.</p>
     
+    </div>
 
-    <pre><span class='co'># S4 method for FLQuant,missing</span>
+    <pre class="usage"><span class='co'># S4 method for FLQuant,missing</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>7</span>,
   <span class='kw'>iter</span> <span class='kw'>=</span> <span class='no'>missing</span>)
@@ -96,7 +120,7 @@
 <span class='co'># S4 method for FLQuants,missing</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>), <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>fill</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S4 method for FLStock,missing</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
@@ -118,6 +142,9 @@
   <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='fu'>FLQuants</span>(<span class='kw'>SSB</span> <span class='kw'>=</span> <span class='fu'>ssb</span>(<span class='no'>x</span>)/<span class='no'>y</span>[, <span class='st'>"ssb"</span>, ], <span class='kw'>F</span> <span class='kw'>=</span>
   <span class='fu'>fbar</span>(<span class='no'>x</span>)/<span class='no'>y</span>[, <span class='st'>"harvest"</span>, ], <span class='kw'>Catch</span> <span class='kw'>=</span> <span class='fu'>catch</span>(<span class='no'>x</span>)))
 
+<span class='co'># S4 method for FLStock,FLStocks</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
+
 <span class='co'># S4 method for FLSR,missing</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)
 
@@ -127,39 +154,70 @@
 <span class='co'># S4 method for FLIndexBiomass,missing</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>Variable on x axis.</dd>
-      <dt>main</dt>
-      <dd>Title of plot.</dd>
-      <dt>xlab</dt>
-      <dd>Label of x axis.</dd>
-      <dt>ylab</dt>
-      <dd>Label of y axis.</dd>
-      <dt>na.rm</dt>
-      <dd>Should NAs be deleted in quantile calculations?, defaults to TRUE.</dd>
-      <dt>probs</dt>
-      <dd>Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).</dd>
-      <dt>type</dt>
-      <dd>Type of quantile calculated, see <code><a href='http://www.rdocumentation.org/packages/stats/topics/quantile'>quantile</a></code>. Defaults to 7.</dd>
-      <dt>iter</dt>
-      <dd>Individual iterations to show as worm plots over the quantiles.</dd>
-      <dt>fill</dt>
-      <dd>Colour to be used for filling of quantile poligons, defaults to &#39;red&#39;.</dd>
-      <dt>colour</dt>
-      <dd>Colour to be used for last quantile lines, defaults to fill.</dd>
-      <dt>y</dt>
-      <dd>Variable on y axis.</dd>
-      <dt>...</dt>
-      <dd>Other arguments to be passed to the corresponding ggplot call.</dd>
-      <dt>metrics</dt>
-      <dd>function returning an FLQuants for each FLStock</dd>
-      <dt>foo</dt>
-      <dd>FlQuants computed from complex objects (e.g. FLStock)</dd>
-      <dt>legend_label</dt>
-      <dd>function to create the legend labels</dd>
-    </dl>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>Variable on x axis.</p></td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td><p>Title of plot.</p></td>
+    </tr>
+    <tr>
+      <th>xlab</th>
+      <td><p>Label of x axis.</p></td>
+    </tr>
+    <tr>
+      <th>ylab</th>
+      <td><p>Label of y axis.</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>Should NAs be deleted in quantile calculations?, defaults to TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>probs</th>
+      <td><p>Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Type of quantile calculated, see <code><a href='http://www.rdocumentation.org/packages/stats/topics/quantile'>quantile</a></code>. Defaults to 7.</p></td>
+    </tr>
+    <tr>
+      <th>iter</th>
+      <td><p>Individual iterations to show as worm plots over the quantiles.</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>Colour to be used for filling of quantile poligons, defaults to 'red'.</p></td>
+    </tr>
+    <tr>
+      <th>colour</th>
+      <td><p>Colour to be used for last quantile lines, defaults to fill.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>Variable on y axis.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments to be passed to the corresponding ggplot call.</p></td>
+    </tr>
+    <tr>
+      <th>metrics</th>
+      <td><p>function returning an FLQuants for each FLStock</p></td>
+    </tr>
+    <tr>
+      <th>foo</th>
+      <td><p>FlQuants computed from complex objects (e.g. FLStock)</p></td>
+    </tr>
+    <tr>
+      <th>legend_label</th>
+      <td><p>function to create the legend labels</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -169,7 +227,7 @@ the first day of the first month of each season. If the `season` dimension of
 the object being plotted is of length greater than one, `date` will be used
 as variable on the x axis of the plot. Otherwise, it will be `year`. Keep this
 in mind when adding extra elements to the plot (see examples below).</p>
-    <p>A similar mechanism is used for the *y* axis, depending on the length of the
+<p>A similar mechanism is used for the *y* axis, depending on the length of the
 `iter` dimension. For objects with no *iters*, a single line is plotted for
 each *FLQuant*, and the *y* axis is mapped to the `data` column of the
 *data.frame*. For objects with iterations, i.e. with length greater than 1 on
@@ -180,54 +238,54 @@ plot.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code>ISOdate</code><code>ggplot</code></p>
+    <div class='dont-index'><p><code>ISOdate</code><code>ggplot</code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
  <span class='co'># Plot a single FLQuant</span>
  <span class='fu'>data</span>(<span class='no'>ple4</span>)
- <span class='fu'>plot</span>(<span class='fu'>catch.n</span>(<span class='no'>ple4</span>))</div><img src='ggplotFL plot methods-2.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='fu'>catch.n</span>(<span class='no'>ple4</span>))</div><div class='img'><img src='plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
  <span class='co'># Plot an FLQuant with iters, shows quantiles</span>
  <span class='no'>flq</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>, <span class='fu'>catch</span>(<span class='no'>ple4</span>), <span class='fl'>60000</span>)
- <span class='fu'>plot</span>(<span class='no'>flq</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: is.na() applied to non-(list or vector) of type &#39;NULL&#39;</span></div><img src='ggplotFL plot methods-5.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>flq</span>)</div><div class='img'><img src='plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
  <span class='co'># Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)</span>
- <span class='fu'>plot</span>(<span class='no'>flq</span>, <span class='kw'>probs</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>0.05</span>, <span class='fl'>0.40</span>, <span class='fl'>0.50</span>, <span class='fl'>0.60</span>, <span class='fl'>0.95</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: is.na() applied to non-(list or vector) of type &#39;NULL&#39;</span></div><img src='ggplotFL plot methods-8.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>flq</span>, <span class='kw'>probs</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>0.05</span>, <span class='fl'>0.40</span>, <span class='fl'>0.50</span>, <span class='fl'>0.60</span>, <span class='fl'>0.95</span>))</div><div class='img'><img src='plot-3.png' alt='' width='700' height='433' /></div><div class='input'>
  <span class='co'># Adding extra elements to an FLQuant plot, with seasons</span>
  <span class='no'>flq</span> <span class='kw'>&lt;-</span> <span class='fu'>FLQuant</span>(<span class='fu'>runif</span>(<span class='fl'>200</span>), <span class='kw'>dim</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>15</span>,<span class='fl'>1</span>,<span class='fl'>4</span>))
- <span class='fu'>plot</span>(<span class='no'>flq</span>) + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>date</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>data</span>, <span class='kw'>colour</span><span class='kw'>=</span><span class='no'>season</span>))</div><img src='ggplotFL plot methods-10.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>flq</span>) + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>date</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>data</span>, <span class='kw'>colour</span><span class='kw'>=</span><span class='no'>season</span>))</div><div class='img'><img src='plot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># or without them</span>
  <span class='no'>flq</span> <span class='kw'>&lt;-</span> <span class='fu'>FLQuant</span>(<span class='fu'>runif</span>(<span class='fl'>200</span>), <span class='kw'>dim</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>15</span>))
- <span class='fu'>plot</span>(<span class='no'>flq</span>) + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>year</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>data</span>))</div><img src='ggplotFL plot methods-12.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>flq</span>) + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>year</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>data</span>))</div><div class='img'><img src='plot-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># For an object with iter, the y axis is called `50%`</span>
  <span class='no'>flq</span> <span class='kw'>&lt;-</span> <span class='fu'>rlnorm</span>(<span class='fl'>100</span>, <span class='no'>flq</span>, <span class='fl'>0.4</span>)
- <span class='fu'>plot</span>(<span class='no'>flq</span>) + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>year</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>`50%`</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: is.na() applied to non-(list or vector) of type &#39;NULL&#39;</span></div><img src='ggplotFL plot methods-15.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>flq</span>) + <span class='fu'>geom_point</span>(<span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>year</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>`50%`</span>))</div><div class='img'><img src='plot-6.png' alt='' width='700' height='433' /></div><div class='input'>
  <span class='co'># Plot an FLQuants created from ple4 FLStock</span>
  <span class='fu'>data</span>(<span class='no'>ple4</span>)
- <span class='fu'>plot</span>(<span class='fu'>FLQuants</span>(<span class='kw'>SSB</span><span class='kw'>=</span><span class='fu'>ssb</span>(<span class='no'>ple4</span>), <span class='kw'>rec</span><span class='kw'>=</span><span class='fu'>rec</span>(<span class='no'>ple4</span>)))</div><img src='ggplotFL plot methods-17.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='fu'>FLQuants</span>(<span class='kw'>SSB</span><span class='kw'>=</span><span class='fu'>ssb</span>(<span class='no'>ple4</span>), <span class='kw'>rec</span><span class='kw'>=</span><span class='fu'>rec</span>(<span class='no'>ple4</span>)))</div><div class='img'><img src='plot-7.png' alt='' width='700' height='433' /></div><div class='input'>
 
  <span class='co'># plot of an FLStock</span>
  <span class='fu'>data</span>(<span class='no'>ple4</span>)
- <span class='fu'>plot</span>(<span class='no'>ple4</span>)</div><img src='ggplotFL plot methods-19.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>ple4</span>)</div><div class='img'><img src='plot-8.png' alt='' width='700' height='433' /></div><div class='input'>
 
  <span class='co'># plot for FLStock, FLPar</span>
  <span class='fu'>data</span>(<span class='no'>ple4</span>)
  <span class='no'>rps</span> <span class='kw'>&lt;-</span> <span class='fu'>FLPar</span>(<span class='kw'>Harvest</span><span class='kw'>=</span><span class='fl'>0.14</span>, <span class='kw'>Catch</span><span class='kw'>=</span><span class='fl'>1.29e5</span>, <span class='kw'>Rec</span><span class='kw'>=</span><span class='fl'>9.38e5</span>, <span class='kw'>SSB</span><span class='kw'>=</span><span class='fl'>1.8e5</span>)
- <span class='fu'>plot</span>(<span class='no'>ple4</span>, <span class='no'>rps</span>)</div><img src='ggplotFL plot methods-21.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>ple4</span>, <span class='no'>rps</span>)</div><div class='img'><img src='plot-9.png' alt='' width='700' height='433' /></div><div class='input'>
 
  <span class='co'># plot for FLStocks</span>
  <span class='fu'>data</span>(<span class='no'>ple4</span>)
  <span class='no'>pls</span> <span class='kw'>&lt;-</span> <span class='fu'>FLStocks</span>(<span class='kw'>runA</span><span class='kw'>=</span><span class='no'>ple4</span>, <span class='kw'>runB</span><span class='kw'>=</span><span class='fu'>qapply</span>(<span class='no'>ple4</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span>*<span class='fl'>1.10</span>))
- <span class='fu'>plot</span>(<span class='no'>pls</span>)</div><img src='ggplotFL plot methods-23.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>pls</span>)</div><div class='img'><img src='plot-10.png' alt='' width='700' height='433' /></div><div class='input'>
 
  <span class='co'># plot for FLStocks</span>
  <span class='fu'>data</span>(<span class='no'>ple4</span>)
  <span class='no'>pls</span> <span class='kw'>&lt;-</span> <span class='fu'>FLStocks</span>(<span class='kw'>runA</span><span class='kw'>=</span><span class='no'>ple4</span>, <span class='kw'>runB</span><span class='kw'>=</span><span class='fu'>qapply</span>(<span class='no'>ple4</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span>*<span class='fl'>1.10</span>))
- <span class='fu'>plot</span>(<span class='no'>pls</span>)</div><img src='ggplotFL plot methods-25.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>pls</span>)</div><div class='img'><img src='plot-11.png' alt='' width='700' height='433' /></div><div class='input'>
 
  <span class='co'># plot for FLSR</span>
  <span class='fu'>data</span>(<span class='no'>nsher</span>)
- <span class='fu'>plot</span>(<span class='no'>nsher</span>)</div><img src='ggplotFL plot methods-27.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>nsher</span>)</div><div class='img'><img src='plot-12.png' alt='' width='700' height='433' /></div><div class='input'>
 
  <span class='co'># plot for FLSRs</span>
  <span class='fu'>data</span>(<span class='no'>nsher</span>)
@@ -235,10 +293,48 @@ plot.</p>
    <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>nsher</span>
    <span class='fu'>model</span>(<span class='no'>y</span>) <span class='kw'>&lt;-</span> <span class='no'>x</span>
    <span class='fu'>return</span>(<span class='fu'>fmle</span>(<span class='no'>y</span>))
- }))</div><div class='output co'>#&gt;   Nelder-Mead direct search function minimizer</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; function value for initial parameters = -15.862252
+ }))</div><div class='output co'>#&gt;   Nelder-Mead direct search function minimizer
+#&gt; function value for initial parameters = -15.862252
 #&gt;   Scaled convergence tolerance is 2.36366e-07
-#&gt; Stepsize computed as 11.939303</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; BUILD              3 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; SHRINK             7 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION       9 267.632807 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      11 236.438352 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      13 205.241529 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      15 174.041331 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      17 142.839861 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      19 111.657775 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      21 80.601711 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      23 50.133420 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      25 21.954719 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      27 0.340450 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      29 -10.920787 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      31 -14.696800 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      33 -15.639120 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      35 -15.676851 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      37 -15.816477 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; HI-REDUCTION      39 -15.825739 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      41 -15.847989 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      43 -15.852490 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      45 -15.857566 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      47 -15.860412 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      49 -15.861062 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      51 -15.861647 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      53 -15.862025 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      55 -15.862108 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      57 -15.862175 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      59 -15.862224 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      61 -15.862235 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      63 -15.862243 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      65 -15.862249 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      67 -15.862250 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      69 -15.862251 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      71 -15.862252 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; LO-REDUCTION      73 -15.862252 -15.862252</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; Exiting from Nelder Mead minimizer
-#&gt;     75 function evaluations used</div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NAs introduced by coercion</span></div><div class='output co'>#&gt;   Nelder-Mead direct search function minimizer
+#&gt; Stepsize computed as 11.939303
+#&gt; BUILD              3 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 -15.862252
+#&gt; SHRINK             7 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 -15.862252
+#&gt; HI-REDUCTION       9 267.632807 -15.862252
+#&gt; HI-REDUCTION      11 236.438352 -15.862252
+#&gt; HI-REDUCTION      13 205.241529 -15.862252
+#&gt; HI-REDUCTION      15 174.041331 -15.862252
+#&gt; HI-REDUCTION      17 142.839861 -15.862252
+#&gt; HI-REDUCTION      19 111.657775 -15.862252
+#&gt; HI-REDUCTION      21 80.601711 -15.862252
+#&gt; HI-REDUCTION      23 50.133420 -15.862252
+#&gt; HI-REDUCTION      25 21.954719 -15.862252
+#&gt; HI-REDUCTION      27 0.340450 -15.862252
+#&gt; HI-REDUCTION      29 -10.920787 -15.862252
+#&gt; HI-REDUCTION      31 -14.696800 -15.862252
+#&gt; HI-REDUCTION      33 -15.639120 -15.862252
+#&gt; HI-REDUCTION      35 -15.676851 -15.862252
+#&gt; HI-REDUCTION      37 -15.816477 -15.862252
+#&gt; HI-REDUCTION      39 -15.825739 -15.862252
+#&gt; LO-REDUCTION      41 -15.847989 -15.862252
+#&gt; LO-REDUCTION      43 -15.852490 -15.862252
+#&gt; LO-REDUCTION      45 -15.857566 -15.862252
+#&gt; LO-REDUCTION      47 -15.860412 -15.862252
+#&gt; LO-REDUCTION      49 -15.861062 -15.862252
+#&gt; LO-REDUCTION      51 -15.861647 -15.862252
+#&gt; LO-REDUCTION      53 -15.862025 -15.862252
+#&gt; LO-REDUCTION      55 -15.862108 -15.862252
+#&gt; LO-REDUCTION      57 -15.862175 -15.862252
+#&gt; LO-REDUCTION      59 -15.862224 -15.862252
+#&gt; LO-REDUCTION      61 -15.862235 -15.862252
+#&gt; LO-REDUCTION      63 -15.862243 -15.862252
+#&gt; LO-REDUCTION      65 -15.862249 -15.862252
+#&gt; LO-REDUCTION      67 -15.862250 -15.862252
+#&gt; LO-REDUCTION      69 -15.862251 -15.862252
+#&gt; LO-REDUCTION      71 -15.862252 -15.862252
+#&gt; LO-REDUCTION      73 -15.862252 -15.862252
+#&gt; Exiting from Nelder Mead minimizer
+#&gt;     75 function evaluations used
+#&gt;   Nelder-Mead direct search function minimizer
 #&gt; function value for initial parameters = -10.336211
 #&gt;   Scaled convergence tolerance is 1.54022e-07
 #&gt; Stepsize computed as 501.110000
@@ -271,8 +367,8 @@ plot.</p>
 #&gt; HI-REDUCTION      63 -12.200179 -12.200179
 #&gt; HI-REDUCTION      65 -12.200179 -12.200179
 #&gt; Exiting from Nelder Mead minimizer
-#&gt;     67 function evaluations used</div><div class='input'> <span class='fu'>plot</span>(<span class='no'>srs</span>)</div><img src='ggplotFL plot methods-169.png' alt='' width='540' height='400' /><div class='input'>
- <span class='fu'>plot</span>(<span class='no'>srs</span>, <span class='kw'>legend_label</span><span class='kw'>=</span><span class='no'>modlabel</span>)</div><img src='ggplotFL plot methods-171.png' alt='' width='540' height='400' /><div class='input'>
+#&gt;     67 function evaluations used</div><div class='input'> <span class='fu'>plot</span>(<span class='no'>srs</span>)</div><div class='img'><img src='plot-13.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='fu'>plot</span>(<span class='no'>srs</span>, <span class='kw'>legend_label</span><span class='kw'>=</span><span class='no'>modlabel</span>)</div><div class='img'><img src='plot-14.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -296,11 +392,14 @@ plot.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
