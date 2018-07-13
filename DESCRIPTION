@@ -14,7 +14,8 @@ Depends:
 Imports:
   methods,
   gridExtra,
-  stats
+  stats,
+  scales
 Suggests:
   knitr,
   rmarkdown

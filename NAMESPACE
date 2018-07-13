@@ -9,6 +9,8 @@ importFrom("utils",
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")
+importFrom("scales",
+  "comma")
 exportMethods(
   "%+%",
   "ggplot",
