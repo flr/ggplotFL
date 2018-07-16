@@ -195,7 +195,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
 		na.rm=TRUE, type=7, fill="red", colour="black", iter=NULL) {
     
-    # check probs
+   # check probs
     if(!length(probs) %in% c(5))
       stop("quantile 'probs' argument must be of length 5")
 
@@ -223,9 +223,6 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 			df <- as.data.frame(x, date=TRUE)
 		}
 
-    # DROP NAs
-    df <- df[!is.na(df$data),]
-    
     # CHOOSE x axis
     if (length(levels(df$season) == 1))
       xaxis <- 'year'
@@ -239,7 +236,10 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       ylabs <- paste0("`", round(probs * 100), "%`")
       yaxis <- ylabs[3]
     }
-    
+
+    # DROP NAs
+    df <- df[!is.na(df[, gsub("`", "", yaxis)]),]
+
     # plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis, group="unit")) +
 			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
