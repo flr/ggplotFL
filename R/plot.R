@@ -236,9 +236,9 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       ylabs <- paste0("`", round(probs * 100), "%`")
       yaxis <- ylabs[3]
     }
-
+    
     # DROP NAs
-    df <- df[!is.na(df[, gsub("`", "", yaxis)]),]
+    # df <- df[!is.na(df[, gsub("`", "", yaxis)]),]
 
     # plot data vs. year + facet on qname +
 		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis, group="unit")) +
