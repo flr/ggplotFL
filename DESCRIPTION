@@ -14,6 +14,7 @@ Depends:
 Imports:
   methods,
   gridExtra,
+  rlang,
   stats,
   scales
 Suggests:

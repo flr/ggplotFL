@@ -9,6 +9,8 @@ importFrom("utils",
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")
+importFrom("rlang",
+  "quo_name")
 importFrom("scales",
   "comma")
 exportMethods(

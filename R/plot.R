@@ -293,6 +293,45 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 	}
 ) # }}}
 
+# plot(FLQuants, FLPar) {{{
+#' @aliases plot,FLQuants,FLPar-method
+#' @rdname plot
+#' @examples
+#'
+#'  # plot for FLQuants, FLPar
+#'  data(ple4)
+#'  rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
+#'  fqs <- metrics(ple4)
+#'  plot(fqs, rps)
+#'  
+
+setMethod("plot", signature(x="FLQuants", y="FLPar"),
+	function(x, y, ...) {
+	
+		p <- plot(x)
+
+    # GET name variable mapped to y axis
+    dat <- quo_name(p$mapping$y)
+    
+    # CREATE df with right name
+		rpa <- data.frame(dat=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
+    colnames(rpa)[1] <- dat
+
+		# FIX mixmatch between refpts and FLStock slots naming
+		if('yield' %in% rpa$qname)
+			rpa$qname[rpa$qname == 'yield'] <- 'catch'
+
+		qnames <- names(x)
+		idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
+			duplicates.ok=TRUE)[seq(length(x))]
+		rpa <- rpa[idx,]
+
+		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
+
+		return(p)
+	}
+) # }}}
+
 # plot(FLStock) {{{
 
 #' @aliases plot,FLStock,missing-method
@@ -347,22 +386,9 @@ setMethod("plot", signature(x="FLStock", y="FLStock"),
 setMethod("plot", signature(x="FLStock", y="FLPar"),
 	function(x, y, ...) {
 	
-		p <- plot(x)
+    p <- plot(metrics(x), y)
 
-		rpa <- data.frame(`data`=c(y), qname=dimnames(y)$params, stringsAsFactors=FALSE)
-
-		# FIX mixmatch between refpts and FLStock slots naming
-		if('yield' %in% rpa$qname)
-			rpa$qname[rpa$qname == 'yield'] <- 'catch'
-
-		qnames <- c("Rec", "SSB", "Catch", "Harvest")
-		idx <- pmatch(tolower(as.character(rpa$qname)), tolower(qnames),
-			duplicates.ok=TRUE)[1:4]
-		rpa <- rpa[idx,]
-
-		p <- p + geom_hline(data=rpa, aes(yintercept=data), colour="blue", linetype=2)
-
-		return(p)
+    return(p)
 	}
 ) # }}}
 
