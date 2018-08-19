@@ -1,3 +1,8 @@
+# ggplot 2.6.5
+
+## USER-VISIBLE CHANGES 
+- Changed span of plot(FLSR) loess smoothers to 3
+
 # ggplotFL 2.6.2
 
 ## BUG FIXES
