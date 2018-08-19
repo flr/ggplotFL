@@ -576,7 +576,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# SSB vs. REC
 	p1 <- ggplot(data=dat, aes_string(x='SSB', y='Rec')) + geom_point() +
-		geom_smooth(method='loess') + xlab(uns) + ylab(unr) +
+		geom_smooth(method='loess', span=3) + xlab(uns) + ylab(unr) +
 		expand_limits(y=0) + expand_limits(x=0)
 
 	# model fit line
@@ -591,7 +591,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	
 	# P2
 	p2 <- ggplot(data=dat, aes_string(x='year', y='Residuals')) + geom_point() + 	
-		geom_smooth(method='loess') + xlab("Year")
+		geom_smooth(method='loess', span=3) + xlab("Year")
 
 	# P3
 	p3 <- ggplot(data=data.frame(res1=dat$Residuals[-length(dat$Residuals)],
@@ -601,7 +601,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# P4
 	p4 <- ggplot(data=dat, aes_string(x='SSB', y='Residuals')) + geom_point() + 	
-		geom_smooth(method='loess')
+		geom_smooth(method='loess', span=3)
 
 	# P5
 	p5 <- ggplot(data=dat, aes_string(sample = 'Residuals')) + stat_qq(color="red",
@@ -610,7 +610,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# P6
 	p6 <- ggplot(data=dat, aes_string(x='RecHat', y='Residuals')) + geom_point() + 	
-		geom_smooth(method='loess') + xlab(expression(hat(Recruits)))
+		geom_smooth(method='loess', span=3) + xlab(expression(hat(Recruits)))
 	
 
 	# BUG Does not return a ggplot, but a grob
