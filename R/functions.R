@@ -102,7 +102,7 @@ modlabel <- function(model, param) {
 
 label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 		
-    units <- unlist(lapply(x, attr, 'units'))
+    units <- unlist(lapply(lapply(x, units), paste, collapse=" "))
 
     # DROP certain units
     units[units %in% drop] <- ""
@@ -111,7 +111,11 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
     units <- gsub("NA", "", units)
     units <- gsub(" ", "", units)
 
-    # DROP unparseable units (w/o any alnum & not in uomTable)
+    # DROP unparseable strings
+    units <- unlist(lapply(units, function(x)
+      ifelse(class(try(parse(text=x), silent=TRUE)) == "try-error", character(1), x)))
+
+    # DROP more unparseable units (w/o any alnum & not in uomTable)
     units[!uomUnits(units) & !grepl("[[:alnum:]]", units)]  <- character(1)
 
     # FORMAT
