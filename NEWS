@@ -3,6 +3,10 @@
  USER-VISIBLE CHANGES 
 - Changed span of plot(FLSR) loess smoothers to 3
 
+ BUG FIXES
+
+- label_flqs deals better with unparseable strings
+
  ggplotFL 2.6.2
 
  BUG FIXES
