@@ -113,7 +113,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
       xaxis <- 'date'
 		
     # basic plot data vs. date
-		p <- ggplot(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan))) +
+		p <- ggplot(data=na.omit(df), aes_q(x=as.name(xaxis), y=as.name(mquan))) +
 			# xlab + ylab +
 			xlab(xlab) + ylab(ylab) +
 			# limits to include 0 +
@@ -123,9 +123,9 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
     # LINE by unit
 		p <- p + if(dim(x)[3] ==1) {
-        geom_line(colour="black")}
+        geom_line(colour="black", na.rm=TRUE)}
       else {
-        geom_line(aes(colour=unit))}
+        geom_line(aes(colour=unit), na.rm=TRUE)}
 
     # SHOW NAs in x axis
 		if(dims(x)$iter == 1) {
@@ -151,9 +151,9 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 			p <- p +
 				# extreme probs as dotted line
 				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[1])),
-					colour="red", alpha = .50, linetype=3) +
+					colour="red", alpha = .50, linetype=3, na.rm=TRUE) +
 				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[length(quans)])),
-					colour="red", alpha = .50, linetype=3)
+					colour="red", alpha = .50, linetype=3, na.rm=TRUE)
 
 			# all others as ribbons of changing alpha
 			if(length(quans) > 3) {
@@ -173,7 +173,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
       names(df)[names(df) == "data"] <- mquan
       df$iter <- as.integer(df$iter)
       p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan),
-        group=as.name("iter"), colour=as.name("iter"))) +
+        group=as.name("iter"), colour=as.name("iter")), na.rm=TRUE) +
         theme(legend.position="none")
     }
 
@@ -224,7 +224,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		}
 
     # CHOOSE x axis
-    if (length(levels(df$season) == 1))
+    if (length(levels(df$season)) == 1)
       xaxis <- 'year'
     else
       xaxis <- 'date'
@@ -237,25 +237,22 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       yaxis <- ylabs[3]
     }
     
-    # DROP NAs
-    # df <- df[!is.na(df[, gsub("`", "", yaxis)]),]
-
     # plot data vs. year + facet on qname +
-		p <- ggplot(data=df, aes_string(x=xaxis, y=yaxis, group="unit")) +
+		p <- ggplot(data=na.omit(df),
+        aes_string(x=xaxis, y=yaxis, group="unit")) +
 			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
-			# line +
-			geom_line(colour=colour, na.rm=na.rm) +
 			# xlab + ylab + limits to include 0 +
       xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
 			# no legend
       theme(legend.position="none")
 
-    # LINE by unit
+    # LINE by unit?
     uts <- unlist(lapply(x, function(x) dim(x)[3]))
-		p <- p + if(any(uts == 1)) {
-        geom_line(colour=colour, na.rm=na.rm)}
-      else {
-        geom_line(aes(colour=unit))}
+		if(all(uts == 1)) {
+        p <- p + geom_line(colour=colour, na.rm=na.rm)
+      } else {
+        p <- p + geom_line(aes(colour=unit)) # + theme(legend.position="bottom")
+      }
 		
     # object w/ iters?
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1) & !all(is.na(probs))) {
@@ -342,8 +339,23 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 
 setMethod("plot", signature(x="FLStock", y="missing"),
 	function(x, ...) {
-    
-    p <- plot(metrics(x), ...)
+ 
+    mets <- metrics(x)
+  
+    # ADAPT for 2-sex model
+    if(all(dimnames(mets$SSB)$unit %in% c("F", "M"))) {
+
+      # DROP M ssb if missing
+      mets$SSB <- mets$SSB[,,'F'] + mets$SSB[,,'M']
+
+      # SUM rec across units
+      mets$Rec <- unitSums(mets$Rec)
+    }
+
+    # ADAPT for seasonal recruitment
+    mets$Rec[mets$Rec == 0] <- NA 
+
+    p <- plot(mets, ...)
 
 		return(p)
 	}
@@ -446,7 +458,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
     names(df) <- gsub("data.", "", names(df))
 
 		# plot data vs. date + facet on qname +
-		p <- ggplot(data=df, aes_string(x='`date`', y='`50%`', group='stock')) +
+		p <- ggplot(data=na.omit(df), aes_string(x='`date`', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free", labeller=labeller) +
 			# line + xlab + ylab +
 			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
@@ -518,7 +530,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
     names(df) <- gsub("data.", "", names(df))
 
 		# plot data vs. date + facet on qname +
-		p <- ggplot(data=df, aes_string(x='date', y='`50%`', group='stock')) +
+		p <- ggplot(data=na.omit(df), aes_string(x='date', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
 			geom_line(aes_string(colour='stock'), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
@@ -575,7 +587,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		'%*%', uns$ssb, fixed=TRUE), ')')))
 
 	# SSB vs. REC
-	p1 <- ggplot(data=dat, aes_string(x='SSB', y='Rec')) + geom_point() +
+	p1 <- ggplot(data=na.omit(dat), aes_string(x='SSB', y='Rec')) + geom_point() +
 		geom_smooth(method='loess', span=3) + xlab(uns) + ylab(unr) +
 		expand_limits(y=0) + expand_limits(x=0)
 
@@ -590,27 +602,29 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	p1 <- p1 + stat_function(fun=fmo,  colour='red', size=0.5)
 	
 	# P2
-	p2 <- ggplot(data=dat, aes_string(x='year', y='Residuals')) + geom_point() + 	
-		geom_smooth(method='loess', span=3) + xlab("Year")
+	p2 <- ggplot(data=na.omit(dat), aes_string(x='year', y='Residuals')) +
+    geom_point() + geom_smooth(method='loess', span=3) + xlab("Year")
 
 	# P3
-	p3 <- ggplot(data=data.frame(res1=dat$Residuals[-length(dat$Residuals)],
-		res2=dat$Residuals[-1]), aes_string(x='res1', y='res2')) + geom_point() +
+	p3 <- ggplot(data=na.omit(data.frame(res1=dat$Residuals[-length(dat$Residuals)],
+		res2=dat$Residuals[-1])), aes_string(x='res1', y='res2')) + geom_point() +
 		xlab(expression(Residuals[t])) + ylab(expression(Residuals[t + 1])) +
 	  geom_smooth(method='lm')
 
 	# P4
-	p4 <- ggplot(data=dat, aes_string(x='SSB', y='Residuals')) + geom_point() + 	
-		geom_smooth(method='loess', span=3)
+	p4 <- ggplot(data=na.omit(dat), aes_string(x='SSB', y='Residuals')) +
+    geom_point() + geom_smooth(method='loess', span=3)
 
 	# P5
-	p5 <- ggplot(data=dat, aes_string(sample = 'Residuals')) + stat_qq(color="red",
-		alpha=1) + geom_abline(aes_q(intercept = quote(mean(Residuals)),
+	p5 <- ggplot(data=na.omit(dat), aes_string(sample = 'Residuals')) +
+    stat_qq(color="red", alpha=1) +
+    geom_abline(aes_q(intercept = quote(mean(Residuals)),
 		slope = quote(sd(Residuals)))) + xlab("Theoretical") + ylab("Sample")
 
 	# P6
-	p6 <- ggplot(data=dat, aes_string(x='RecHat', y='Residuals')) + geom_point() + 	
-		geom_smooth(method='loess', span=3) + xlab(expression(hat(Recruits)))
+	p6 <- ggplot(data=na.omit(dat), aes_string(x='RecHat', y='Residuals')) +
+    geom_point() + geom_smooth(method='loess', span=3) +
+    xlab(expression(hat(Recruits)))
 	
 
 	# BUG Does not return a ggplot, but a grob
@@ -671,7 +685,7 @@ setMethod("plot", signature(x="FLSRs"),
     res <- Reduce('rbind', res)
 
     # GET plot
-    p <- ggplot(res, aes(x=ssb, y=rec, colour=sr)) +
+    p <- ggplot(na.omit(res), aes(x=ssb, y=rec, colour=sr)) +
       geom_line(aes(group=sr, color=sr)) +
       geom_point(data=dat) + 
       xlab(as.expression(paste0("SSB (", sub('\\*', '%.%', uns$ssb), ")"))) +
@@ -701,7 +715,7 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
   function(x, ...) {
 
     flqs <- FLQuants(Index=index(x))
-    ggplot(as.data.frame(flqs, date=TRUE), aes(x=date, y=data)) +
+    ggplot(na.omit(as.data.frame(flqs, date=TRUE)), aes(x=date, y=data)) +
       geom_line() + geom_smooth(na.rm=TRUE, method="loess") +
       facet_grid(qname~.) + xlab("") + ylab("")
 
