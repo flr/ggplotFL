@@ -338,7 +338,7 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 #'
 
 setMethod("plot", signature(x="FLStock", y="missing"),
-	function(x, ...) {
+	function(x, colour=c("#8da0cb","#fc8d62", "#66c2a5"), ...) {
  
     mets <- metrics(x)
   
@@ -353,9 +353,22 @@ setMethod("plot", signature(x="FLStock", y="missing"),
     }
 
     # ADAPT for seasonal recruitment
-    mets$Rec[mets$Rec == 0] <- NA 
+    if(dim(mets$Rec)[4] > 1) {
+      mets$Rec[mets$Rec == 0] <- NA 
+    }
 
     p <- plot(mets, ...)
+  
+    # ADD legend if 2 sexes  
+    if(all(dimnames(mets$SSB)$unit %in% c("F", "M"))) {
+      return(p +
+        theme(legend.position="bottom", legend.key=element_blank()) +
+        labs(color="Sex") +
+        scale_color_manual(name="Gender",
+          labels=c("Both", "F", "M"),
+          values=c("unique"=colour[1], "F"=colour[2], "M"=colour[3]))
+      )
+    }
 
 		return(p)
 	}
