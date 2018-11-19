@@ -330,6 +330,7 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 
 #' @aliases plot,FLStock,missing-method
 #' @rdname plot
+#' @params colour vector of colours to use for the quantile polygons
 #' @examples
 #'
 #'  # plot of an FLStock
@@ -341,6 +342,10 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 	function(x, colour=c("#8da0cb","#fc8d62", "#66c2a5"), ...) {
  
     mets <- metrics(x)
+
+    # HACK for F units
+    if("F" %in% names(mets))
+      units(mets$F) <- paste0(range(x, c("minfbar", "maxfbar")), collapse="-")
   
     # ADAPT for 2-sex model
     if(all(dimnames(mets$SSB)$unit %in% c("F", "M"))) {
