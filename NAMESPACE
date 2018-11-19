@@ -3,7 +3,8 @@ import("ggplot2")
 import("FLCore")
 importFrom("stats",
   "as.formula",
-  "reshape")
+  "reshape",
+  "na.omit")
 importFrom("utils",
   "data")
 importFrom("gridExtra",

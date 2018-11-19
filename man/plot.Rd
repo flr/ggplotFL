@@ -29,20 +29,21 @@
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
-\S4method{plot}{FLStock,missing}(x, y, ...)
+\S4method{plot}{FLStock,missing}(x, colour = c("#8da0cb", "#fc8d62",
+  "#66c2a5"), ...)
 
-\S4method{plot}{FLStock,FLStock}(x, y, main = "", xlab = "", ylab = "",
-  ..., iter = NULL)
+\S4method{plot}{FLStock,FLStock}(x, y, main = "", xlab = "",
+  ylab = "", ..., iter = NULL)
 
 \S4method{plot}{FLStock,FLPar}(x, y, ...)
 
 \S4method{plot}{FLStocks,missing}(x, main = "", xlab = "", ylab = "",
-  na.rm = TRUE, metrics = function(y) FLQuants(Rec = rec(y), SSB = ssb(y),
-  Catch = catch(y), Harvest = fbar(y)), ...)
+  na.rm = TRUE, metrics = function(y) FLQuants(Rec = rec(y), SSB =
+  ssb(y), Catch = catch(y), Harvest = fbar(y)), ...)
 
-\S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "", ylab = "",
-  na.rm = TRUE, foo = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F =
-  fbar(x)/y[, "harvest", ], Catch = catch(x)))
+\S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "",
+  ylab = "", na.rm = TRUE, foo = function(x, y) FLQuants(SSB =
+  ssb(x)/y[, "ssb", ], F = fbar(x)/y[, "harvest", ], Catch = catch(x)))
 
 \S4method{plot}{FLStock,FLStocks}(x, y, ...)
 
@@ -132,13 +133,14 @@ plot.
  data(ple4)
  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
  
-
  # plot for FLQuants, FLPar
  data(ple4)
  rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
  fqs <- metrics(ple4)
  plot(fqs, rps)
- 
+ # Works also if reptsa are given for some panels
+ rps <- FLPar(F=0.14, Catch=1.29e5, SSB=1.8e5)
+ plot(fqs, rps)
 
  # plot of an FLStock
  data(ple4)

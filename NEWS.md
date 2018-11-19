@@ -1,3 +1,8 @@
+# ggplot 2.6.6
+
+## USER-VISIBLE CHANGES 
+- Label for F in plot(FLStock) now includes age-range used by fbar()
+
 # ggplot 2.6.5
 
 ## USER-VISIBLE CHANGES 
