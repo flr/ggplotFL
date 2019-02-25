@@ -71,7 +71,7 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
-    params = list(probs=probs[c(1, length(probs))], alpha=alpha, ...)
+    params = list(probs=probs[c(1, length(probs))], alpha=alpha, colour=NA, ...)
   ),
        
   # Median line

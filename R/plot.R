@@ -1,7 +1,7 @@
 # plot.R - ggplot2-based plot methods for FLCore classes
 # ggplotFL/R/plot.R
 
-# Copyright 2012-2017 FLR Team. Distributed under the GPL 2
+# Copyright 2012-2018 FLR Team. Distributed under the GPL 2
 # Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
 # plot(FLQuant) {{{
@@ -72,7 +72,7 @@
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=missing) {
+    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=NULL) {
 
 		# object w/ iters? compute quantiles
 		if(dims(x)$iter > 1 & !is.null(probs)) {
@@ -168,7 +168,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 		}
 
     # plot some iters?
-    if(is.numeric(iter)) {
+    if(!is.null(iter)) {
       df <- as.data.frame(iter(x, iter), date=TRUE)
       names(df)[names(df) == "data"] <- mquan
       df$iter <- as.integer(df$iter)
@@ -434,7 +434,8 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-		metrics=function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y), Harvest=fbar(y)), ...) {
+		metrics=function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y),
+    F=fbar(y)), ...) {
 	
 		# check names not repeated
 		dup <- duplicated(names(x))
@@ -444,7 +445,14 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		}
 		
 		# extract slots by stock
-		fqs <- lapply(x, metrics)
+		fqs <- lapply(x, "metrics", metrics)
+
+    # HACK for F units
+    if("F" %in% names(fqs[[1]]))
+      fqs <- lapply(fqs, function(fq) {
+        units(fq$F) <- paste0(range(x[[1]], c("minfbar", "maxfbar")), collapse="-")
+        return(fq)
+    })
 
     # get labels
     labeller <- label_flqs(fqs[[1]])
