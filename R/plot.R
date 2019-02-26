@@ -275,13 +275,11 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 
 #' @aliases plot,FLStock,missing-method
 #' @rdname plot
-#' @params colour vector of colours to use for the quantile polygons
+#' @param colour vector of colours to use for the quantile polygons
 #' @examples
-#'
-#'  # plot of an FLStock
+#' # plot of an FLStock
 #'  data(ple4)
 #'  plot(ple4)
-#'
 
 setMethod("plot", signature(x="FLStock", y="missing"),
 	function(x, colour=c("#8da0cb","#fc8d62", "#66c2a5"), ...) {

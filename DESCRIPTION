@@ -35,4 +35,4 @@ License: GPL-2
 VignetteBuilder: knitr
 LazyLoad: Yes
 LazyData: Yes
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
