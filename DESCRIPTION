@@ -26,6 +26,7 @@ BugReports: https://github.com/flr/ggplotFL/issues
 Additional_repositories: http://flr-project.org/R
 Collate:
   'allGenerics.R'
+  'palette.R'
   'geom.R'
   'functions.R'
   'ggplot.R'

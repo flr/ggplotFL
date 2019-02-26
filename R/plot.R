@@ -64,78 +64,50 @@
 #'
 #' # or without them
 #'  flq <- FLQuant(runif(200), dim=c(1,15))
-#'  plot(flq) + geom_point(aes(x=year, y=data))
+#'  plot(flq) + geom_point(aes(x=date, y=data))
 #'
-#' # For an object with iter, the y axis is called `50%`
+#' # For an object with iter
 #'  flq <- rlnorm(100, flq, 0.4)
-#'  plot(flq) + geom_point(aes(x=year, y=`50%`))
+#'  plot(flq) + geom_point(aes(x=date, y=data))
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=NULL) {
+	function(x, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL) {
 
-		# object w/ iters? compute quantiles
-		if(dims(x)$iter > 1 & !is.null(probs)) {
-			
-			# check probs length is odd
-			if(is.integer(length(probs)/2))
-				stop("quantile probs can only be a vector of odd length")
-		
-			quans <- paste0(probs * 100, "%")
-			mid <- ceiling(length(quans)/2)
-			mquan <- quans[mid]
-			
-			# compute quantiles on FLQs, then convert to df
-		  df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
-        date=TRUE)
+		# CHECK probs length is odd
+		if(is.integer(length(probs)/2))
+		  stop("quantile probs can only be a vector of odd length")
 
-      # turn to wide
-      df <- reshape(df, timevar="iter", direction="wide",
-        idvar=c(names(df)[1:5], "date"))
-      
-      names(df) <- gsub("data.", "", names(df))
+    # FIND center of probs
+    idx <- ceiling(length(probs)/2)
+ 
+    # PLOT central ribbon and line by unit
+		p <- if(dim(x)[3] == 1) {
+        ggplot(x, aes(x=date, y=data, fill=unit)) +
+          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)])
+    } else {
+        ggplot(x, aes(x=date, y=data, fill=unit, colour=unit)) +
+          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)])
+      }
 
-		# otherwise, plot on 'data'
-		} else {
-			df <- as.data.frame(x, date=TRUE)
-			mquan <- "data"
-		}
-
-
-		# dims on facet or groups
-		dx <- dim(x)
-		ldi <- names(x)[-c(2,3,4,6)][dx[-c(2,3,4,6)] > 1]
-
-    # CHOOSE x axis
-    if (length(levels(df$season)) == 1)
-      xaxis <- 'year'
-    else
-      xaxis <- 'date'
-		
-    # basic plot data vs. date
-		p <- ggplot(data=na.omit(df), aes_q(x=as.name(xaxis), y=as.name(mquan))) +
-			# xlab + ylab +
-			xlab(xlab) + ylab(ylab) +
-			# limits to include 0 +
-			expand_limits(y=0) +
-			# no legend +
-			theme(legend.title = element_blank()) 
-
-    # LINE by unit
-		p <- p + if(dim(x)[3] ==1) {
-        geom_line(colour="black", na.rm=TRUE)}
-      else {
-        geom_line(aes(colour=unit), na.rm=TRUE)}
-
+    # PLOT other ribbons, if any
+    if(length(probs) > 3 & dim(x)[6] > 1) {
+      geoms <- lapply(seq((length(probs)-3)/2), function(x) {
+        geom_flquantiles(prob=probs[seq(idx - x - 1, idx + x + 1)], alpha=0.2)
+      })
+      p <- p + geoms
+    }
+     
     # SHOW NAs in x axis
-		if(dims(x)$iter == 1) {
-      if(sum(is.na(df$data)) > 0) {
+		if(dim(x)[6] == 1) {
+      if(sum(is.na(x)) > 0) {
         p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
           data=subset(df, is.na(data)))
       }
     }
-		
-		# build formula
+
+    # BUILD facet formula
+		dx <- dim(x)
+		ldi <- names(x)[-c(2,3,4,6)][dx[-c(2,3,4,6)] > 1]
 		if(length(ldi) == 1) {
 			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
 				labeller=label_both)
@@ -145,41 +117,14 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 				sep= "+"))), scales="free", labeller=label_both)
 		}
 
-		# object w/ iters?
-		if(dims(x)$iter > 1 & !is.null(probs)) {
+    # ASSEMBLE plot 
+    p <- p + xlab("") + ylab("") + theme(legend.position="none")
 
-			p <- p +
-				# extreme probs as dotted line
-				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[1])),
-					colour="red", alpha = .50, linetype=3, na.rm=TRUE) +
-				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[length(quans)])),
-					colour="red", alpha = .50, linetype=3, na.rm=TRUE)
+    return(p)
+  })
 
-			# all others as ribbons of changing alpha
-			if(length(quans) > 3) {
 
-				ids <- seq(2, mid-1)
-				for(i in ids)
-					p <- p + geom_ribbon(aes_q(x=as.name(xaxis),
-						ymin = as.name(quans[i]),
-						ymax = as.name(quans[length(quans)-i+1])),
-						fill="red", alpha = probs[i])
-			}
-		}
-
-    # plot some iters?
-    if(!is.null(iter)) {
-      df <- as.data.frame(iter(x, iter), date=TRUE)
-      names(df)[names(df) == "data"] <- mquan
-      df$iter <- as.integer(df$iter)
-      p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan),
-        group=as.name("iter"), colour=as.name("iter")), na.rm=TRUE) +
-        theme(legend.position="none")
-    }
-
-		return(p)
-	}
-) # }}}
+# }}}
 
 # plot(FLQuants) {{{
 #' @aliases plot,FLQuants,missing-method

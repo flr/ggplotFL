@@ -58,7 +58,7 @@
 
 geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
   position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = TRUE,
-  probs=c(0.10, 0.90), alpha=0.5, ...) {
+  probs=c(0.10, 0.50, 0.90), alpha=0.5, ...) {
 
   list(
 
@@ -85,7 +85,7 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     inherit.aes = inherit.aes,
     check.aes = FALSE,
     check.param = FALSE,
-    params = list(probs=0.50, alpha=1, ...)
+    params = list(probs=probs[ceiling(length(probs)/2)], alpha=1, ...)
   )
   )
 } # }}}
