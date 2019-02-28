@@ -83,10 +83,12 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
     # PLOT central ribbon and line by unit
 		p <- if(dim(x)[3] == 1) {
         ggplot(x, aes(x=date, y=data, fill=unit)) +
-          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)])
+          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
+            na.rm=na.rm)
     } else {
         ggplot(x, aes(x=date, y=data, fill=unit, colour=unit)) +
-          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)])
+          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
+            na.rm=na.rm)
       }
 
     # PLOT other ribbons, if any

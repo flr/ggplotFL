@@ -44,10 +44,14 @@ flpalette <- c(red='#e41a1c', blue='#377eb8', green='#4daf4a', violet='#984ea3',
 #' @examples
 #' flpalette_colours()
 #' flpalette_colours(5)
+#' flpalette_colours(2:3)
 
 flpalette_colours <- function(n=length(flpalette)) {
 
-  unname(flpalette[seq(n)])
+  if(length(n) > 1)
+    return(unname(flpalette[n]))
+
+  return(unname(flpalette[seq(n)]))
 }
 
 #' @rdname flpalette
