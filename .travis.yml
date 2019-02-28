@@ -1,18 +1,18 @@
-
 warnings_are_errors: false
 
 language: r
 
-matrix:
-  include:
-  - os: linux
-    r: release
-  - os: osx
-    r: release
+os:
+  - linux
+  - osx
 
-r_github_packages:
-  - flr/FLCore
+r:
+  - release
 
+branches:
+  only:
+  - master
+    
 sudo: false
 
 cache: packages
@@ -21,17 +21,28 @@ notifications:
   email:
     on_success: change
     on_failure: change
-    
-all_branches: true
+
+before_deploy:
+  # Get PKGVER
+  - 'export PKGVER=$(sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)'
+  # CHECK version type by counting dots (flaky)
+  - 'export RELEASE=$(grep -o \\. <<< $PKGVER | wc -w)'
+  - "echo $RELEASE"
+  # Build binary and remove the source archive
+  - "R CMD INSTALL --build ggplotFL_$PKGVER.tar.gz"
+  - "rm ggplotFL_$PKGVER.tar.gz"
+  # Look for packages
+  - "export RELEASE_PKG_FILE=$(ls ggplotFL*gz)"
+  - "echo $RELEASE_PKG_FILE"
 
 deploy:
   provider: releases
   api_key:
-    secure: hyuRWAEALFCTxbCVUCBuvearIBShVng3//mrAc1R8D/HvToPFQ6LqO6rvV+kCejQiRL5DVmLX9F6PR8bQSVxrnsL4MeSTmO2hLSAAfyd3Ly46oukUMhCb35wdJZinOm7dJMzXdw2qJiNKtDTVUMmVar6PHpewmg3MXDer0JIC8Y=
+    secure: QrWCUrkEVOwPitBzGoIoK8zp2Mk4SL0KTnygW9YtVwFCe+vkbEAfvRpRRQ9IvjPUberQT1WvysWr/oM232QtL+g7TeEad0uB5oLMrGq6lyUBgaUnkzRShIKMbUzXOH3i2EW4Bv2mUaKf02nkiRNcNIG0t3SBfwbgMHwhf/VWATc=
+  file: $RELEASE_PKG_FILE
   skip_cleanup: true
-  file_glob: true
-  file: ggplotFL_*.t*gz
+  draft: true
   on:
-    branch: master
     repo: flr/ggplotFL
-    tags: true
+    # condition: "$RELEASE=2"
+    # condition: $RELEASE =~ ^[0-9]+\.[0-9]+\.[0-9]+
