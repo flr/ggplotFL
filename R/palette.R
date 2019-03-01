@@ -86,5 +86,3 @@ scale_colour_flr <- function(palette = flpalette, discrete = TRUE, reverse = FAL
     scale_colour_gradientn(colours = pal(256), ...)
   }
 }
-
-scale_flr <- function(...) list(scale_fill_flr(...), scale_colour_fill(...))

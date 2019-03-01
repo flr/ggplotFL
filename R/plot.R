@@ -252,7 +252,7 @@ setMethod("plot", signature(x="FLStock", y="missing"),
         labs(color="Sex") +
         scale_color_manual(name="Gender",
           labels=c("Both", "F", "M"),
-          values=c("unique"=colour[1], "F"=colour[2], "M"=colour[3]))
+          values=c("unique"=flpalette[1], "F"=flpalette[2], "M"=flpalette[3]))
       )
     }
 

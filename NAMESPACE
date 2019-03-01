@@ -1,6 +1,8 @@
 import("methods")
 import("ggplot2")
 import("FLCore")
+importFrom("grDevices",
+  "colorRampPalette")
 importFrom("stats",
   "as.formula",
   "reshape",
