@@ -26,6 +26,7 @@ notifications:
     on_failure: change
 
 after_success:
+  # Get PKGVER
   - 'export PKGVER=$(sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)'
   - 'export REL=$(echo $PKGVER | grep -o "\." | grep -c "\.")'
   - "echo $PKGVER $REL"

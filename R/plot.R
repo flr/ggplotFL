@@ -64,231 +64,113 @@
 #'
 #' # or without them
 #'  flq <- FLQuant(runif(200), dim=c(1,15))
-#'  plot(flq) + geom_point(aes(x=year, y=data))
+#'  plot(flq) + geom_point(aes(x=date, y=data))
 #'
-#' # For an object with iter, the y axis is called `50%`
+#' # For an object with iter
 #'  flq <- rlnorm(100, flq, 0.4)
-#'  plot(flq) + geom_point(aes(x=year, y=`50%`))
+#'  plot(flq) + geom_point(aes(x=date, y=data))
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-    probs=c(0.10, 0.25, 0.50, 0.75, 0.90), type=7, iter=NULL) {
+	function(x, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL) {
 
-		# object w/ iters? compute quantiles
-		if(dims(x)$iter > 1 & !is.null(probs)) {
-			
-			# check probs length is odd
-			if(is.integer(length(probs)/2))
-				stop("quantile probs can only be a vector of odd length")
-		
-			quans <- paste0(probs * 100, "%")
-			mid <- ceiling(length(quans)/2)
-			mquan <- quans[mid]
-			
-			# compute quantiles on FLQs, then convert to df
-		  df <- as.data.frame(quantile(x, probs=probs, na.rm=na.rm, type=type),
-        date=TRUE)
+    # GET base plot from plot(FLQuants)
+    p <- plot(FLQuants(x), probs=probs, na.rm=na.rm, iter=iter)
+    
+    # PARSE dimensions > 1 for new facets
+    ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
 
-      # turn to wide
-      df <- reshape(df, timevar="iter", direction="wide",
-        idvar=c(names(df)[1:5], "date"))
-      
-      names(df) <- gsub("data.", "", names(df))
-
-		# otherwise, plot on 'data'
-		} else {
-			df <- as.data.frame(x, date=TRUE)
-			mquan <- "data"
-		}
-
-
-		# dims on facet or groups
-		dx <- dim(x)
-		ldi <- names(x)[-c(2,3,4,6)][dx[-c(2,3,4,6)] > 1]
-
-    # CHOOSE x axis
-    if (length(levels(df$season)) == 1)
-      xaxis <- 'year'
-    else
-      xaxis <- 'date'
-		
-    # basic plot data vs. date
-		p <- ggplot(data=na.omit(df), aes_q(x=as.name(xaxis), y=as.name(mquan))) +
-			# xlab + ylab +
-			xlab(xlab) + ylab(ylab) +
-			# limits to include 0 +
-			expand_limits(y=0) +
-			# no legend +
-			theme(legend.title = element_blank()) 
-
-    # LINE by unit
-		p <- p + if(dim(x)[3] ==1) {
-        geom_line(colour="black", na.rm=TRUE)}
-      else {
-        geom_line(aes(colour=unit), na.rm=TRUE)}
-
-    # SHOW NAs in x axis
-		if(dims(x)$iter == 1) {
-      if(sum(is.na(df$data)) > 0) {
-        p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
-          data=subset(df, is.na(data)))
-      }
+    # PLOt(FLQuants(x)) & reset facets
+		if(length(ldi) == 0) {
+      p <- p + theme(strip.text.y = element_blank())
     }
-		
-		# build formula
-		if(length(ldi) == 1) {
-			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
-				labeller=label_both)
+		else if(length(ldi) == 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free",
+        labeller=label_both)
 		}
 		else if (length(ldi) > 1) {
 			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
-				sep= "+"))), scales="free", labeller=label_both)
+        collapse= "+"))), scales="free", labeller=label_both)
 		}
 
-		# object w/ iters?
-		if(dims(x)$iter > 1 & !is.null(probs)) {
-
-			p <- p +
-				# extreme probs as dotted line
-				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[1])),
-					colour="red", alpha = .50, linetype=3, na.rm=TRUE) +
-				geom_line(aes_q(x=as.name(xaxis), y = as.name(quans[length(quans)])),
-					colour="red", alpha = .50, linetype=3, na.rm=TRUE)
-
-			# all others as ribbons of changing alpha
-			if(length(quans) > 3) {
-
-				ids <- seq(2, mid-1)
-				for(i in ids)
-					p <- p + geom_ribbon(aes_q(x=as.name(xaxis),
-						ymin = as.name(quans[i]),
-						ymax = as.name(quans[length(quans)-i+1])),
-						fill="red", alpha = probs[i])
-			}
-		}
-
-    # plot some iters?
-    if(!is.null(iter)) {
-      df <- as.data.frame(iter(x, iter), date=TRUE)
-      names(df)[names(df) == "data"] <- mquan
-      df$iter <- as.integer(df$iter)
-      p <- p + geom_line(data=df, aes_q(x=as.name(xaxis), y=as.name(mquan),
-        group=as.name("iter"), colour=as.name("iter")), na.rm=TRUE) +
-        theme(legend.position="none")
-    }
-
-		return(p)
-	}
-) # }}}
+    return(p)
+  })
+# }}}
 
 # plot(FLQuants) {{{
+
 #' @aliases plot,FLQuants,missing-method
 #' @rdname plot
 #' @examples
-#'
 #'  # Plot an FLQuants created from ple4 FLStock
 #'  data(ple4)
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
-#'  
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, main="", xlab="", ylab="", probs=c(0.10, 0.25, 0.50, 0.75, 0.90),
-		na.rm=TRUE, type=7, fill="red", colour="black", iter=NULL) {
-    
-   # check probs
-    if(!length(probs) %in% c(5))
-      stop("quantile 'probs' argument must be of length 5")
+	function(x, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL) {
 
-		# check names not repeated
-		dup <- duplicated(names(x))
-		if(any(dup)) {
-			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
-			warning('Duplicated names in object, changed to differentiate')
-		}
-		
-    # object w/ iters? compute quantiles
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
-			
-			# compute quantiles on FLQs, then convert to df
-			df <- as.data.frame(lapply(x, quantile, probs=probs,
-				na.rm=na.rm, type=type), date=TRUE)
+		# CHECK probs length is odd
+		if(is.integer(length(probs)/2))
+		  stop("quantile probs can only be a vector of odd length")
 
-      df <- reshape(df, timevar="iter", direction="wide",
-        idvar=c(names(x[[1]])[1:5], "date", "qname"))
-      
-      names(df) <- gsub("data.", "", names(df))
+    # FIND center of probs
+    idx <- ceiling(length(probs)/2)
 
-		# otherwise
-		} else {
-			df <- as.data.frame(x, date=TRUE)
-		}
+    # GET max dimensions
+    mds <- apply(do.call(rbind, lapply(x, dim)), 2, max)
 
-    # CHOOSE x axis
-    if (length(levels(df$season)) == 1)
-      xaxis <- 'year'
-    else
-      xaxis <- 'date'
-    
-    # and y axis
-    if("data" %in% names(df))
-      yaxis <- "data"
-    else {
-      ylabs <- paste0("`", round(probs * 100), "%`")
-      yaxis <- ylabs[3]
-    }
-    
-    # plot data vs. year + facet on qname +
-		p <- ggplot(data=na.omit(df),
-        aes_string(x=xaxis, y=yaxis, group="unit")) +
-			facet_grid(qname~., scales="free", labeller=label_flqs(x)) +
-			# xlab + ylab + limits to include 0 +
-      xlab(xlab) + ylab(ylab) + expand_limits(y=0) +
-			# no legend
-      theme(legend.position="none")
-
-    # LINE by unit?
-    uts <- unlist(lapply(x, function(x) dim(x)[3]))
-		if(all(uts == 1)) {
-        p <- p + geom_line(colour=colour, na.rm=na.rm)
-      } else {
-        p <- p + geom_line(aes(colour=unit)) # + theme(legend.position="bottom")
+    # USE year or date for x axis
+    xvar <- sym(ifelse(mds[4] == 1, "year", "date"))
+     
+    # PLOT central ribbon and line by unit
+		p <- if(mds[3] == 1) {
+        ggplot(x, aes(x=!!xvar, y=data, fill=unit)) +
+          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
+            na.rm=na.rm)
+    } else {
+        ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
+          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
+            na.rm=na.rm)
       }
-		
-    # object w/ iters?
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1) & !all(is.na(probs))) {
-			p <- p +
-			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x=xaxis, ymin = ylabs[2], ymax = ylabs[4]),
-				fill=fill, alpha = .25, na.rm=na.rm) +
-			# 90% quantile ribbon in red, aplha=0.10
-			geom_ribbon(aes_string(x=xaxis, ymin = ylabs[1], ymax = ylabs[5]),
-				fill=fill, alpha = .10, na.rm=na.rm) +
-			# .. and dotted lines
-			geom_line(aes_string(x=xaxis, y = ylabs[1]),
-				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-			geom_line(aes_string(x=xaxis, y = ylabs[5]),
-				colour=colour, alpha = .50, linetype=3, na.rm=na.rm) +
-      scale_fill_manual(values=c("red"))
+
+    # PLOT other ribbons, if any
+    if(length(probs) > 3 & mds[6] > 1) {
+      geoms <- lapply(seq((length(probs)-3)/2), function(x) {
+        geom_flquantiles(probs=probs[seq(idx - x - 1, idx + x + 1)], alpha=0.2)
+      })
+      p <- p + geoms
+    }
+     
+    # SHOW NAs in x axis, only if no iters
+		if(mds[6] == 1) {
+      if(sum(is.na(x)) > 0) {
+        p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
+          data=subset(p$data, is.na(data)))
+      }
+    }
+
+    # PLOT iter worms
+    if(!is.null(iter)) {
+      idata <- p$data[p$data$iter %in% iter,]
+      p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter))
+    }
+
+    # BUILD facet formula
+		ldi <- c("qname", names(x[[1]])[-c(2,3,4,6)][mds[-c(2,3,4,6)] > 1])
+		if(length(ldi) == 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
+				labeller=label_flqs(x))
+		}
+		else if (length(ldi) > 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
+        collapse= "+"))), scales="free", labeller=label_flqs(x))
 		}
 
-    # plot some iters?
-    if(!is.null(iter)) {
-      df <- as.data.frame(iter(x, iter), date=TRUE)
-      idx <- unlist(lapply(x, function(x) dims(x)$iter)) > 1
-      df <- subset(df, qname == names(x)[idx])
-      
-      df$iter <- as.integer(df$iter)
-      df$time <- df[, xaxis]
+    # ASSEMBLE plot 
+    p <- p + xlab("") + ylab("") + theme(legend.position="none")
 
-      p <- p + geom_line(data=df, aes(x=time, y=data,
-        group=interaction(iter, unit), colour=interaction(iter, unit))) +
-        # colours
-        scale_color_manual(values=.flpalette[-1])
-    }
-		
-		return(p)
-	}
-) # }}}
+    return(p)
+  })
+# }}}
 
 # plot(FLQuants, FLPar) {{{
 
@@ -304,6 +186,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 #'  rps <- FLPar(F=0.14, Catch=1.29e5, SSB=1.8e5)
 #'  plot(fqs, rps)
 
+# TODO REFORMAT
 setMethod("plot", signature(x="FLQuants", y="FLPar"),
 	function(x, y, ...) {
 	
@@ -330,16 +213,14 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 
 #' @aliases plot,FLStock,missing-method
 #' @rdname plot
-#' @params colour vector of colours to use for the quantile polygons
+#' @param colour vector of colours to use for the quantile polygons
 #' @examples
-#'
-#'  # plot of an FLStock
+#' # plot of an FLStock
 #'  data(ple4)
 #'  plot(ple4)
-#'
 
 setMethod("plot", signature(x="FLStock", y="missing"),
-	function(x, colour=c("#8da0cb","#fc8d62", "#66c2a5"), ...) {
+	function(x, ...) {
  
     mets <- metrics(x)
 
@@ -371,13 +252,16 @@ setMethod("plot", signature(x="FLStock", y="missing"),
         labs(color="Sex") +
         scale_color_manual(name="Gender",
           labels=c("Both", "F", "M"),
-          values=c("unique"=colour[1], "F"=colour[2], "M"=colour[3]))
+          values=c("unique"=flpalette[1], "F"=flpalette[2], "M"=flpalette[3]))
       )
     }
 
 		return(p)
 	}
 ) # }}}
+
+
+
 
 # plot(FLStock, FLStock) {{{
 
@@ -425,26 +309,23 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #' @rdname plot
 #' @param metrics function returning an FLQuants for each FLStock
 #' @examples
-#'
 #'  # plot for FLStocks
 #'  data(ple4)
 #'  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
 #'  plot(pls)
-#'  
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
-	function(x, main="", xlab="", ylab="", na.rm=TRUE,
-		metrics=function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y),
+	function(x, metrics=function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y),
     F=fbar(y)), ...) {
 	
-		# check names not repeated
+		# CHECK names not repeated
 		dup <- duplicated(names(x))
 		if(any(dup)) {
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
 			warning('Duplicated names in object, changed to differentiate')
 		}
 		
-		# extract slots by stock
+		# EXTRACT slots by stock
 		fqs <- lapply(x, "metrics", metrics)
 
     # HACK for F units
@@ -454,51 +335,33 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
         return(fq)
     })
 
-    # get labels
+    # GET labels
     labeller <- label_flqs(fqs[[1]])
 
-		# get median & 85% quantiles if iters
-		its <- unlist(lapply(x, function(x) dims(x)$iter))
-		if(any(its > 1))
-		{
-			# quantiles
-			fqs <- lapply(fqs, function(y) as.data.frame(lapply(y, quantile,
-				c(0.10, 0.50, 0.90), na.rm=TRUE), date=TRUE))
-		} else {
-			fqs <- lapply(fqs, as.data.frame, date=TRUE)
-			fqs <- lapply(fqs, function(x) {x$iter <- "50%"; return(x)})
-		}
+    # ASSEMBLE data
+    data <- lapply(fqs, as.data.frame, date=TRUE, drop=FALSE)
 
-		# stock names
-		stk <- rep.int(names(fqs), unlist(lapply(fqs, nrow)))
-		# rbind dfs
-		fqs <- do.call(rbind, fqs)
-		rownames(fqs) <- NULL
-		# add stock names
-		fqs <- transform(fqs, stock=stk)
-
-    # compute quantiles
-    df <- reshape(fqs, timevar="iter", direction="wide",
-      idvar=c(names(fqs)[1:5], "qname", "stock", "date"))
-      
-    names(df) <- gsub("data.", "", names(df))
-
-		# plot data vs. date + facet on qname +
-		p <- ggplot(data=na.omit(df), aes_string(x='`date`', y='`50%`', group='stock')) +
-			facet_grid(qname~., scales="free", labeller=labeller) +
-			# line + xlab + ylab +
-			geom_line(aes(colour=stock), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
-			# limits to include 0 +  no legend
-			expand_limits(y=0) + theme(legend.title = element_blank())
+    # SET stock names
+		stk <- rep.int(names(fqs), unlist(lapply(data, nrow)))
 		
-		# object w/ iters?
-		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
-				p <- p +
-			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`', group='stock',
-				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
-			# 90% quantile ribbon in red, aplha=0.10
-		}
+    # RBIND dfs
+		data <- do.call(rbind, data)
+		rownames(data) <- NULL
+		
+    # ADD stock names
+		data <- transform(data, stock=stk)
+
+    # PLOT using geom_flquantiles
+    p <- ggplot(data, aes(x=date, y=data, fill=stock, colour=stock)) + 
+      facet_grid(qname~., labeller=labeller, scales="free_y") +
+      geom_flquantiles() + xlab("") + ylab("") +
+			# SET limits to include 0
+			expand_limits(y=0) +
+      # SET legend with no title
+      theme(legend.title = element_blank()) +
+      # and only with lines and no title
+      guides(fill = FALSE)
+		
 		return(p)
 	}
 ) # }}}

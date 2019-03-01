@@ -1,6 +1,8 @@
 import("methods")
 import("ggplot2")
 import("FLCore")
+importFrom("grDevices",
+  "colorRampPalette")
 importFrom("stats",
   "as.formula",
   "reshape",
@@ -20,8 +22,13 @@ exportMethods(
   "plot")
 export(
   "eqlabel",
+  "flpalette",
+  "flpalette_colours",
+  "flpalette_grads",
   "human_numbers",
   "label_flqs",
   "modlabel",
+  "scale_fill_flr",
+  "scale_colour_flr",
   "stat_flquantiles",
   "geom_flquantiles")

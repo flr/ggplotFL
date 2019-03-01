@@ -20,12 +20,14 @@ Imports:
   scales
 Suggests:
   knitr,
-  rmarkdown
+  rmarkdown,
+  testthat
 URL: http://flr-project.org/ggplotFL
 BugReports: https://github.com/flr/ggplotFL/issues
 Additional_repositories: http://flr-project.org/R
 Collate:
   'allGenerics.R'
+  'palette.R'
   'geom.R'
   'functions.R'
   'ggplot.R'
@@ -34,4 +36,4 @@ License: GPL-2
 VignetteBuilder: knitr
 LazyLoad: Yes
 LazyData: Yes
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

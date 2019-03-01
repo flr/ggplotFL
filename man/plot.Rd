@@ -19,18 +19,15 @@
 \alias{plot,FLIndexBiomass,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
-\S4method{plot}{FLQuant,missing}(x, main = "", xlab = "", ylab = "",
-  na.rm = TRUE, probs = c(0.1, 0.25, 0.5, 0.75, 0.9), type = 7,
-  iter = missing)
+\S4method{plot}{FLQuant,missing}(x, probs = c(0.01, 0.1, 0.5, 0.9, 0.99),
+  na.rm = TRUE, iter = NULL)
 
-\S4method{plot}{FLQuants,missing}(x, main = "", xlab = "", ylab = "",
-  probs = c(0.1, 0.25, 0.5, 0.75, 0.9), na.rm = TRUE, type = 7,
-  fill = "red", colour = "black", iter = NULL)
+\S4method{plot}{FLQuants,missing}(x, probs = c(0.01, 0.1, 0.5, 0.9,
+  0.99), na.rm = TRUE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
-\S4method{plot}{FLStock,missing}(x, colour = c("#8da0cb", "#fc8d62",
-  "#66c2a5"), ...)
+\S4method{plot}{FLStock,missing}(x, y, ...)
 
 \S4method{plot}{FLStock,FLStock}(x, y, main = "", xlab = "",
   ylab = "", ..., iter = NULL)
@@ -39,7 +36,7 @@
 
 \S4method{plot}{FLStocks,missing}(x, main = "", xlab = "", ylab = "",
   na.rm = TRUE, metrics = function(y) FLQuants(Rec = rec(y), SSB =
-  ssb(y), Catch = catch(y), Harvest = fbar(y)), ...)
+  ssb(y), Catch = catch(y), F = fbar(y)), ...)
 
 \S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "",
   ylab = "", na.rm = TRUE, foo = function(x, y) FLQuants(SSB =
@@ -56,33 +53,35 @@
 \arguments{
 \item{x}{Variable on x axis.}
 
+\item{probs}{Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).}
+
+\item{na.rm}{Should NAs be deleted in quantile calculations?, defaults to TRUE.}
+
+\item{iter}{Individual iterations to show as worm plots over the quantiles.}
+
+\item{y}{Variable on y axis.}
+
+\item{...}{Other arguments to be passed to the corresponding ggplot call.}
+
 \item{main}{Title of plot.}
 
 \item{xlab}{Label of x axis.}
 
 \item{ylab}{Label of y axis.}
 
-\item{na.rm}{Should NAs be deleted in quantile calculations?, defaults to TRUE.}
-
-\item{probs}{Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).}
-
-\item{type}{Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.}
-
-\item{iter}{Individual iterations to show as worm plots over the quantiles.}
-
-\item{fill}{Colour to be used for filling of quantile poligons, defaults to 'red'.}
-
-\item{colour}{Colour to be used for last quantile lines, defaults to fill.}
-
-\item{y}{Variable on y axis.}
-
-\item{...}{Other arguments to be passed to the corresponding ggplot call.}
-
 \item{metrics}{function returning an FLQuants for each FLStock}
 
 \item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
 
 \item{legend_label}{function to create the legend labels}
+
+\item{type}{Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.}
+
+\item{fill}{Colour to be used for filling of quantile poligons, defaults to 'red'.}
+
+\item{colour}{Colour to be used for last quantile lines, defaults to fill.}
+
+\item{colour}{vector of colours to use for the quantile polygons}
 }
 \description{
 New basic plot methods for some FLR classes are defined in ggplotFL.
@@ -125,14 +124,12 @@ plot.
  flq <- FLQuant(runif(200), dim=c(1,15))
  plot(flq) + geom_point(aes(x=year, y=data))
 
-# For an object with iter, the y axis is called `50\%`
+# For an object with iter
  flq <- rlnorm(100, flq, 0.4)
- plot(flq) + geom_point(aes(x=year, y=`50\%`))
-
+ plot(flq) + geom_point(aes(x=year, y=data))
  # Plot an FLQuants created from ple4 FLStock
  data(ple4)
  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
- 
  # plot for FLQuants, FLPar
  data(ple4)
  rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
@@ -141,11 +138,9 @@ plot.
  # Works also if reptsa are given for some panels
  rps <- FLPar(F=0.14, Catch=1.29e5, SSB=1.8e5)
  plot(fqs, rps)
-
- # plot of an FLStock
+# plot of an FLStock
  data(ple4)
  plot(ple4)
-
 
  # plot for FLStock, FLPar
  data(ple4)
