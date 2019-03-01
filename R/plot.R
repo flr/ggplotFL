@@ -260,9 +260,6 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 	}
 ) # }}}
 
-
-
-
 # plot(FLStock, FLStock) {{{
 
 #' @aliases plot,FLStock,FLStock-method
@@ -367,15 +364,15 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 ) # }}}
 
 # plot(FLStocks, FLPar) {{{
+# TODO Move to geom_flquantiles
+
 #' @aliases plot,FLStocks,FLPar-method
 #' @rdname plot
 #' @examples
-#'
 #'  # plot for FLStocks
 #'  data(ple4)
 #'  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
 #'  plot(pls)
-#'  
 
 setMethod("plot", signature(x="FLStocks", y="FLPar"),
 	function(x, y, main="", xlab="", ylab="", na.rm=TRUE,
@@ -591,9 +588,23 @@ setMethod("plot", signature(x="FLSRs"),
 
 # plot(FLBiol) {{{
 
-# rec, tsb, 
+#' @aliases plot,FLBiol,missing-method
+#' @docType methods
+#' @rdname plot
+setMethod("plot", signature(x="FLBiol", y="missing"),
+  function(x, metrics=list(Rec=function(x) n(x)[1,], SSB=ssb), ...) {
 
-# }}}
+    flqs <- metrics(x, metrics)
+
+    p <- plot(flqs)
+
+    # TODO ADD SRR
+    
+    # TODO ADD mat, fec, m, wt by age
+
+    return(p)
+  }
+) # }}}
 
 # plot(FLIndexBiomass) {{{
 
@@ -604,9 +615,9 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
   function(x, ...) {
 
     flqs <- FLQuants(Index=index(x))
-    ggplot(na.omit(as.data.frame(flqs, date=TRUE)), aes(x=date, y=data)) +
-      geom_line() + geom_smooth(na.rm=TRUE, method="loess") +
-      facet_grid(qname~.) + xlab("") + ylab("")
 
+    p <- plot(flqs, ...) + geom_smooth(na.rm=TRUE, method="loess")
+
+    return(p)
   }
 ) # }}}
