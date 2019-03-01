@@ -41,6 +41,7 @@ gradation of colours between two or more of the palette colours, *flpalette_grad
  flpalette
 flpalette_colours()
 flpalette_colours(5)
+flpalette_colours(2:3)
 flpalette_grads(flpalette_colours(3))(20)
 }
 \seealso{
