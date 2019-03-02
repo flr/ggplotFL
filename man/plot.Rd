@@ -16,6 +16,7 @@
 \alias{plot,FLSR,missing-method}
 \alias{plot,FLSRs,ANY-method}
 \alias{plot,FLSRs,missing-method}
+\alias{plot,FLBiol,missing-method}
 \alias{plot,FLIndexBiomass,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
@@ -34,9 +35,8 @@
 
 \S4method{plot}{FLStock,FLPar}(x, y, ...)
 
-\S4method{plot}{FLStocks,missing}(x, main = "", xlab = "", ylab = "",
-  na.rm = TRUE, metrics = function(y) FLQuants(Rec = rec(y), SSB =
-  ssb(y), Catch = catch(y), F = fbar(y)), ...)
+\S4method{plot}{FLStocks,missing}(x, metrics = function(y) FLQuants(Rec =
+  rec(y), SSB = ssb(y), Catch = catch(y), F = fbar(y)), ...)
 
 \S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "",
   ylab = "", na.rm = TRUE, foo = function(x, y) FLQuants(SSB =
@@ -47,6 +47,9 @@
 \S4method{plot}{FLSR,missing}(x, y, ...)
 
 \S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
+
+\S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x)
+  n(x)[1, ], SSB = ssb), ...)
 
 \S4method{plot}{FLIndexBiomass,missing}(x, y, ...)
 }
@@ -122,11 +125,16 @@ plot.
 
 # or without them
  flq <- FLQuant(runif(200), dim=c(1,15))
- plot(flq) + geom_point(aes(x=year, y=data))
+ plot(flq) + geom_point(aes(x=date, y=data))
 
 # For an object with iter
  flq <- rlnorm(100, flq, 0.4)
- plot(flq) + geom_point(aes(x=year, y=data))
+ plot(flq) + geom_point(aes(x=date, y=data))
+
+# To plot(FLQuant) as in previous versions of ggplotFL
+plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
+  geom_flquantiles(probs=c(0.01), linetype=3, colour="red", alpha=0.1) +
+  geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
  # Plot an FLQuants created from ple4 FLStock
  data(ple4)
  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
@@ -147,18 +155,14 @@ plot.
  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
  plot(ple4, rps)
  
-
  # plot for FLStocks
  data(ple4)
  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
  plot(pls)
- 
-
  # plot for FLStocks
  data(ple4)
  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
  plot(pls)
- 
 
  # plot for FLSR
  data(nsher)

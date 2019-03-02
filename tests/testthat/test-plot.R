@@ -42,7 +42,7 @@ test_that("plot(FLQuant) works as expected", {
 
 # -- FLQuants
 
-# FLStock {{{
+# -- FLStock {{{
 test_that("plot(FLStock) works as expected", {
 
   expect_is(plot(ple4), "ggplot")
@@ -51,8 +51,4 @@ test_that("plot(FLStock) works as expected", {
 
 }) # }}}
 
-# FLStocks
-
-
-
-
+# -- FLStocks

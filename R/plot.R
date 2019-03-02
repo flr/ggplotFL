@@ -69,6 +69,11 @@
 #' # For an object with iter
 #'  flq <- rlnorm(100, flq, 0.4)
 #'  plot(flq) + geom_point(aes(x=date, y=data))
+#'
+#' # To plot(FLQuant) as in previous versions of ggplotFL
+#' plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
+#'   geom_flquantiles(probs=c(0.01), linetype=3, colour="red", alpha=0.1) +
+#'   geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
 	function(x, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL) {

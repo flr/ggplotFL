@@ -7,7 +7,7 @@
 \usage{
 geom_flquantiles(mapping = NULL, data = NULL, stat = "FLQuantiles",
   position = "identity", show.legend = NA, inherit.aes = TRUE,
-  na.rm = TRUE, probs = c(0.1, 0.5, 0.9), alpha = 0.5, ...)
+  na.rm = TRUE, probs = c(0.1, 0.9), alpha = 0.5, ...)
 
 stat_flquantiles(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = TRUE, show.legend = NA,
