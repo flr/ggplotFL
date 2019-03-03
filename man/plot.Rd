@@ -125,11 +125,11 @@ plot.
 
 # or without them
  flq <- FLQuant(runif(200), dim=c(1,15))
- plot(flq) + geom_point(aes(x=date, y=data))
+ plot(flq) + geom_point(aes(x=year, y=data))
 
 # For an object with iter
  flq <- rlnorm(100, flq, 0.4)
- plot(flq) + geom_point(aes(x=date, y=data))
+ plot(flq) + geom_point(aes(x=year, y=data))
 
 # To plot(FLQuant) as in previous versions of ggplotFL
 plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
