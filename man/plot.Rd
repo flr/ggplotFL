@@ -28,15 +28,17 @@
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
-\S4method{plot}{FLStock,missing}(x, y, ...)
+\S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb,
+  Catch = catch, F = fbar), ...)
 
-\S4method{plot}{FLStock,FLStock}(x, y, main = "", xlab = "",
-  ylab = "", ..., iter = NULL)
+\S4method{plot}{FLStock,FLStock}(x, y, probs = c(0.01, 0.1, 0.5, 0.9,
+  0.99), na.rm = TRUE, iter = NULL, ...)
 
-\S4method{plot}{FLStock,FLPar}(x, y, ...)
+\S4method{plot}{FLStock,FLPar}(x, y, metrics = list(Rec = rec, SSB = ssb,
+  Catch = catch, F = fbar), ...)
 
-\S4method{plot}{FLStocks,missing}(x, metrics = function(y) FLQuants(Rec =
-  rec(y), SSB = ssb(y), Catch = catch(y), F = fbar(y)), ...)
+\S4method{plot}{FLStocks,missing}(x, metrics = list(Rec = rec, SSB = ssb,
+  Catch = catch, F = fbar), ...)
 
 \S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "",
   ylab = "", na.rm = TRUE, foo = function(x, y) FLQuants(SSB =
@@ -54,27 +56,19 @@
 \S4method{plot}{FLIndexBiomass,missing}(x, y, ...)
 }
 \arguments{
-\item{x}{Variable on x axis.}
+\item{x}{FLR object to plot}
 
-\item{probs}{Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).}
+\item{probs}{Quantiles to be plotted if object has iters, defaults to c(0.05, 0.10, 0.50, 0.90, 0.95).}
 
 \item{na.rm}{Should NAs be deleted in quantile calculations?, defaults to TRUE.}
 
 \item{iter}{Individual iterations to show as worm plots over the quantiles.}
 
-\item{y}{Variable on y axis.}
+\item{y}{FLR object to plot}
 
 \item{...}{Other arguments to be passed to the corresponding ggplot call.}
 
-\item{main}{Title of plot.}
-
-\item{xlab}{Label of x axis.}
-
-\item{ylab}{Label of y axis.}
-
-\item{metrics}{function returning an FLQuants for each FLStock}
-
-\item{foo}{FlQuants computed from complex objects (e.g. FLStock)}
+\item{metrics}{FlQuants computed from complex objects (e.g. FLStock)}
 
 \item{legend_label}{function to create the legend labels}
 
@@ -82,9 +76,9 @@
 
 \item{fill}{Colour to be used for filling of quantile poligons, defaults to 'red'.}
 
-\item{colour}{Colour to be used for last quantile lines, defaults to fill.}
+\item{colour}{Colour to be used for quantile lines, defaults to fill.}
 
-\item{colour}{vector of colours to use for the quantile polygons}
+\item{metrics}{function returning an FLQuants for each FLStock}
 }
 \description{
 New basic plot methods for some FLR classes are defined in ggplotFL.
@@ -149,12 +143,10 @@ plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
 # plot of an FLStock
  data(ple4)
  plot(ple4)
-
- # plot for FLStock, FLPar
- data(ple4)
- rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
- plot(ple4, rps)
- 
+# plot for FLStock, FLPar
+data(ple4)
+rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
+plot(ple4, rps)
  # plot for FLStocks
  data(ple4)
  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
@@ -182,5 +174,5 @@ plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
 
 }
 \seealso{
-\code{\link{ISOdate}}\code{\link{ggplot}}
+\code{\link{ISOdate}} \code{\link{ggplot}}
 }

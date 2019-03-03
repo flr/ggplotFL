@@ -8,22 +8,23 @@
 
 # flpalette {{{
 
-#' A highly-contrasted palette to use in ggplotFL
-#'
+#' A high-contrast palette to use in ggplotFL
 #' 
 #' Plot methods defined in the ggplotFL package make use by default of a palette
 #' with a high contrast, useful to separate time series or categories. The palette
 #' consist of seven colours: red, blue, green, violet, orange, yellow and brown.
 #' This palette can be inspected at the [colorbrewe2.org site](http://colorbrewer2.org/?type=qualitative&scheme=Set1&n=7#type=qualitative&scheme=Set1&n=7).
 #'
-#' The palette is accessible as a named vector, *flpalette*, with the corresponding
-#' HEX codes. Two functions are also available to manipualte the palette. One to
-#' extract a subset of the palette, *flpalette_colours*, and another to create a
-#' gradation of colours between two or more of the palette colours, *flpalette_grads*.
+#' The palette is accessible as a named vector, *flpalette*. Two functions are
+#' also available to manipualte the palette. One to extract a subset of the
+#' palette, *flpalette_colours*, and another to create a gradation of colours
+#' between two or more of the palette colours, *flpalette_grads*.
 #'
 #' @param ... Elements to subset from palette, by name or position.
 #' @param palette Palette subset to create a gradual scale from, defaults to *flpalette*.
 #' @param reverse Should the palette be reversed, FALSE.
+#' @param discrete Is the palette to be applied to a discrete variable, TRUE.
+#' @param n Number of colours or individual colours to return, or number of colours to interpolate.
 #'
 #' @return A named vector of colors and HEX codes, or a function to obtain a gradient of colors fo a given length.
 #'
@@ -32,7 +33,7 @@
 #'
 #' @author The FLR Team
 #' @seealso \link{FLComp}
-#' @keywords classes
+#' @keywords color
 #' @examples
 #' # CHECK flpalette
 #'  flpalette
@@ -67,6 +68,27 @@ flpalette_grads <- function(palette = flpalette, reverse = FALSE, ...) {
 # }}}
 
 
+# scale_fill/colour_flr {{{
+
+#' High contrast discrete and continuous palettes
+#' 
+#' Discrete and continuous versions of the standard ggplotFL palette.
+#' See \link{flpalette} fo further details.
+#'
+#' @param palette Palette subset to create a gradual scale from, defaults to *flpalette*.
+#' @param discrete Is the palette to be applied to a discrete variable, TRUE.
+#' @param reverse Should the palette be reversed, FALSE.
+#' @param ... Other arguments to be passed to the scale functions
+#'
+#' @return A function.
+#'
+#' @name scale_fill_flr
+#' @rdname scale_fill_flr
+#'
+#' @author The FLR Team
+#' @seealso \link{flpalette}
+#' @keywords color
+
 scale_fill_flr <- function(palette = flpalette, discrete = TRUE, reverse = FALSE, ...) {
 
   if (discrete) {
@@ -77,6 +99,8 @@ scale_fill_flr <- function(palette = flpalette, discrete = TRUE, reverse = FALSE
   }
 }
 
+#' @rdname flpalette
+
 scale_colour_flr <- function(palette = flpalette, discrete = TRUE, reverse = FALSE, ...) {
 
   if (discrete) {
@@ -86,3 +110,5 @@ scale_colour_flr <- function(palette = flpalette, discrete = TRUE, reverse = FAL
     scale_colour_gradientn(colours = pal(256), ...)
   }
 }
+
+# }}}

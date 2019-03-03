@@ -5,7 +5,8 @@
 \alias{flpalette}
 \alias{flpalette_colours}
 \alias{flpalette_grads}
-\title{A highly-contrasted palette to use in ggplotFL}
+\alias{scale_colour_flr}
+\title{A high-contrast palette to use in ggplotFL}
 \format{An object of class \code{character} of length 7.}
 \usage{
 flpalette
@@ -13,13 +14,20 @@ flpalette
 flpalette_colours(n = length(flpalette))
 
 flpalette_grads(palette = flpalette, reverse = FALSE, ...)
+
+scale_colour_flr(palette = flpalette, discrete = TRUE,
+  reverse = FALSE, ...)
 }
 \arguments{
+\item{n}{Number of colours or individual colours to return, or number of colours to interpolate.}
+
 \item{palette}{Palette subset to create a gradual scale from, defaults to *flpalette*.}
 
 \item{reverse}{Should the palette be reversed, FALSE.}
 
 \item{...}{Elements to subset from palette, by name or position.}
+
+\item{discrete}{Is the palette to be applied to a discrete variable, TRUE.}
 }
 \value{
 A named vector of colors and HEX codes, or a function to obtain a gradient of colors fo a given length.
@@ -31,10 +39,10 @@ consist of seven colours: red, blue, green, violet, orange, yellow and brown.
 This palette can be inspected at the [colorbrewe2.org site](http://colorbrewer2.org/?type=qualitative&scheme=Set1&n=7#type=qualitative&scheme=Set1&n=7).
 }
 \details{
-The palette is accessible as a named vector, *flpalette*, with the corresponding
-HEX codes. Two functions are also available to manipualte the palette. One to
-extract a subset of the palette, *flpalette_colours*, and another to create a
-gradation of colours between two or more of the palette colours, *flpalette_grads*.
+The palette is accessible as a named vector, *flpalette*. Two functions are
+also available to manipualte the palette. One to extract a subset of the
+palette, *flpalette_colours*, and another to create a gradation of colours
+between two or more of the palette colours, *flpalette_grads*.
 }
 \examples{
 # CHECK flpalette
@@ -50,4 +58,4 @@ flpalette_grads(flpalette_colours(3))(20)
 \author{
 The FLR Team
 }
-\keyword{classes}
+\keyword{color}

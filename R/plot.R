@@ -26,22 +26,19 @@
 #' examples below on how to refer to these variables when adding elements to the
 #' plot.
 #'
-#' @param x Variable on x axis.
-#' @param y Variable on y axis.
-#' @param main Title of plot.
-#' @param xlab Label of x axis.
-#' @param ylab Label of y axis.
+#' @param x FLR object to plot
+#' @param y FLR object to plot
 #' @param na.rm Should NAs be deleted in quantile calculations?, defaults to TRUE.
-#' @param probs Quantiles to be plotted if object has iters, defaults to c(0.10, 0.25, 0.50, 0.75, 0.90).
+#' @param probs Quantiles to be plotted if object has iters, defaults to c(0.05, 0.10, 0.50, 0.90, 0.95).
 #' @param type Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.
 #' @param fill Colour to be used for filling of quantile poligons, defaults to 'red'.
-#' @param colour Colour to be used for last quantile lines, defaults to fill.
+#' @param colour Colour to be used for quantile lines, defaults to fill.
 #' @param ... Other arguments to be passed to the corresponding ggplot call.
-#' @param foo FlQuants computed from complex objects (e.g. FLStock)
+#' @param metrics FlQuants computed from complex objects (e.g. FLStock)
 #' @param iter Individual iterations to show as worm plots over the quantiles.
 #'
 #' @aliases plot,FLQuant,missing-method
-#' @seealso \code{\link{ISOdate}}\code{\link{ggplot}} 
+#' @seealso \code{\link{ISOdate}} \code{\link{ggplot}} 
 #' @docType methods
 #' @rdname plot
 #' @name ggplotFL plot methods
@@ -218,40 +215,39 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 
 #' @aliases plot,FLStock,missing-method
 #' @rdname plot
-#' @param colour vector of colours to use for the quantile polygons
 #' @examples
 #' # plot of an FLStock
 #'  data(ple4)
 #'  plot(ple4)
 
 setMethod("plot", signature(x="FLStock", y="missing"),
-	function(x, ...) {
- 
-    mets <- metrics(x)
+	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), ...) {
+    
+    metrics <- metrics(x, metrics=metrics)
 
     # HACK for F units
-    if("F" %in% names(mets))
-      units(mets$F) <- paste0(range(x, c("minfbar", "maxfbar")), collapse="-")
+    if("F" %in% names(metrics))
+      units(metrics$F) <- paste0(range(x, c("minfbar", "maxfbar")), collapse="-")
   
     # ADAPT for 2-sex model
-    if(all(dimnames(mets$SSB)$unit %in% c("F", "M"))) {
+    if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
 
       # DROP M ssb if missing
-      mets$SSB <- mets$SSB[,,'F'] + mets$SSB[,,'M']
+      metrics$SSB <- metrics$SSB[,,'F'] + metrics$SSB[,,'M']
 
       # SUM rec across units
-      mets$Rec <- unitSums(mets$Rec)
+      metrics$Rec <- unitSums(metrics$Rec)
     }
 
     # ADAPT for seasonal recruitment
-    if(dim(mets$Rec)[4] > 1) {
-      mets$Rec[mets$Rec == 0] <- NA 
+    if(dim(metrics$Rec)[4] > 1) {
+      metrics$Rec[metrics$Rec == 0] <- NA 
     }
 
-    p <- plot(mets, ...)
+    p <- plot(metrics, ...)
   
     # ADD legend if 2 sexes  
-    if(all(dimnames(mets$SSB)$unit %in% c("F", "M"))) {
+    if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
       return(p +
         theme(legend.position="bottom", legend.key=element_blank()) +
         labs(color="Sex") +
@@ -271,7 +267,7 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 #' @rdname plot
 
 setMethod("plot", signature(x="FLStock", y="FLStock"),
-	function(x, y, main="", xlab="", ylab="", ..., iter=NULL) {
+	function(x, y, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL, ...) {
 
     args <- list(...)
 
@@ -279,28 +275,26 @@ setMethod("plot", signature(x="FLStock", y="FLStock"),
 
     names(sts) <- unlist(lapply(sts, name))
 
-    p <- plot(sts, iter=NULL)
+    p <- plot(sts, probs=probs, na.rm=na.rm, iter=iter)
 
 		return(p)
 	}
 ) # }}}
 
 # plot(FLStock, FLPar) {{{
+
 #' @aliases plot,FLStock,FLPar-method
 #' @rdname plot
 #' @examples
-#'
-#'  # plot for FLStock, FLPar
-#'  data(ple4)
-#'  rps <- FLPar(Harvest=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
-#'  plot(ple4, rps)
-#'  
+#' # plot for FLStock, FLPar
+#' data(ple4)
+#' rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
+#' plot(ple4, rps)
 
 setMethod("plot", signature(x="FLStock", y="FLPar"),
-	function(x, y, ...) {
+	function(x, y, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), ...) {
 	
-    p <- plot(metrics(x), y)
-
+    p <- plot(metrics(x, metrics=metrics), y, ...)
     return(p)
 	}
 ) # }}}
@@ -317,8 +311,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #'  plot(pls)
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
-	function(x, metrics=function(y) FLQuants(Rec=rec(y), SSB=ssb(y), Catch=catch(y),
-    F=fbar(y)), ...) {
+	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), ...) {
 	
 		# CHECK names not repeated
 		dup <- duplicated(names(x))
@@ -333,7 +326,8 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
     # HACK for F units
     if("F" %in% names(fqs[[1]]))
       fqs <- lapply(fqs, function(fq) {
-        units(fq$F) <- paste0(range(x[[1]], c("minfbar", "maxfbar")), collapse="-")
+        units(fq$F) <- paste0(range(x[[1]],
+          c("minfbar", "maxfbar")), collapse="-")
         return(fq)
     })
 
@@ -448,7 +442,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 setMethod("plot", signature(x="FLStock", y="FLStocks"),
 	function(x, y, ...) {
     
-    plot(FLStocks(c(x, y)))
+    plot(FLStocks(c(x, y)), ...)
     
 	}
 ) # }}}
