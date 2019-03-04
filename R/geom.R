@@ -100,11 +100,11 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
     grid <- as.data.frame(do.call("rbind",
       as.list(tapply(data$y, data$x, quantile, probs=probs))))
 
+    grid$x <- as.numeric(rownames(grid))
     grid$PANEL <- unique(data$PANEL)
     grid$group <- unique(data$group)
     grid$colour <- unique(data$colour)
     grid$fill <- unique(data$fill)
-    grid$x <- unique(data$x)
 
     if(length(probs) == 1) {
       grid$y <- grid[,1]

@@ -29,7 +29,7 @@
 #' @param x FLR object to plot
 #' @param y FLR object to plot
 #' @param na.rm Should NAs be deleted in quantile calculations?, defaults to TRUE.
-#' @param probs Quantiles to be plotted if object has iters, defaults to c(0.05, 0.10, 0.50, 0.90, 0.95).
+#' @param probs Quantiles to be plotted if object has iters, defaults to c(0.10, 0.33, 0.50, 0.66, 0.90).
 #' @param type Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.
 #' @param fill Colour to be used for filling of quantile poligons, defaults to 'red'.
 #' @param colour Colour to be used for quantile lines, defaults to fill.
@@ -52,8 +52,8 @@
 #'  flq <- rnorm(100, catch(ple4), 60000)
 #'  plot(flq)
 #'
-#'  # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
-#'  plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
+#'  # Specify quantiles, default is c(0.10, 0.33, 0.50, 0.66, 0.90)
+#'  plot(flq, probs=c(0.05, 0.25, 0.50, 0.75, 0.95))
 #'
 #'  # Adding extra elements to an FLQuant plot, with seasons
 #'  flq <- FLQuant(runif(200), dim=c(1,15,1,4))
@@ -73,7 +73,7 @@
 #'   geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL) {
+	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL) {
 
     # GET base plot from plot(FLQuants)
     p <- plot(FLQuants(x), probs=probs, na.rm=na.rm, iter=iter)
@@ -108,7 +108,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL) {
+	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL) {
 
 		# CHECK probs length is odd
 		if(is.integer(length(probs)/2))
@@ -267,7 +267,7 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 #' @rdname plot
 
 setMethod("plot", signature(x="FLStock", y="FLStock"),
-	function(x, y, probs=c(0.01, 0.10, 0.50, 0.90, 0.99), na.rm=TRUE, iter=NULL, ...) {
+	function(x, y, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL, ...) {
 
     args <- list(...)
 

@@ -20,19 +20,19 @@
 \alias{plot,FLIndexBiomass,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
-\S4method{plot}{FLQuant,missing}(x, probs = c(0.01, 0.1, 0.5, 0.9, 0.99),
+\S4method{plot}{FLQuant,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
   na.rm = TRUE, iter = NULL)
 
-\S4method{plot}{FLQuants,missing}(x, probs = c(0.01, 0.1, 0.5, 0.9,
-  0.99), na.rm = TRUE, iter = NULL)
+\S4method{plot}{FLQuants,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66,
+  0.9), na.rm = TRUE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
 \S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb,
   Catch = catch, F = fbar), ...)
 
-\S4method{plot}{FLStock,FLStock}(x, y, probs = c(0.01, 0.1, 0.5, 0.9,
-  0.99), na.rm = TRUE, iter = NULL, ...)
+\S4method{plot}{FLStock,FLStock}(x, y, probs = c(0.1, 0.33, 0.5, 0.66,
+  0.9), na.rm = TRUE, iter = NULL, ...)
 
 \S4method{plot}{FLStock,FLPar}(x, y, metrics = list(Rec = rec, SSB = ssb,
   Catch = catch, F = fbar), ...)
@@ -58,7 +58,7 @@
 \arguments{
 \item{x}{FLR object to plot}
 
-\item{probs}{Quantiles to be plotted if object has iters, defaults to c(0.05, 0.10, 0.50, 0.90, 0.95).}
+\item{probs}{Quantiles to be plotted if object has iters, defaults to c(0.10, 0.33, 0.50, 0.66, 0.90).}
 
 \item{na.rm}{Should NAs be deleted in quantile calculations?, defaults to TRUE.}
 
@@ -110,8 +110,8 @@ plot.
  flq <- rnorm(100, catch(ple4), 60000)
  plot(flq)
 
- # Specify quantiles, default is c(0.10, 0.25, 0.50, 0.75, 0.90)
- plot(flq, probs=c(0.05, 0.40, 0.50, 0.60, 0.95))
+ # Specify quantiles, default is c(0.10, 0.33, 0.50, 0.66, 0.90)
+ plot(flq, probs=c(0.05, 0.25, 0.50, 0.75, 0.95))
 
  # Adding extra elements to an FLQuant plot, with seasons
  flq <- FLQuant(runif(200), dim=c(1,15,1,4))
