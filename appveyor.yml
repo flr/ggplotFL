@@ -23,6 +23,18 @@ environment:
   matrix:
   - R_VERSION: release
 
+cache:
+  - C:\RLibrary
+  - C:\Program Files (x86)\Pandoc\
+
+before_test:
+  - ps: >-
+      if (-Not (Test-Path "C:\Program Files (x86)\Pandoc\")) {
+        cinst pandoc
+      }
+  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+  - pandoc -v
+
 build_script:
   - travis-tool.sh install_deps
 
