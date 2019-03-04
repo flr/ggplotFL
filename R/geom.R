@@ -57,8 +57,8 @@
 #'   facet_grid(qname~.)
 
 geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
-  position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = TRUE,
-  probs=c(0.10, 0.90), alpha=0.5, ...) {
+  position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = FALSE,
+  probs=c(0.10, 0.50, 0.90), alpha=0.5, ...) {
 
   list(
 
@@ -95,10 +95,10 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
 StatFLQuantiles <- ggproto("StatFLQuantiles", Stat, 
   required_aes = c("x", "y"),
   
-  compute_group = function(data, scales, probs=c(0.10, 0.90)) {
-
+  compute_group = function(data, scales, probs=c(0.10, 0.50, 0.90), na.rm=TRUE) {
+    
     grid <- as.data.frame(do.call("rbind",
-      as.list(tapply(data$y, data$x, quantile, probs=probs))))
+      as.list(tapply(data$y, data$x, quantile, na.rm=TRUE, probs=probs))))
 
     grid$x <- as.numeric(rownames(grid))
     grid$PANEL <- unique(data$PANEL)
@@ -155,10 +155,10 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
 stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = TRUE, show.legend = NA, 
   inherit.aes = TRUE, ...) {
-  
+
   layer(
     stat = StatFLQuantiles, data = data, mapping = mapping, geom = geom, 
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
+    params = list(na.rm = TRUE, ...)
   )
 } # }}}

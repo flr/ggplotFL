@@ -47,3 +47,10 @@ plot(rnorm(300, expand(catch.n(ple4sex)[1:3,], area=1:3), 100000))
 
 dev.off()
 # }}}
+
+
+data("ple4")
+stkn <- ple4@stock.n
+stkn[1,] <- NA
+stkn[,ac(1981:2015)] <- NA
+plot(stkn)

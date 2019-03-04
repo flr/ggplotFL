@@ -73,7 +73,7 @@
 #'   geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL) {
+	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=FALSE, iter=NULL) {
 
     # GET base plot from plot(FLQuants)
     p <- plot(FLQuants(x), probs=probs, na.rm=na.rm, iter=iter)
@@ -108,7 +108,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL) {
+	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=FALSE, iter=NULL) {
 
 		# CHECK probs length is odd
 		if(is.integer(length(probs)/2))
@@ -122,18 +122,29 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 
     # USE year or date for x axis
     xvar <- sym(ifelse(mds[4] == 1, "year", "date"))
-     
-    # PLOT central ribbon and line by unit
-		p <- if(mds[3] == 1) {
+    
+    if(mds[6] == 1) {
+      # NO ITERS? PLOT central line by unit
+      p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit)) +
-          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
-            na.rm=na.rm)
+          geom_line(na.rm=na.rm)
     } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-          geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
-            na.rm=na.rm)
+          geom_line(na.rm=na.rm)
       }
-
+    } else {
+      # ITERS? PLOT central ribbon and line by unit
+  		p <- if(mds[3] == 1) {
+          ggplot(x, aes(x=!!xvar, y=data, fill=unit)) +
+            geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
+              na.rm=na.rm)
+      } else {
+          ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
+            geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
+              na.rm=na.rm)
+      }
+    }
+    
     # PLOT other ribbons, if any
     if(length(probs) > 3 & mds[6] > 1) {
       geoms <- lapply(seq((length(probs)-3)/2), function(x) {
@@ -143,11 +154,10 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     }
      
     # SHOW NAs in x axis, only if no iters
-		if(mds[6] == 1) {
-      if(sum(is.na(x)) > 0) {
-        p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
-          data=subset(p$data, is.na(data)))
-      }
+		if(mds[6] == 1 & na.rm == FALSE) {
+        if(any(is.na(p$data)))
+          p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
+            data=subset(p$data, is.na(data)))
     }
 
     # PLOT iter worms
@@ -157,14 +167,15 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     }
 
     # BUILD facet formula
-		ldi <- c("qname", names(x[[1]])[-c(2,3,4,6)][mds[-c(2,3,4,6)] > 1])
-		if(length(ldi) == 1) {
-			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
-				labeller=label_flqs(x))
+    ldi <- c("qname", names(x[[1]])[-c(2,3,4,6)][mds[-c(2,3,4,6)] > 1])
+    
+    if(length(ldi) == 1) {
+  			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 
+	  			labeller=label_flqs(x))
 		}
 		else if (length(ldi) > 1) {
-			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
-        collapse= "+"))), scales="free", labeller=label_flqs(x))
+			  p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
+          collapse= "+"))), scales="free", labeller=label_flqs(x))
 		}
 
     # ASSEMBLE plot 

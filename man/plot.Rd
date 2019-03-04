@@ -21,10 +21,10 @@
 \title{ggplot versions of FLR class plot() methods}
 \usage{
 \S4method{plot}{FLQuant,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
-  na.rm = TRUE, iter = NULL)
+  na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuants,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66,
-  0.9), na.rm = TRUE, iter = NULL)
+  0.9), na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
