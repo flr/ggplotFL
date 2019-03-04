@@ -31,13 +31,15 @@ test_that("plot(FLQuant) works as expected", {
   expect_is(plot(expand(catch(ple4sex), area=1:3)), "ggplot")
   
   # dim c(1, 61, 2, 1, 2, 300)
-  expect_is(plot(rnorm(300, expand(catch(ple4sex), area=1:3), 100000)), "ggplot")
+  expect_is(plot(rnorm(300, expand(catch(ple4sex), area=1:3), 1e5)), "ggplot")
   
   # dim c(3, 61, 2, 1, 2, 1)
   expect_is(plot(expand(catch.n(ple4sex)[1:3,], area=1:3)), "ggplot")
   
   # dim c(3, 61, 2, 1, 2, 300)
-  expect_is(plot(rnorm(300, expand(catch.n(ple4sex)[1:3,], area=1:3), 100000)), "ggplot")
+  expect_is(plot(rnorm(300, expand(catch.n(ple4sex)[1:3,], area=1:3),
+    1e5)), "ggplot")
+
 }) # }}}
 
 # -- FLQuants
