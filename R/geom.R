@@ -106,6 +106,7 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
     grid$colour <- unique(data$colour)
     grid$fill <- unique(data$fill)
 
+    # TODO Output to vary with stat_flquantiles$geom, not probs
     if(length(probs) == 1) {
       grid$y <- grid[,1]
     } else if(length(probs) == 2) {

@@ -67,7 +67,6 @@ flpalette_grads <- function(palette = flpalette, reverse = FALSE, ...) {
 }
 # }}}
 
-
 # scale_fill/colour_flr {{{
 
 #' High contrast discrete and continuous palettes
