@@ -126,7 +126,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     if(mds[6] == 1) {
       # NO ITERS? PLOT central line by unit
       p <- if(mds[3] == 1) {
-        ggplot(x, aes(x=!!xvar, y=data, fill=unit)) +
+        ggplot(x, aes(x=!!xvar, y=data)) +
           geom_line(na.rm=na.rm)
     } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
@@ -135,7 +135,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     } else {
       # ITERS? PLOT central ribbon and line by unit
   		p <- if(mds[3] == 1) {
-          ggplot(x, aes(x=!!xvar, y=data, fill=unit)) +
+          ggplot(x, aes(x=!!xvar, y=data, fill=flpalette[1])) +
             geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
               na.rm=na.rm)
       } else {
@@ -255,7 +255,7 @@ setMethod("plot", signature(x="FLStock", y="missing"),
       metrics$Rec[metrics$Rec == 0] <- NA 
     }
 
-    p <- plot(metrics, ...)
+    p <- plot(metrics, ...) + ylim(c(0, NA))
   
     # ADD legend if 2 sexes  
     if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
