@@ -606,13 +606,46 @@ setMethod("plot", signature(x="FLBiol", y="missing"),
 
     flqs <- metrics(x, metrics)
 
-    p <- plot(flqs)
+    p <- plot(flqs) + ylim(c(0,NA))
 
     # TODO ADD SRR
     
     # TODO ADD mat, fec, m, wt by age
 
     return(p)
+  }
+) # }}}
+
+# plot(FLBiols) {{{
+
+#' @aliases plot,FLBiols,missing-method
+#' @docType methods
+#' @rdname plot
+setMethod("plot", signature(x="FLBiols", y="missing"),
+  function(x, metrics=list(Rec=function(x) n(x)[1,], SSB=ssb), ...) {
+
+    fqs <- lapply(x, function(x) metrics(x, metrics))
+    
+    # GET labels
+    labeller <- label_flqs(fqs[[1]])
+
+    dfs <- lapply(fqs, as.data.frame, date=TRUE, units=TRUE)
+
+    data <- do.call("rbind", c(mapply(`[<-`, dfs, "biol", value=names(mets),
+      SIMPLIFY=FALSE), list(make.row.names = FALSE)))
+
+    # PLOT using geom_flquantiles
+    p <- ggplot(data, aes(x=date, y=data, fill=biol, colour=biol)) + 
+      facet_grid(qname~., labeller=labeller, scales="free_y") +
+      geom_flquantiles() + xlab("") + ylab("") +
+			# SET limits to include 0
+			expand_limits(y=0) +
+      # SET legend with no title
+      theme(legend.title = element_blank()) +
+      # and only with lines and no title
+      guides(fill = FALSE)
+		
+		return(p)
   }
 ) # }}}
 
