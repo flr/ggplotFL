@@ -100,10 +100,20 @@ modlabel <- function(model, param) {
 #' @seealso \link[ggplot2]{labeller}
 #' @keywords dplot
 
-label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
+label_flqs <- function(x, ...) {
 		
+    # GET named vector of uoms
     units <- unlist(lapply(lapply(x, units), paste, collapse=" "))
 
+    return(format_label_flqs(units, names(x), ...))
+
+} # }}}
+
+# format_label_flqs {{{
+
+format_label_flqs <- function(units, names, 
+  drop=c("NA", "NC", "m", "f", "z", "prop")) {
+		
     # DROP certain units
     units[units %in% drop] <- ""
     
@@ -122,7 +132,7 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
     idx <- units != ""
     units[idx] <- paste0("~(", units[idx], ")")
     
-    units[] <- paste0("`", names(units), "`", as.expression(units))
+    units[] <- paste0("`", names, "`", as.expression(units))
 
     return(as_labeller(units, label_parsed))
 } # }}}
