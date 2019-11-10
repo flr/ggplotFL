@@ -354,12 +354,15 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
     # RBIND dfs
 		data <- do.call(rbind, data)
 		rownames(data) <- NULL
+
+    # USE year or date for x axis
+    xvar <- sym(ifelse(length(unique(data$season)) == 1, "year", "date"))
 		
     # ADD stock names
 		data <- transform(data, stock=stk)
 
     # PLOT using geom_flquantiles
-    p <- ggplot(data, aes(x=date, y=data, fill=stock, colour=stock)) + 
+    p <- ggplot(data, aes(x=!!xvar, y=data, fill=stock, colour=stock)) + 
       facet_grid(qname~., labeller=labeller, scales="free_y") +
       geom_flquantiles() + xlab("") + ylab("") +
 			# SET limits to include 0
@@ -631,11 +634,14 @@ setMethod("plot", signature(x="FLBiols", y="missing"),
 
     dfs <- lapply(fqs, as.data.frame, date=TRUE, units=TRUE)
 
-    data <- do.call("rbind", c(mapply(`[<-`, dfs, "biol", value=names(mets),
+    data <- do.call("rbind", c(mapply(`[<-`, dfs, "biol", value=names(fqs),
       SIMPLIFY=FALSE), list(make.row.names = FALSE)))
-
+    
+    # USE year or date for x axis
+    xvar <- sym(ifelse(length(unique(data$season)) == 1, "year", "date"))
+    
     # PLOT using geom_flquantiles
-    p <- ggplot(data, aes(x=date, y=data, fill=biol, colour=biol)) + 
+    p <- ggplot(data, aes(x=!!xvar, y=data, fill=.data$biol, colour=.data$biol)) + 
       facet_grid(qname~., labeller=labeller, scales="free_y") +
       geom_flquantiles() + xlab("") + ylab("") +
 			# SET limits to include 0

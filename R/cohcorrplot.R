@@ -50,8 +50,8 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 	  		names(d1) <- c("x","y")
 		  	c1 <- round(with(na.omit(d1),cor(x,y)),2)
 			  c2[za] <- c1
-  			pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(c1)), aes(x,y)) +
-	  		geom_text(aes(label = text)) +
+  			pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(c1)), aes(.data$x,.data$y)) +
+	  		geom_text(aes(label = .data$text)) +
 		  		theme(axis.title=element_blank(),
         			axis.text=element_blank(),
         			axis.ticks=element_blank(),
@@ -61,8 +61,8 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 		  }
 	  }
 
-  	pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(coh)), aes(x,y)) +
-	    geom_text(aes(label = text)) +
+  	pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(coh)), aes(.data$x,.data$y)) +
+	    geom_text(aes(label = .data$text)) +
 		  theme(axis.title=element_blank(),
         		axis.text=element_blank(),
         		axis.ticks=element_blank(),
@@ -80,7 +80,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 			  c2[za] <- with(na.omit(d1),cor(x,y))
 
         d1$za <- za
-        pL[[za]] <- ggplot(data = na.omit(d1), aes(x = x, y = y)) +
+        pL[[za]] <- ggplot(data = na.omit(d1), aes(x=.data$x, y=.data$y)) +
 		  		scale_fill_gradient2(low="blue", mid = "white", high="red",
 					limits=c(-1,1), guide = FALSE) +
 			  	geom_rect(aes(fill = c2[za]),xmin = -Inf,xmax = Inf,
