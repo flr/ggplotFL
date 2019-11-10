@@ -69,7 +69,7 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     data = data,
     stat = stat,
     position = position,
-    show.legend = show.legend,
+    show.legend = FALSE,
     inherit.aes = inherit.aes,
     params = list(probs=probs[c(1, length(probs))], alpha=alpha, ...)
   ),
