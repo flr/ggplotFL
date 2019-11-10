@@ -9,6 +9,8 @@ importFrom("stats",
   "na.omit")
 importFrom("utils",
   "data")
+importFrom("rlang",
+  ".data")
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")
