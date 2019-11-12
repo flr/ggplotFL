@@ -17,6 +17,7 @@
 \alias{plot,FLSRs,ANY-method}
 \alias{plot,FLSRs,missing-method}
 \alias{plot,FLBiol,missing-method}
+\alias{plot,FLBiols,missing-method}
 \alias{plot,FLIndexBiomass,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
@@ -51,6 +52,9 @@
 \S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
 
 \S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x)
+  n(x)[1, ], SSB = ssb), ...)
+
+\S4method{plot}{FLBiols,missing}(x, metrics = list(Rec = function(x)
   n(x)[1, ], SSB = ssb), ...)
 
 \S4method{plot}{FLIndexBiomass,missing}(x, y, ...)
