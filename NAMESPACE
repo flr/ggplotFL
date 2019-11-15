@@ -21,6 +21,7 @@ importFrom("scales",
 exportMethods(
   "%+%",
   "ggplot",
+  "cohcorrplot",
   "plot")
 export(
   "eqlabel",
