@@ -359,7 +359,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
     xvar <- sym(ifelse(length(unique(data$season)) == 1, "year", "date"))
 		
     # ADD stock names
-		data <- transform(data, stock=stk)
+		data <- transform(data, stock=factor(stk, levels=names(x)))
 
     # PLOT using geom_flquantiles
     p <- ggplot(data, aes(x=!!xvar, y=data, fill=stock, colour=stock)) + 
