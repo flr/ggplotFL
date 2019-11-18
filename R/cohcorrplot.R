@@ -17,6 +17,7 @@ setGeneric("cohcorrplot", function(x, ...)
 #' cohcorrplot(FLCohort(stock.n(ple4)))
 
 
+# {{{
 
 setMethod("cohcorrplot", signature(x="FLCohort"),
   function(x) {
@@ -51,7 +52,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 		  	c1 <- round(with(na.omit(d1),cor(x,y)),2)
 			  c2[za] <- c1
   			pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(c1)), aes(.data$x,.data$y)) +
-	  		geom_text(aes(label = .data$text)) +
+	  		geom_text(aes(label = .data$text), size=10) +
 		  		theme(axis.title=element_blank(),
         			axis.text=element_blank(),
         			axis.ticks=element_blank(),
@@ -62,7 +63,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 	  }
 
   	pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(coh)), aes(.data$x,.data$y)) +
-	    geom_text(aes(label = .data$text)) +
+	    geom_text(aes(label = .data$text), size=16) +
 		  theme(axis.title=element_blank(),
         		axis.text=element_blank(),
         		axis.ticks=element_blank(),
@@ -96,5 +97,10 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 	}
 }
 
+margin = theme(plot.margin = unit(c(0.01,0.01,0.01,0.01), "cm"))
+
+pL <- lapply(pL, "+", margin)
+
 do.call("grid.arrange", c(pL, ncol =(max(flc$age))))
-})
+}
+) # }}}
