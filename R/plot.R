@@ -136,19 +136,20 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       # ITERS? PLOT central ribbon and line by unit
   		p <- if(mds[3] == 1) {
           ggplot(x, aes(x=!!xvar, y=data, fill=flpalette[1])) +
-            geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
-              na.rm=na.rm)
+            geom_flquantiles(aes(alpha=0.3),
+              probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       } else {
           ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-            geom_flquantiles(aes(alpha=0.3), probs=probs[seq(idx - 1, idx + 1)],
-              na.rm=na.rm)
+            geom_flquantiles(aes(alpha=0.3),
+              probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       }
     }
     
     # PLOT other ribbons, if any
     if(length(probs) > 3 & mds[6] > 1) {
       geoms <- lapply(seq((length(probs)-3)/2), function(x) {
-        geom_flquantiles(probs=probs[seq(idx - x - 1, idx + x + 1)], alpha=0.2)
+        geom_flquantiles(probs=probs[seq(idx - x - 1, idx + x + 1)],
+          alpha=0.2)
       })
       p <- p + geoms
     }
@@ -238,26 +239,32 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 
     # HACK for F units
     if("F" %in% names(metrics))
-      units(metrics$F) <- paste0(range(x, c("minfbar", "maxfbar")), collapse="-")
+      units(metrics$F) <- paste0(range(x, c("minfbar", "maxfbar")),
+        collapse="-")
   
     # ADAPT for 2-sex model
+    if("SSB" %in% names(metrics))
     if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
 
       # DROP M ssb if missing
       metrics$SSB <- metrics$SSB[,,'F'] + metrics$SSB[,,'M']
 
       # SUM rec across units
+      if("Rec" %in% names(metrics))
       metrics$Rec <- unitSums(metrics$Rec)
     }
 
     # ADAPT for seasonal recruitment
-    if(dim(metrics$Rec)[4] > 1) {
-      metrics$Rec[metrics$Rec == 0] <- NA 
+    if("Rec" %in% names(metrics)) {
+      if(dim(metrics$Rec)[4] > 1) {
+        metrics$Rec[metrics$Rec == 0] <- NA 
+      }
     }
 
     p <- plot(metrics, ...) + ylim(c(0, NA))
   
     # ADD legend if 2 sexes  
+    if("SSB" %in% names(metrics))
     if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
       return(p +
         theme(legend.position="bottom", legend.key=element_blank()) +
@@ -322,7 +329,8 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #'  plot(pls)
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
-	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), ...) {
+	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
+    probs=c(0.10, 0.33, 0.50, 0.66, 0.90), alpha=c(0.10, 0.40), ...) {
 	
 		# CHECK names not repeated
 		dup <- duplicated(names(x))
@@ -360,11 +368,19 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		
     # ADD stock names
 		data <- transform(data, stock=factor(stk, levels=names(x)))
-
+    
     # PLOT using geom_flquantiles
     p <- ggplot(data, aes(x=!!xvar, y=data, fill=stock, colour=stock)) + 
       facet_grid(qname~., labeller=labeller, scales="free_y") +
-      geom_flquantiles() + xlab("") + ylab("") +
+      # outer quantile
+      geom_flquantiles(probs=probs[c(1, 5)], alpha=alpha[1],
+        colour="white") +
+      # inner quantile
+      geom_flquantiles(probs=probs[c(2, 4)], alpha=alpha[2],
+        colour="white") +
+      # median
+      geom_flquantiles(probs=probs[3], alpha=1) +
+      xlab("") + ylab("") +
 			# SET limits to include 0
 			expand_limits(y=0) +
       # SET legend with no title

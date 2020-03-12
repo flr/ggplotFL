@@ -11,6 +11,8 @@ importFrom("utils",
   "data")
 importFrom("rlang",
   ".data")
+importFrom("grid",
+  "grid.draw")
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")

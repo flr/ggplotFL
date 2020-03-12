@@ -98,7 +98,6 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 }
 
 margin = theme(plot.margin = unit(c(0.01,0.01,0.01,0.01), "cm"))
-
 pL <- lapply(pL, "+", margin)
 
 do.call("grid.arrange", c(pL, ncol =(max(flc$age))))
