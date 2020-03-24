@@ -223,6 +223,85 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 	}
 ) # }}}
 
+# plot(FLQuantPoint) {{{
+
+setMethod("plot", signature(x="FLQuantPoint", y="missing"),
+	function(x, na.rm=FALSE, iter=NULL) {
+
+    # BASE plot 
+    p <- ggplot(x, aes(x=date))
+   
+    # ITERS to add
+    if(!all(is.na(p$data$median)))
+       p <- p + geom_line(aes(y=median))
+
+    if(!all(is.na(p$data$mean)))
+       p <- p + geom_line(aes(y=mean))
+
+    if(!all(is.na(p$data[, c("lowq", "uppq")])))
+      p <- p + geom_ribbon(aes(ymin=lowq, ymax=uppq), colour="gray",
+        alpha=0.20, linetype=2)
+
+    # PARSE dimensions > 1 for new facets
+    ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
+
+    # PLOT(FLQuants(x)) & reset facets
+		if(length(ldi) == 0) {
+      p <- p + theme(strip.text.y = element_blank())
+    }
+		else if(length(ldi) == 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free",
+        labeller=label_both)
+		}
+		else if (length(ldi) > 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
+        collapse= "+"))), scales="free", labeller=label_both)
+		}
+
+    # ASSEMBLE plot 
+    p <- p + xlab("") + ylab("")
+
+    return(p)
+  })
+# }}}
+
+# plot(FLQuantPoint, FLQuants) {{{
+
+setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
+	function(x, y, na.rm=FALSE, iter=NULL) {
+
+    # PLOT FLQuantPoint
+    p <- plot(x)
+
+    # EXTRACT FLQuants
+    dat <- as.data.frame(y, drop=TRUE, date=TRUE)
+
+    # ADD FLQuants as lines
+    p <- p + geom_line(data=dat, aes(x=date, y=data, colour=qname))
+
+    # PARSE dimensions > 1 for new facets
+    ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
+
+    # PLOT(FLQuants(x)) & reset facets
+		if(length(ldi) == 0) {
+      p <- p + theme(strip.text.y = element_blank())
+    }
+		else if(length(ldi) == 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free",
+        labeller=label_both)
+		}
+		else if (length(ldi) > 1) {
+			p <- p + facet_grid(as.formula(paste0(ldi[1], "~", paste(ldi[-1],
+        collapse= "+"))), scales="free", labeller=label_both)
+		}
+
+    # ASSEMBLE plot 
+    p <- p + xlab("") + ylab("") + theme(legend.position="none")
+
+    return(p)
+  })
+# }}}
+
 # plot(FLStock) {{{
 
 #' @aliases plot,FLStock,missing-method
