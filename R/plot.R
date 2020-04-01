@@ -135,7 +135,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     } else {
       # ITERS? PLOT central ribbon and line by unit
   		p <- if(mds[3] == 1) {
-          ggplot(x, aes(x=!!xvar, y=data, fill=flpalette[1])) +
+          ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
             geom_flquantiles(aes(alpha=0.3),
               probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       } else {
@@ -348,12 +348,11 @@ setMethod("plot", signature(x="FLStock", y="missing"),
       return(p +
         theme(legend.position="bottom", legend.key=element_blank()) +
         labs(color="Sex") +
-        scale_color_manual(name="Gender",
+        scale_color_manual(name="", 
           labels=c("Both", "F", "M"),
-          values=c("unique"=flpalette[1], "F"=flpalette[2], "M"=flpalette[3]))
+          values=flpalette_colours(3))
       )
     }
-
 		return(p)
 	}
 ) # }}}
