@@ -1,9 +1,17 @@
- ggplot 2.6.6
+ ggplotFL 2.6.8
+
+ NEW FEATURES
+- New plot(FLindex) and plot(FLIndices) methods. They will both plot the @index
+  slot, faceted by age. In thr second case, indices will be standardized.
+
+- New plot(FLQuanPoint) and plot(FLQuantPoint, FLQuants) methods.
+
+ ggplotFL 2.6.6
 
  USER-VISIBLE CHANGES 
 - Label for F in plot(FLStock) now includes age-range used by fbar()
 
- ggplot 2.6.5
+ ggplotFL 2.6.5
 
  USER-VISIBLE CHANGES 
 - Changed span of plot(FLSR) loess smoothers to 3
