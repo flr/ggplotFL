@@ -764,3 +764,53 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
     return(p)
   }
 ) # }}}
+
+# plot(FLIndex) {{{
+# TODO ADD index.var/se
+
+#' @aliases plot,FLIndex,missing-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'  # Plot a FLIndex object
+#'  data(ple4.index)
+#'  plot(ple4.index)
+setMethod("plot", signature(x="FLIndex", y="missing"),
+  function(x) {
+
+    if(!units(index(x)) %in% c("NA", ""))
+      ylab <- paste0("Abundance (", units(index(x)), ")")
+    else
+      ylab <- "Abundance"
+
+    ggplot(index(x), aes(x=date, y=data)) +
+      geom_line() +
+      facet_wrap(~age, scales="free_y") +
+      geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.4) +
+      xlab("") + ylab(ylab)
+
+  }
+) # }}}
+
+# plot(FLIndices) {{{
+
+#' @aliases plot,FLIndices,missing-method
+#' @docType methods
+#' @rdname plot
+#' @examples
+#'  # Plot a FLIndices object
+#'  data(ple4.indices)
+#'  plot(ple4.indices)
+setMethod("plot", signature(x="FLIndices", y="missing"),
+  function(x) {
+
+    fqs <- lapply(x, function(x) (index(x) %-% yearMeans(index(x)) %/%
+      sqrt(yearVars(index(x)))))
+
+    ggplot(fqs, aes(x=date, y=data, group=qname, colour=qname)) +
+      geom_line() + facet_wrap(~age, scales="free_y") +
+      geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2) +
+      ylab("Standardized relative abundance") + xlab("") +
+      theme(legend.title=element_blank())
+  }
+) # }}}
