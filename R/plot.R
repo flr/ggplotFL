@@ -810,7 +810,6 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
 
     ggplot(fqs, aes(x=date, y=data, group=qname, colour=qname)) +
       geom_line() + facet_wrap(~age, scales="free_y") +
-      # geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2) +
       ylab("Standardized relative abundance") + xlab("") +
       theme(legend.title=element_blank())
   }
