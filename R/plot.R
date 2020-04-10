@@ -786,7 +786,6 @@ setMethod("plot", signature(x="FLIndex", y="missing"),
     ggplot(index(x), aes(x=date, y=data)) +
       geom_line() +
       facet_wrap(~age, scales="free_y") +
-      geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.4) +
       xlab("") + ylab(ylab)
 
   }
@@ -801,6 +800,8 @@ setMethod("plot", signature(x="FLIndex", y="missing"),
 #'  # Plot a FLIndices object
 #'  data(ple4.indices)
 #'  plot(ple4.indices)
+#'  plot(ple4.indices) +
+#'    geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2)
 setMethod("plot", signature(x="FLIndices", y="missing"),
   function(x) {
 
@@ -809,7 +810,7 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
 
     ggplot(fqs, aes(x=date, y=data, group=qname, colour=qname)) +
       geom_line() + facet_wrap(~age, scales="free_y") +
-      geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2) +
+      # geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2) +
       ylab("Standardized relative abundance") + xlab("") +
       theme(legend.title=element_blank())
   }
