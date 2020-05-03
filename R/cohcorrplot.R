@@ -52,7 +52,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 		  	c1 <- round(with(na.omit(d1),cor(x,y)),2)
 			  c2[za] <- c1
   			pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(c1)), aes(.data$x,.data$y)) +
-	  		geom_text(aes(label = .data$text), size=10) +
+	  		geom_text(aes(label = .data$text), size=8) +
 		  		theme(axis.title=element_blank(),
         			axis.text=element_blank(),
         			axis.ticks=element_blank(),

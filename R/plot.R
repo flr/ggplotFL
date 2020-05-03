@@ -223,11 +223,58 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 	}
 ) # }}}
 
+# plot (FLQuants, FLPars) {{{
+
+setMethod("plot", signature(x="FLQuants", y="FLPars"),
+	function(x, y, ...) {
+	
+		p <- plot(x)
+
+    # GET name variable mapped to y axis
+    dnm <- quo_name(p$mapping$y)
+    
+    # CREATE df with right names
+    dat <- do.call(rbind, c(mapply(function(i, j)
+      cbind(as.data.frame(i, drop=TRUE), qname=j), y, names(y),
+      SIMPLIFY=FALSE), make.row.names = FALSE))
+    colnames(dat)[2] <- dnm
+    # DEBUG factors to character
+    dat[,"params"] <- as.character(dat[,"params"])
+
+		# FIX common mixmatch between refpts and FLStock slots naming
+		if('yield' %in% dat$qname)
+			dat$qname[dat$qname == 'yield'] <- 'catch'
+
+    # MERGE refpts with same value
+    counts <- table(dat$data)
+    dups <- counts[counts > 1]
+    idx <- lapply(names(dups), function(x) which(dat$data == x))
+    dat[unlist(lapply(idx, '[', 1)), "params"] <- 
+      unlist(lapply(idx, function(x) paste(as.character(dat[x, "params"]),
+        collapse=" - ")))
+
+    # DROP merged params
+    dat <- dat[-unlist(lapply(idx, '[', -1)),]
+
+    # SET y nudge up
+    lim <- do.call(rbind, mapply(function(i, j) data.frame(max=max(i),
+      min=min(i), qname=as.character(j)),  x, names(x), SIMPLIFY=FALSE))
+
+    dat <- merge(dat, lim)
+
+		p <- p + geom_hline(data=dat, aes(yintercept=data), linetype=2, size=0.25) +
+      geom_text(data=dat, aes(y=data + ((max-min) * 0.05), label=params),
+        x=dims(x[[1]])$minyear - 1, size=3, hjust="inward")
+
+		return(p)
+	}
+) # }}}
+
 # plot(FLQuantPoint) {{{
 
 setMethod("plot", signature(x="FLQuantPoint", y="missing"),
 	function(x, na.rm=FALSE, iter=NULL) {
-
+    
     # BASE plot 
     p <- ggplot(x, aes(x=date))
    

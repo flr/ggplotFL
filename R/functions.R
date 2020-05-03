@@ -189,3 +189,14 @@ human_numbers <- function(x = NULL, smbl ="", signif = 1){
   }
   sapply(x, humanity)
 } # }}}
+
+# integer_breaks {{{
+# BOrrowed from https://gist.github.com/jhrcook/eb7b63cc57c683a6eb4986c4107a88ec
+integer_breaks <- function(n = 5, ...) {
+  fxn <- function(x) {
+    breaks <- floor(pretty(x, n, ...))
+    names(breaks) <- attr(breaks, "labels")
+    breaks
+  }
+  return(fxn)
+} # }}}
