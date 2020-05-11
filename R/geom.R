@@ -163,3 +163,61 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
     params = list(na.rm = TRUE, ...)
   )
 } # }}}
+
+# TODO geom_flpar(data=FLPar(s))
+
+# geom_flpar {{{
+
+#' @examples
+#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), aes(x=1960))
+#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=1960)
+#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=2015)
+#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), aes(x=1960))
+
+geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
+  
+  # DATA
+  data <- as.data.frame(data, drop=FALSE)
+
+  data$yintercept <- data$data
+  data$linetype <- letters[as.numeric(row.names(data)) + 1]
+  
+  data$y <- data$data * 0.95
+  data$label <- data$params
+  
+  # MAPPINGS
+  if(!missing(x)) {
+    mapping <- aes(x=x)
+  }
+  mapping$y <- aes(y=y)$y
+  mapping$label <- aes(label=params)$label
+
+  list(
+
+  # geom_hline
+  layer(
+    geom = GeomHline,
+    mapping = aes(yintercept=yintercept, linetype=linetype),
+    data = data,
+    stat = StatIdentity,
+    position = PositionIdentity,
+    show.legend = FALSE,
+    inherit.aes = FALSE,
+    params = list(na.rm=na.rm, ...)
+
+  ),
+
+  # geom_text
+  layer(
+    geom = GeomText,
+    mapping = mapping,
+    data = data,
+    stat = StatIdentity,
+    position = PositionIdentity,
+    show.legend = FALSE,
+    inherit.aes = FALSE,
+    params = list(na.rm=na.rm, hjust="outward")
+  )
+  )
+} # }}}
+

@@ -30,10 +30,12 @@ export(
   "flpalette",
   "flpalette_colours",
   "flpalette_grads",
+  "geom_flpar",
+  "geom_flquantiles",
   "human_numbers",
+  "integer_breaks",
   "label_flqs",
   "modlabel",
-  "scale_fill_flr",
   "scale_colour_flr",
-  "stat_flquantiles",
-  "geom_flquantiles")
+  "scale_fill_flr",
+  "stat_flquantiles")
