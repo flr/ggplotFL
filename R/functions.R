@@ -138,6 +138,7 @@ format_label_flqs <- function(units, names,
 } # }}}
 
 # human_numbers {{{
+
 #' A ggplot2 number formatter
 #'
 #' This function formats numbers for output in a 'human' way.
@@ -192,6 +193,22 @@ human_numbers <- function(x = NULL, smbl ="", signif = 1){
 
 # integer_breaks {{{
 # BOrrowed from https://gist.github.com/jhrcook/eb7b63cc57c683a6eb4986c4107a88ec
+
+#' Shows integer values in a programmatic and scalable fashion. 
+#'
+#' This function provides sensible breaks for integers
+#'
+#' @param n Number of breaks
+#'
+#' @return A function to be called
+#'
+#' @name integer_breaks
+#' @rdname integer_breaks
+#'
+#' @author Iago Mosqueira (WMR)
+#' @seealso \link[ggplot2]{labeller}
+#' @keywords dplot
+
 integer_breaks <- function(n = 5, ...) {
   fxn <- function(x) {
     breaks <- floor(pretty(x, n, ...))

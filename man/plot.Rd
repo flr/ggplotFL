@@ -19,31 +19,47 @@
 \alias{plot,FLBiol,missing-method}
 \alias{plot,FLBiols,missing-method}
 \alias{plot,FLIndexBiomass,missing-method}
+\alias{plot,FLIndex,missing-method}
+\alias{plot,FLIndices,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
-\S4method{plot}{FLQuant,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
-  na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuant,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9), na.rm = FALSE, iter = NULL)
 
-\S4method{plot}{FLQuants,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66,
-  0.9), na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuants,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9), na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
-\S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb,
-  Catch = catch, F = fbar), ...)
+\S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar), ...)
 
-\S4method{plot}{FLStock,FLStock}(x, y, probs = c(0.1, 0.33, 0.5, 0.66,
-  0.9), na.rm = TRUE, iter = NULL, ...)
+\S4method{plot}{FLStock,FLStock}(
+  x,
+  y,
+  probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
+  na.rm = TRUE,
+  iter = NULL,
+  ...
+)
 
-\S4method{plot}{FLStock,FLPar}(x, y, metrics = list(Rec = rec, SSB = ssb,
-  Catch = catch, F = fbar), ...)
+\S4method{plot}{FLStock,FLPar}(x, y, metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar), ...)
 
-\S4method{plot}{FLStocks,missing}(x, metrics = list(Rec = rec, SSB = ssb,
-  Catch = catch, F = fbar), ...)
+\S4method{plot}{FLStocks,missing}(
+  x,
+  metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar),
+  probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
+  alpha = c(0.1, 0.4),
+  ...
+)
 
-\S4method{plot}{FLStocks,FLPar}(x, y, main = "", xlab = "",
-  ylab = "", na.rm = TRUE, foo = function(x, y) FLQuants(SSB =
-  ssb(x)/y[, "ssb", ], F = fbar(x)/y[, "harvest", ], Catch = catch(x)))
+\S4method{plot}{FLStocks,FLPar}(
+  x,
+  y,
+  main = "",
+  xlab = "",
+  ylab = "",
+  na.rm = TRUE,
+  foo = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F = fbar(x)/y[, "harvest",
+    ], Catch = catch(x))
+)
 
 \S4method{plot}{FLStock,FLStocks}(x, y, ...)
 
@@ -51,13 +67,15 @@
 
 \S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
 
-\S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x)
-  n(x)[1, ], SSB = ssb), ...)
+\S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], SSB = ssb), ...)
 
-\S4method{plot}{FLBiols,missing}(x, metrics = list(Rec = function(x)
-  n(x)[1, ], SSB = ssb), ...)
+\S4method{plot}{FLBiols,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], SSB = ssb), ...)
 
 \S4method{plot}{FLIndexBiomass,missing}(x, y, ...)
+
+\S4method{plot}{FLIndex,missing}(x)
+
+\S4method{plot}{FLIndices,missing}(x)
 }
 \arguments{
 \item{x}{FLR object to plot}
@@ -72,7 +90,7 @@
 
 \item{...}{Other arguments to be passed to the corresponding ggplot call.}
 
-\item{metrics}{FlQuants computed from complex objects (e.g. FLStock)}
+\item{metrics}{function returning an FLQuants for each FLStock}
 
 \item{legend_label}{function to create the legend labels}
 
@@ -81,8 +99,6 @@
 \item{fill}{Colour to be used for filling of quantile poligons, defaults to 'red'.}
 
 \item{colour}{Colour to be used for quantile lines, defaults to fill.}
-
-\item{metrics}{function returning an FLQuants for each FLStock}
 }
 \description{
 New basic plot methods for some FLR classes are defined in ggplotFL.
@@ -176,6 +192,14 @@ plot(ple4, rps)
  
  plot(srs, legend_label=modlabel)
 
+ # Plot a FLIndex object
+ data(ple4.index)
+ plot(ple4.index)
+ # Plot a FLIndices object
+ data(ple4.indices)
+ plot(ple4.indices)
+ plot(ple4.indices) +
+   geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2)
 }
 \seealso{
 \code{\link{ISOdate}} \code{\link{ggplot}}

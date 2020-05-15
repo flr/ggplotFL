@@ -4,8 +4,7 @@
 \alias{scale_fill_flr}
 \title{High contrast discrete and continuous palettes}
 \usage{
-scale_fill_flr(palette = flpalette, discrete = TRUE, reverse = FALSE,
-  ...)
+scale_fill_flr(palette = flpalette, discrete = TRUE, reverse = FALSE, ...)
 }
 \arguments{
 \item{palette}{Palette subset to create a gradual scale from, defaults to *flpalette*.}

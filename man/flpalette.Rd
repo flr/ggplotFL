@@ -7,7 +7,9 @@
 \alias{flpalette_grads}
 \alias{scale_colour_flr}
 \title{A high-contrast palette to use in ggplotFL}
-\format{An object of class \code{character} of length 7.}
+\format{
+An object of class \code{character} of length 7.
+}
 \usage{
 flpalette
 
@@ -15,8 +17,7 @@ flpalette_colours(n = length(flpalette))
 
 flpalette_grads(palette = flpalette, reverse = FALSE, ...)
 
-scale_colour_flr(palette = flpalette, discrete = TRUE,
-  reverse = FALSE, ...)
+scale_colour_flr(palette = flpalette, discrete = TRUE, reverse = FALSE, ...)
 }
 \arguments{
 \item{n}{Number of colours or individual colours to return, or number of colours to interpolate.}

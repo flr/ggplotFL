@@ -166,7 +166,26 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 
 # geom_flpar {{{
 
+#' Horizontal lines for FLPar objects
+#'
+#' This `geom` shows a horizontal line for each `param` in a `FLPar` object and
+#' labels it using the `param` dimnames
+#'
+#' @name geom_flpar
+#' @section Aesthetics:
+#' `geom_flpar` understands the following aesthetics (required aesthetics are in bold):
+#' - `*x*`
+#' - `label`
+#' - `alpha`
+#' - `colour`
+#' - `linetype`
+#' - `size`
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_hline
+#' @inheritParams ggplot2::geom_tex
+#' @param x
 #' @examples
+#' data(ple4)
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), aes(x=1960))
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=1960)
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=2015)
@@ -187,7 +206,7 @@ geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
   if(!missing(x)) {
     mapping <- aes(x=x)
   }
-  mapping$y <- aes(y=y)$y
+  mapping$y <- aes_string(y="y")$y
   mapping$label <- aes(label=params)$label
 
   list(
@@ -195,7 +214,7 @@ geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
   # geom_hline
   layer(
     geom = GeomHline,
-    mapping = aes(yintercept=yintercept, linetype=linetype),
+    mapping = aes_string(yintercept="yintercept", linetype="linetype"),
     data = data,
     stat = StatIdentity,
     position = PositionIdentity,

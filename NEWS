@@ -6,6 +6,11 @@
 
 - New plot(FLQuanPoint) and plot(FLQuantPoint, FLQuants) methods.
 
+- integer_breaks function useful for ages in the x axis.
+
+- geom_flpar allows ploting reference points and similar variables as horizontal
+  lines.
+
  ggplotFL 2.6.6
 
  USER-VISIBLE CHANGES 
