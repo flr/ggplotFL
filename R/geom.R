@@ -164,8 +164,6 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
   )
 } # }}}
 
-# TODO geom_flpar(data=FLPar(s))
-
 # geom_flpar {{{
 
 #' @examples
@@ -175,7 +173,7 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), aes(x=1960))
 
 geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
-  
+
   # DATA
   data <- as.data.frame(data, drop=FALSE)
 
@@ -221,3 +219,8 @@ geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
   )
 } # }}}
 
+# TODO geom_flpar(data=FLPars)
+# TODO as.data.frame(FLPars)
+#
+# plot(metrics(ple4, F=fbar, SSB=ssb)) +
+#   geom_flpar(data=FLPars(F=FLPar(Fmsy=0.20), SSB=FLPar(Bpa=250000)), x=1960)
