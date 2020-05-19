@@ -113,17 +113,19 @@ label_flqs <- function(x, ...) {
 
 format_label_flqs <- function(units, names, 
   drop=c("NA", "NC", "m", "f", "z", "prop")) {
-		
+    
     # DROP certain units
     units[units %in% drop] <- ""
     
     # DROP NAs and empty characters
     units <- gsub("NA", "", units)
-    units <- gsub(" ", "", units)
+    units[units == " "] <- character(1)
+    units <- gsub(" ", "~", units)
 
     # DROP unparseable strings
     units <- unlist(lapply(units, function(x)
-      ifelse(class(try(parse(text=x), silent=TRUE)) == "try-error", character(1), x)))
+      ifelse(class(try(parse(text=x), silent=TRUE)) == "try-error", character(1), x)
+      ))
 
     # DROP more unparseable units (w/o any alnum & not in uomTable)
     units[!uomUnits(units) & !grepl("[[:alnum:]]", units)]  <- character(1)
