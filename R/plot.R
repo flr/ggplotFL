@@ -746,7 +746,7 @@ setMethod("plot", signature(x="FLSRs"),
 #' @docType methods
 #' @rdname plot
 setMethod("plot", signature(x="FLBiol", y="missing"),
-  function(x, metrics=list(Rec=function(x) n(x)[1,], SSB=ssb), ...) {
+  function(x, metrics=list(Rec=function(x) n(x)[1,], B=tsb), ...) {
 
     flqs <- metrics(x, metrics)
 
@@ -766,7 +766,7 @@ setMethod("plot", signature(x="FLBiol", y="missing"),
 #' @docType methods
 #' @rdname plot
 setMethod("plot", signature(x="FLBiols", y="missing"),
-  function(x, metrics=list(Rec=function(x) n(x)[1,], SSB=ssb), ...) {
+  function(x, metrics=list(Rec=function(x) n(x)[1,], B=tsb), ...) {
 
     fqs <- lapply(x, function(x) metrics(x, metrics))
     
