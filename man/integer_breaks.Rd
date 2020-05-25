@@ -18,7 +18,7 @@ A function to be called
 This function provides sensible breaks for integers
 }
 \seealso{
-\link[ggplot2]{labeller} \link[ggplot2]{pretty}
+\link[ggplot2]{labeller} \link[base]{pretty}
 }
 \author{
 Iago Mosqueira (WMR)

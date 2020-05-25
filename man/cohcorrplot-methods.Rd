@@ -14,6 +14,8 @@ cohcorrplot(x, ...)
 }
 \arguments{
 \item{x}{An object with the abundance at age information. FLQuant or FLCohort.}
+
+\item{...}{Any extra arguments}
 }
 \description{
 A correlation plot that show and quantifies correlation along
