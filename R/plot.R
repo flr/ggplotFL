@@ -225,6 +225,15 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 
 # plot (FLQuants, FLPars) {{{
 
+#' @aliases plot,FLQuants,FLPars-method
+#' @rdname plot
+#' @examples
+#'  # plot for FLQuants, FLPars
+#'  data(ple4)
+#'  rps <- FLPars(F=FLPar(Fmsy=0.14, Fpa=0.35), SSB=FLPar(SBmsy=1.8e5, SBlim=1.1e5))
+#'  fqs <- metrics(ple4, list(SSB=ssb, F=fbar))
+#'  plot(fqs, rps)
+
 setMethod("plot", signature(x="FLQuants", y="FLPars"),
 	function(x, y, ...) {
 	
@@ -248,13 +257,14 @@ setMethod("plot", signature(x="FLQuants", y="FLPars"),
     # MERGE refpts with same value
     counts <- table(dat$data)
     dups <- counts[counts > 1]
-    idx <- lapply(names(dups), function(x) which(dat$data == x))
-    dat[unlist(lapply(idx, '[', 1)), "params"] <- 
-      unlist(lapply(idx, function(x) paste(as.character(dat[x, "params"]),
-        collapse=" - ")))
-
-    # DROP merged params
-    dat <- dat[-unlist(lapply(idx, '[', -1)),]
+    if(length(dups) > 0) {
+      idx <- lapply(names(dups), function(x) which(dat$data == x))
+      dat[unlist(lapply(idx, '[', 1)), "params"] <- 
+        unlist(lapply(idx, function(x) paste(as.character(dat[x, "params"]),
+          collapse=" - ")))
+      # DROP merged params
+      dat <- dat[-unlist(lapply(idx, '[', -1)),]
+    }
 
     # SET y nudge up
     lim <- do.call(rbind, mapply(function(i, j) data.frame(max=max(i),
@@ -272,22 +282,29 @@ setMethod("plot", signature(x="FLQuants", y="FLPars"),
 
 # plot(FLQuantPoint) {{{
 
+#' @aliases plot,FLQuantPoint,missing-method
+#' @rdname plot
+#' @examples
+#' # plot for FLQuantPoint
+#' fqp <- FLQuantPoint(rlnorm(300, log(catch(ple4)), 0.20))
+#' plot(fqp)
+
 setMethod("plot", signature(x="FLQuantPoint", y="missing"),
-	function(x, na.rm=FALSE, iter=NULL) {
+	function(x) {
     
     # BASE plot 
     p <- ggplot(x, aes(x=date))
    
-    # ITERS to add
+    # ELEMENTS to add
     if(!all(is.na(p$data$median)))
-       p <- p + geom_line(aes(y=median))
+       p <- p + geom_line(aes(y=median), linetype=1)
 
     if(!all(is.na(p$data$mean)))
-       p <- p + geom_line(aes(y=mean))
+       p <- p + geom_line(aes(y=mean), linetype=2)
 
     if(!all(is.na(p$data[, c("lowq", "uppq")])))
       p <- p + geom_ribbon(aes(ymin=lowq, ymax=uppq), colour="gray",
-        alpha=0.20, linetype=2)
+        alpha=0.20, linetype=3)
 
     # PARSE dimensions > 1 for new facets
     ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
@@ -309,10 +326,35 @@ setMethod("plot", signature(x="FLQuantPoint", y="missing"),
     p <- p + xlab("") + ylab("")
 
     return(p)
-  })
-# }}}
+  }
+) # }}}
+
+# plot(FLQuantPoint, FLQuant) {{{
+
+#' @aliases plot,FLQuantPoint,FLQuant-method
+#' @rdname plot
+#' @examples
+#' # plot for FLQuantPoint, FLQuant
+#' plot(fqp, rlnorm(3, log(catch(ple4)), 0.20))
+
+setMethod("plot", signature(x="FLQuantPoint", y="FLQuant"),
+	function(x, y, na.rm=FALSE, iter=NULL) {
+    if(dim(y)[6] > 1)
+      plot(x, divide(y))
+    else
+      plot(x, FLQuants(y=y))
+  }
+) # }}}
 
 # plot(FLQuantPoint, FLQuants) {{{
+
+#' @aliases plot,FLQuantPoint,FLQuants-method
+#' @rdname plot
+#' @examples
+#' # plot for FLQuantPoint, FLQuants
+#' fqp <- FLQuantPoint(rlnorm(300, log(catch(ple4)), 0.20))
+#' fqs <- divide(rlnorm(3, log(catch(ple4)), 0.20))
+#' plot(fqp, fqs)
 
 setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
 	function(x, y, na.rm=FALSE, iter=NULL) {

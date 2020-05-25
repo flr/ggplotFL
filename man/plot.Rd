@@ -6,6 +6,10 @@
 \alias{plot,FLQuant,missing-method}
 \alias{plot,FLQuants,missing-method}
 \alias{plot,FLQuants,FLPar-method}
+\alias{plot,FLQuants,FLPars-method}
+\alias{plot,FLQuantPoint,missing-method}
+\alias{plot,FLQuantPoint,FLQuant-method}
+\alias{plot,FLQuantPoint,FLQuants-method}
 \alias{plot,FLStock,missing-method}
 \alias{plot,FLStock,FLStock-method}
 \alias{plot,FLStock,FLPar-method}
@@ -28,6 +32,14 @@
 \S4method{plot}{FLQuants,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9), na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
+
+\S4method{plot}{FLQuants,FLPars}(x, y, ...)
+
+\S4method{plot}{FLQuantPoint,missing}(x)
+
+\S4method{plot}{FLQuantPoint,FLQuant}(x, y, na.rm = FALSE, iter = NULL)
+
+\S4method{plot}{FLQuantPoint,FLQuants}(x, y, na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar), ...)
 
@@ -67,9 +79,9 @@
 
 \S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
 
-\S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], SSB = ssb), ...)
+\S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], B = tsb), ...)
 
-\S4method{plot}{FLBiols,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], SSB = ssb), ...)
+\S4method{plot}{FLBiols,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], B = tsb), ...)
 
 \S4method{plot}{FLIndexBiomass,missing}(x, y, ...)
 
@@ -160,6 +172,20 @@ plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
  # Works also if reptsa are given for some panels
  rps <- FLPar(F=0.14, Catch=1.29e5, SSB=1.8e5)
  plot(fqs, rps)
+ # plot for FLQuants, FLPars
+ data(ple4)
+ rps <- FLPars(F=FLPar(Fmsy=0.14, Fpa=0.35), SSB=FLPar(SBmsy=1.8e5, SBlim=1.1e5))
+ fqs <- metrics(ple4, list(SSB=ssb, F=fbar))
+ plot(fqs, rps)
+# plot for FLQuantPoint
+fqp <- FLQuantPoint(rlnorm(300, log(catch(ple4)), 0.20))
+plot(fqp)
+# plot for FLQuantPoint, FLQuant
+plot(fqp, rlnorm(3, log(catch(ple4)), 0.20))
+# plot for FLQuantPoint, FLQuants
+fqp <- FLQuantPoint(rlnorm(300, log(catch(ple4)), 0.20))
+fqs <- divide(rlnorm(3, log(catch(ple4)), 0.20))
+plot(fqp, fqs)
 # plot of an FLStock
  data(ple4)
  plot(ple4)

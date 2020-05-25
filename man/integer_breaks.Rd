@@ -8,6 +8,8 @@ integer_breaks(n = 5, ...)
 }
 \arguments{
 \item{n}{Number of breaks}
+
+\item{...}{Arguments to be passed to *pretty*}
 }
 \value{
 A function to be called
@@ -16,7 +18,7 @@ A function to be called
 This function provides sensible breaks for integers
 }
 \seealso{
-\link[ggplot2]{labeller}
+\link[ggplot2]{labeller} \link[ggplot2]{pretty}
 }
 \author{
 Iago Mosqueira (WMR)

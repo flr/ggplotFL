@@ -100,12 +100,12 @@ modlabel <- function(model, param) {
 #' @seealso \link[ggplot2]{labeller}
 #' @keywords dplot
 
-label_flqs <- function(x, ...) {
+label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 		
     # GET named vector of uoms
     units <- unlist(lapply(lapply(x, units), paste, collapse=" "))
 
-    return(format_label_flqs(units, names(x), ...))
+    return(format_label_flqs(units, names(x), drop=drop))
 
 } # }}}
 
@@ -201,6 +201,7 @@ human_numbers <- function(x = NULL, smbl ="", signif = 1){
 #' This function provides sensible breaks for integers
 #'
 #' @param n Number of breaks
+#' @param ... Arguments to be passed to *pretty*
 #'
 #' @return A function to be called
 #'
@@ -208,7 +209,7 @@ human_numbers <- function(x = NULL, smbl ="", signif = 1){
 #' @rdname integer_breaks
 #'
 #' @author Iago Mosqueira (WMR)
-#' @seealso \link[ggplot2]{labeller}
+#' @seealso \link[ggplot2]{labeller} \link[base]{pretty}
 #' @keywords dplot
 
 integer_breaks <- function(n = 5, ...) {

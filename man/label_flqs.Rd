@@ -4,7 +4,7 @@
 \alias{label_flqs}
 \title{A ggplot2 labeller for FLQuants}
 \usage{
-label_flqs(x, ...)
+label_flqs(x, drop = c("NA", "NC", "m", "f", "z", "prop"))
 }
 \arguments{
 \item{x}{An object of class \code{FLQuants}}

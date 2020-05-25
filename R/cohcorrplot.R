@@ -6,18 +6,42 @@
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
+# cohcorrplot {{{
 
-# cohcorrplot
+#' cohcorrplot
+#'
+#' A correlation plot that show and quantifies correlation along
+#' cohorts. Typically used on catch or survey abundances-at-age.
+#'
+#' The method prints a plot assembled as a combination of grid elements, not a
+#' *gg* object.
+#'
+#' @param x An object with the abundance at age information. FLQuant or FLCohort.
+#' @param ... Any extra arguments
+#'
+#' @name cohcorrplot
+#' @rdname cohcorrplot-methods
+#'
+#' @author The FLR Team
+#' @keywords methods
+#' @md
+
 setGeneric("cohcorrplot", function(x, ...)
   standardGeneric("cohcorrplot"))
 
-# FLCohort
+#' @rdname cohcorrplot-methods
+#' @examples
+#' data(ple4)
+#' cohcorrplot(stock.n(ple4))
 
+setMethod("cohcorrplot", signature(x="FLQuant"),
+  function(x) {
+    cohcorrplot(FLCohort(x))
+  })
+
+#' @rdname cohcorrplot-methods
 #' @examples
 #' cohcorrplot(FLCohort(stock.n(ple4)))
-
-
-# {{{
 
 setMethod("cohcorrplot", signature(x="FLCohort"),
   function(x) {
@@ -99,6 +123,6 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 
 margin = theme(plot.margin = unit(c(0.01,0.01,0.01,0.01), "cm"))
 pL <- lapply(pL, "+", margin)
-do.call("grid.arrange", c(pL, ncol =(length(unique(flc$age)))))
+suppressMessages(do.call("grid.arrange", c(pL, ncol =(length(unique(flc$age))))))
 }
 ) # }}}

@@ -183,7 +183,7 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_hline
 #' @inheritParams ggplot2::geom_tex
-#' @param x
+#' @param x Position for params labels on the x axis
 #' @examples
 #' data(ple4)
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), aes(x=1960))
