@@ -19,7 +19,6 @@
 #' @param x An object with the abundance at age information. FLQuant or FLCohort.
 #' @param ... Any extra arguments
 #'
-#' @name cohcorrplot
 #' @rdname cohcorrplot-methods
 #'
 #' @author The FLR Team

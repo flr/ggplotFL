@@ -182,7 +182,7 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' - `size`
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_hline
-#' @inheritParams ggplot2::geom_tex
+#' @inheritParams ggplot2::geom_text
 #' @param x Position for params labels on the x axis
 #' @examples
 #' data(ple4)

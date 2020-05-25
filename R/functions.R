@@ -92,7 +92,6 @@ modlabel <- function(model, param) {
 #'
 #' @return A ggplot2 labeller function
 #'
-#' @name label_flqs
 #' @rdname label_flqs
 #' @aliases label_flqs
 #'
@@ -151,7 +150,6 @@ format_label_flqs <- function(units, names,
 #'
 #' @return A formatted character vector
 #'
-#' @name human_numbers
 #' @rdname human_numbers
 #'
 #' @author Iago Mosqueira (EC JRC)
@@ -205,7 +203,6 @@ human_numbers <- function(x = NULL, smbl ="", signif = 1){
 #'
 #' @return A function to be called
 #'
-#' @name integer_breaks
 #' @rdname integer_breaks
 #'
 #' @author Iago Mosqueira (WMR)

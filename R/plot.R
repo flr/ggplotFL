@@ -30,9 +30,6 @@
 #' @param y FLR object to plot
 #' @param na.rm Should NAs be deleted in quantile calculations?, defaults to TRUE.
 #' @param probs Quantiles to be plotted if object has iters, defaults to c(0.10, 0.33, 0.50, 0.66, 0.90).
-#' @param type Type of quantile calculated, see \code{\link[stats]{quantile}}. Defaults to 7.
-#' @param fill Colour to be used for filling of quantile poligons, defaults to 'red'.
-#' @param colour Colour to be used for quantile lines, defaults to fill.
 #' @param ... Other arguments to be passed to the corresponding ggplot call.
 #' @param metrics FlQuants computed from complex objects (e.g. FLStock)
 #' @param iter Individual iterations to show as worm plots over the quantiles.
@@ -41,7 +38,6 @@
 #' @seealso \code{\link{ISOdate}} \code{\link{ggplot}} 
 #' @docType methods
 #' @rdname plot
-#' @name ggplotFL plot methods
 #' @examples
 #'
 #'  # Plot a single FLQuant
@@ -489,6 +485,8 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #' @aliases plot,FLStocks,missing-method
 #' @rdname plot
 #' @param metrics function returning an FLQuants for each FLStock
+#' @param probs Quantiles to calculate along the iter dimension. A vector of length 5, for the lower outer, lower inner, central, upper inner and upper outer quantiles. Defaults to the 66 and 80 percent quantiles, plus median line.
+#' @param alpha alpha values for the quantile ribbons, defaults to 0.10 and 0.40.
 #' @examples
 #'  # plot for FLStocks
 #'  data(ple4)
@@ -564,15 +562,10 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 
 #' @aliases plot,FLStocks,FLPar-method
 #' @rdname plot
-#' @examples
-#'  # plot for FLStocks
-#'  data(ple4)
-#'  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
-#'  plot(pls)
 
 setMethod("plot", signature(x="FLStocks", y="FLPar"),
-	function(x, y, main="", xlab="", ylab="", na.rm=TRUE,
-		foo= function(x, y) FLQuants(SSB=ssb(x)/y[,'ssb',], F=fbar(x)/y[,'harvest',],
+	function(x, y, na.rm=TRUE,
+		metrics= function(x, y) FLQuants(SSB=ssb(x)/y[,'ssb',], F=fbar(x)/y[,'harvest',],
 			Catch=catch(x))) {
 		
 		# check names not repeated
@@ -583,7 +576,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		}
 		
 		# extract slots by stock
-		fqs <- lapply(x, foo, y)
+		fqs <- lapply(x, metrics, y)
 
 		# get median & 85% quantiles if iters
 		its <- unlist(lapply(x, function(x) dims(x)$iter))
@@ -615,7 +608,7 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		p <- ggplot(data=na.omit(df), aes_string(x='date', y='`50%`', group='stock')) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
-			geom_line(aes_string(colour='stock'), na.rm=na.rm) + xlab(xlab) + ylab(ylab) +
+			geom_line(aes_string(colour='stock'), na.rm=na.rm) + xlab("") + ylab("") +
 			# limits to include 0 +  no legend
 			expand_limits(y=0) + theme(legend.title = element_blank())
 		
@@ -670,7 +663,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# SSB vs. REC
 	p1 <- ggplot(data=na.omit(dat), aes_string(x='SSB', y='Rec')) + geom_point() +
-		geom_smooth(method='loess', span=3) + xlab(uns) + ylab(unr) +
+		geom_smooth(formula= y ~ x, method='loess', span=3) + xlab(uns) + ylab(unr) +
 		expand_limits(y=0) + expand_limits(x=0)
 
 	# model fit line
@@ -685,17 +678,17 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	
 	# P2
 	p2 <- ggplot(data=na.omit(dat), aes_string(x='year', y='Residuals')) +
-    geom_point() + geom_smooth(method='loess', span=3) + xlab("Year")
+    geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3) + xlab("Year")
 
 	# P3
 	p3 <- ggplot(data=na.omit(data.frame(res1=dat$Residuals[-length(dat$Residuals)],
 		res2=dat$Residuals[-1])), aes_string(x='res1', y='res2')) + geom_point() +
 		xlab(expression(Residuals[t])) + ylab(expression(Residuals[t + 1])) +
-	  geom_smooth(method='lm')
+	  geom_smooth(formula= y ~ x, method='lm')
 
 	# P4
 	p4 <- ggplot(data=na.omit(dat), aes_string(x='SSB', y='Residuals')) +
-    geom_point() + geom_smooth(method='loess', span=3)
+    geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3)
 
 	# P5
 	p5 <- ggplot(data=na.omit(dat), aes_string(sample = 'Residuals')) +
@@ -705,7 +698,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 
 	# P6
 	p6 <- ggplot(data=na.omit(dat), aes_string(x='RecHat', y='Residuals')) +
-    geom_point() + geom_smooth(method='loess', span=3) +
+    geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3) +
     xlab(expression(hat(Recruits)))
 	
 
@@ -848,7 +841,7 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
 
     flqs <- FLQuants(Index=index(x))
 
-    p <- plot(flqs, ...) + geom_smooth(na.rm=TRUE, method="loess")
+    p <- plot(flqs, ...) + geom_smooth(formula=y ~ x, na.rm=TRUE, method="loess")
 
     return(p)
   }
@@ -890,7 +883,7 @@ setMethod("plot", signature(x="FLIndex", y="missing"),
 #'  data(ple4.indices)
 #'  plot(ple4.indices)
 #'  plot(ple4.indices) +
-#'    geom_smooth(se=FALSE, method="loess", formula=y~x, size=0.2)
+#'    geom_smooth(formula=y ~ x, se=FALSE, method="loess", size=0.2)
 setMethod("plot", signature(x="FLIndices", y="missing"),
   function(x) {
 
