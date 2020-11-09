@@ -77,7 +77,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
     # PARSE dimensions > 1 for new facets
     ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
 
-    # PLOt(FLQuants(x)) & reset facets
+    # PLOT(FLQuants(x)) & reset facets
 		if(length(ldi) == 0) {
       p <- p + theme(strip.text.y = element_blank())
     }
@@ -410,6 +410,11 @@ setMethod("plot", signature(x="FLStock", y="missing"),
     if("SSB" %in% names(metrics))
     if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
 
+      # FIND spawning season, if it exists
+      if(dim(metrics$SSB)[4] > 1) {
+        metrics$SSB[is.na(metrics$SSB)] <- 0
+      }
+      
       # DROP M ssb if missing
       metrics$SSB <- metrics$SSB[,,'F'] + metrics$SSB[,,'M']
 
@@ -890,9 +895,15 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
     fqs <- lapply(x, function(x) (index(x) %-% yearMeans(index(x)) %/%
       sqrt(yearVars(index(x)))))
 
-    ggplot(fqs, aes(x=date, y=data, group=qname, colour=qname)) +
-      geom_line() + facet_wrap(~age, scales="free_y") +
+    p <- ggplot(fqs, aes(x=year, y=data, group=qname, colour=qname)) +
+      geom_line() +
       ylab("Standardized relative abundance") + xlab("") +
       theme(legend.title=element_blank())
+    
+    if(all(unlist(lapply(x, is, "FLIndexBiomass")))) {
+      return(p)
+    } else {
+      return(p + facet_wrap(~age, scales="free_y"))
+    }
   }
 ) # }}}
