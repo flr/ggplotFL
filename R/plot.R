@@ -894,9 +894,17 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
 
     fqs <- lapply(x, function(x) (index(x) %-% yearMeans(index(x)) %/%
       sqrt(yearVars(index(x)))))
+     
+    aes_(quote(mpg), quote(wt), col = quote(cyl))
 
-    p <- ggplot(fqs, aes(x=year, y=data, group=qname, colour=qname)) +
-      geom_line() +
+    # CHOOSE xvar = date if seasons
+    if(dim(fqs[[1]])[4] > 1)
+      xvar <- quote(date)
+    else
+      xvar <- quote(year)
+
+    p <- ggplot(fqs, aes_(x=xvar, y=quote(data), group=quote(qname),
+      colour=quote(qname))) + geom_line() +
       ylab("Standardized relative abundance") + xlab("") +
       theme(legend.title=element_blank())
     
