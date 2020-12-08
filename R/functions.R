@@ -217,3 +217,12 @@ integer_breaks <- function(n = 5, ...) {
   }
   return(fxn)
 } # }}}
+
+# pubpng {{{
+pubpng <- function(file, plot, width=1600, height=1400, res=200) {
+
+  png(file=file, type="cairo", width=width, height=height, res=res)
+  print(plot)
+  dev.off()
+invisible(TRUE)
+} # }}}

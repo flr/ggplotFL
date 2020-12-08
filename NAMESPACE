@@ -10,7 +10,8 @@ importFrom("stats",
 importFrom("utils",
   "data")
 importFrom("rlang",
-  ".data")
+  ".data",
+  "as_name")
 importFrom("grid",
   "grid.draw")
 importFrom("gridExtra",
