@@ -1,3 +1,7 @@
+ ggplotFL 2.6.9
+
+- pubpng() function to output good quality png plot files.
+
  ggplotFL 2.6.8
 
  NEW FEATURES
