@@ -37,6 +37,7 @@ export(
   "integer_breaks",
   "label_flqs",
   "modlabel",
+  "pubpng",
   "scale_colour_flr",
   "scale_fill_flr",
   "stat_flquantiles")
