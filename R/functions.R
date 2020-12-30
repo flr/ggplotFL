@@ -219,6 +219,19 @@ integer_breaks <- function(n = 5, ...) {
 } # }}}
 
 # pubpng {{{
+
+
+#' Output ggplot object to PNG files with good quality settings.
+#'
+#' @param file Output file path and name.
+#' @param plot ggplot object or command.
+#' @param width Width of plot, in pixels. Defaults to 1600.
+#' @param height Height of plot, in pixels. Defaults to 1400.
+#' @param res Resolution, in ppi. Deagults to 200.
+#'
+#' @return TRUE if succesful, while file is saved to disk.
+#' @seealso grDevices::png
+
 pubpng <- function(file, plot, width=1600, height=1400, res=200) {
 
   png(file=file, type="cairo", width=width, height=height, res=res)
