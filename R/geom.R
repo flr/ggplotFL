@@ -191,7 +191,7 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=2015)
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), aes(x=1960))
 
-geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
+geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
   # DATA
   data <- as.data.frame(data, drop=FALSE)
@@ -243,3 +243,38 @@ geom_flpar <- function(mapping = NULL, data = NULL, ..., x, na.rm=FALSE) {
 #
 # plot(metrics(ple4, F=fbar, SSB=ssb)) +
 #   geom_flpar(data=FLPars(F=FLPar(Fmsy=0.20), SSB=FLPar(Bpa=250000)), x=1960)
+
+# geom_worm {{{
+
+#' A geom for adding worms to probability intervals from geom_flquantiles
+#'
+#' @section Aesthetics:
+#' `geom_worm` understands the following aesthetics (required aesthetics are in bold):
+#' - `colour`
+#' - `linetype`
+#' - `size`
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_line
+#' @param data Subset of data, select from full object using iter().
+#'
+#' @examples
+#' data(ple4)
+#' x <- rlnorm(200, log(catch(ple4)), 0.3)
+#' plot(x) + geom_worm(data=iter(x, 1:4))
+#'
+#' x <- FLQuants(C=rlnorm(200, log(catch(ple4)), 0.3),
+#'   F=rlnorm(200, fbar(ple4), 0.2))
+#' plot(x) + geom_worm(data=iter(x, 1:4))
+
+geom_worm <- function(data, mapping = aes(colour=iter), ...,
+  stat="identity", position="identity", na.rm=FALSE) {
+  
+  data <- as.data.frame(data)
+
+  layer(
+    geom = GeomLine, mapping = mapping,  data = data, stat = stat, 
+    position = position, inherit.aes = TRUE,
+    params = list(na.rm = na.rm, ...)
+  )
+}
+# }}}
