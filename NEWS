@@ -1,6 +1,7 @@
  ggplotFL 2.6.9
 
 - pubpng() function to output good quality png plot files.
+- geom_worm to add worm plots of single iterations on tyop of geom_flquantiles
 
  ggplotFL 2.6.8
 

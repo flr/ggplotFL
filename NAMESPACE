@@ -35,6 +35,7 @@ export(
   "flpalette_grads",
   "geom_flpar",
   "geom_flquantiles",
+  "geom_worm",
   "human_numbers",
   "integer_breaks",
   "label_flqs",
