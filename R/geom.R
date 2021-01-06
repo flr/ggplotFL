@@ -175,74 +175,83 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' @section Aesthetics:
 #' `geom_flpar` understands the following aesthetics (required aesthetics are in bold):
 #' - `*x*`
-#' - `label`
+#' - `y`, defaults to 90% of params value (text).
+#' - `yintercept`, defaults to params value (line).
+#' - `label`, defaults to params names.
 #' - `alpha`
 #' - `colour`
-#' - `linetype`
-#' - `size`
+#' - `linetype` (line)
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_hline
 #' @inheritParams ggplot2::geom_text
 #' @param x Position for params labels on the x axis
 #' @examples
 #' data(ple4)
-#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), aes(x=1960))
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=1960)
 #' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=2015)
-#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), aes(x=1960))
+#' plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), x=1960)
+#' # geom works for multiple facets, separate params using name-matching FLPars()
+#' plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
+#'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+#'   F=FLPar(FMSY=0.21)), x=c(1960))
+#' # x and y positions can be altered by param
+#' plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
+#'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+#'   F=FLPar(FMSY=0.21)), x=c(2015, 2015, 1960), y=c(340000, 180000, 0.18))
 
 geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
-  # DATA
-  data <- as.data.frame(data, drop=FALSE)
+  args <- list(...)
 
+  if(is.null(mapping))
+    mapping <- aes(x=x)
+
+  # DATA
+  data <- as(data, "data.frame")
   data$yintercept <- data$data
+  data$y <- data$data * 0.90
   data$linetype <- letters[as.numeric(row.names(data)) + 1]
-  
-  data$y <- data$data * 0.95
   data$label <- data$params
   
-  # MAPPINGS
-  if(!missing(x)) {
-    mapping <- aes(x=x)
-  }
+  # MAPPINGS from data: y, yintercept, label, linetype
+
   mapping$y <- aes_string(y="y")$y
   mapping$label <- aes(label=params)$label
-
+  mapping$yintercept <- aes_string(yintercept="yintercept")$yintercept
+  mapping$linetype <- aes_string(linetype="linetype")$linetype
+  
+  # ACCEPTED aesthetics by geom
+  ahline <- c("alpha", "colour", "linetype", "size", "yintercept")
+  atext <- c("x", "y", "label", "alpha", "angle", "colour", "family",
+    "fontface", "group", "hjust", "lineheight", "size", "vjust")
+  
   list(
 
   # geom_hline
   layer(
     geom = GeomHline,
-    mapping = aes_string(yintercept="yintercept", linetype="linetype"),
+    mapping = mapping[names(mapping) %in% ahline],
     data = data,
     stat = StatIdentity,
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
-    params = list(na.rm=na.rm, ...)
-
+    params = c(list(na.rm=na.rm), args[names(args) %in% ahline])
   ),
 
   # geom_text
   layer(
     geom = GeomText,
-    mapping = mapping,
+    mapping = mapping[names(mapping) %in% atext],
     data = data,
     stat = StatIdentity,
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
-    params = list(na.rm=na.rm, hjust="outward")
+    params = c(list(na.rm=na.rm), args[names(args) %in% atext])
   )
   )
 } # }}}
-
-# TODO geom_flpar(data=FLPars)
-# TODO as.data.frame(FLPars)
-#
-# plot(metrics(ple4, F=fbar, SSB=ssb)) +
-#   geom_flpar(data=FLPars(F=FLPar(Fmsy=0.20), SSB=FLPar(Bpa=250000)), x=1960)
 
 # geom_worm {{{
 
