@@ -6,8 +6,8 @@ Authors@R: c(
   person("Iago", "Mosqueira", email = "iago.mosqueira@ec.europa.eu", role = "cre"),
   person("Laurence T.", "Kell", email = "laurie.kell@iccat.int", role = "aut"))
 Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
-    various FLR classes, and (2) ggplot-based versions of standard plots in
-    the FLCore package.
+    various FLR classes, (2) ggplot-based versions of standard plots in
+    the FLCore package, and (3) new geoms for using FLR objects.
 Depends:
   R(>= 3.2.0),
   ggplot2(>= 2.0.0),
