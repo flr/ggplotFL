@@ -4,7 +4,7 @@
 \alias{geom_flpar}
 \title{Horizontal lines for FLPar objects}
 \usage{
-geom_flpar(mapping = NULL, data = NULL, ..., x, na.rm = FALSE)
+geom_flpar(mapping = NULL, data, ..., x, na.rm = FALSE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -45,17 +45,25 @@ labels it using the `param` dimnames
 
 `geom_flpar` understands the following aesthetics (required aesthetics are in bold):
 - `*x*`
-- `label`
+- `y`, defaults to 90% of params value (text).
+- `yintercept`, defaults to params value (line).
+- `label`, defaults to params names.
 - `alpha`
 - `colour`
-- `linetype`
-- `size`
+- `linetype` (line)
 }
 
 \examples{
 data(ple4)
-plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), aes(x=1960))
 plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=1960)
 plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000), x=2015)
-plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), aes(x=1960))
+plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), x=1960)
+# geom works for multiple facets, separate params using name-matching FLPars()
+plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
+  geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+  F=FLPar(FMSY=0.21)), x=c(1960))
+# x and y positions can be altered by param
+plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
+  geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+  F=FLPar(FMSY=0.21)), x=c(2015, 2015, 1960), y=c(340000, 180000, 0.18))
 }
