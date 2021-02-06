@@ -1,6 +1,7 @@
 import("methods")
 import("ggplot2")
 import("FLCore")
+import("data.table")
 importFrom("grDevices",
   "colorRampPalette",
   "dev.off",
@@ -40,6 +41,7 @@ export(
   "integer_breaks",
   "label_flqs",
   "modlabel",
+  "plotXval",
   "pubpng",
   "scale_colour_flr",
   "scale_fill_flr",
