@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cohcorrplot — cohcorrplot • ggplotFL</title>
+<title>Plot of FLIndices cross-validation by retrospective hindcast — plotXval • ggplotFL</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="cohcorrplot — cohcorrplot" />
-<meta property="og:description" content="A correlation plot that show and quantifies correlation along
-cohorts. Typically used on catch or survey abundances-at-age." />
+<meta property="og:title" content="Plot of FLIndices cross-validation by retrospective hindcast — plotXval" />
+<meta property="og:description" content="Plot of FLIndices cross-validation by retrospective hindcast" />
 
 
 
@@ -113,50 +112,41 @@ cohorts. Typically used on catch or survey abundances-at-age." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>cohcorrplot</h1>
+    <h1>Plot of FLIndices cross-validation by retrospective hindcast</h1>
     <small class="dont-index">Source: <a href='https://github.com/flr/ggplotFL/blob/master/R/special.R'><code>R/special.R</code></a></small>
-    <div class="hidden name"><code>cohcorrplot-methods.Rd</code></div>
+    <div class="hidden name"><code>plotXval.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A correlation plot that show and quantifies correlation along
-cohorts. Typically used on catch or survey abundances-at-age.</p>
+    <p>Plot of FLIndices cross-validation by retrospective hindcast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cohcorrplot</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S4 method for FLQuant</span>
-<span class='fu'>cohcorrplot</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='co'># S4 method for FLCohort</span>
-<span class='fu'>cohcorrplot</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>plotXval</span><span class='op'>(</span><span class='va'>x</span>, y <span class='op'>=</span> <span class='st'>"missing"</span>, order <span class='op'>=</span> <span class='st'>"inverse"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object with the abundance at age information. FLQuant or FLCohort.</p></td>
+      <td><p>An *FLIndices* object of the original observations.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Any extra arguments</p></td>
+      <th>y</th>
+      <td><p>A list contaning *FLIndices* objects returned by *a4ahcxval*.</p></td>
+    </tr>
+    <tr>
+      <th>order</th>
+      <td><p>Order in which retrospective runs are stored, defaults to"inverse".</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The method prints a plot assembled as a combination of grid elements, not a
-<em>gg</em> object.</p>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>The FLR Team</p>
+    <p>A ggplot object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
-<span class='fu'>cohcorrplot</span><span class='op'>(</span><span class='fu'>stock.n</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='cohcorrplot-methods-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>cohcorrplot</span><span class='op'>(</span><span class='fu'>FLCohort</span><span class='op'>(</span><span class='fu'>stock.n</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='cohcorrplot-methods-2.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='co'># SEE vignette</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
