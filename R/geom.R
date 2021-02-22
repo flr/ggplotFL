@@ -41,19 +41,19 @@
 #' data(ple4)
 #' flq <- rnorm(250, catch(ple4), 200000)
 #' ggplot(flq, aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75), fill="red", alpha=0.25)
+#'   geom_flquantiles(probs=c(0.25, 0.50, 0.75), fill="red", alpha=0.25)
 #' # Draw two quantiles with two calls to geom_flquantiles
 #' ggplot(flq, aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.25, 0.75), alpha=0.25, fill="red") +
+#'   geom_flquantiles(probs=c(0.25, 0.50, 0.75), alpha=0.25, fill="red") +
 #'   geom_flquantiles(probs=c(0.10, 0.90), alpha=0.15, fill="red")
 #' # Use it on an FLQuants, colouring by their name
 #' flqs <- FLQuants(A=rnorm(250, catch(ple4), 200000),
 #'   B=rnorm(250, stock(ple4), 200000))
 #' ggplot(flqs, aes(x=date, y=data, group=qname)) +
-#'   geom_flquantiles(probs=c(0.10, 0.90), aes(fill=qname), alpha=c(0.30))
+#'   geom_flquantiles(probs=c(0.10, 0.50, 0.90), aes(fill=qname), alpha=c(0.30))
 #' # Or facet them
 #' ggplot(flqs, aes(x=date, y=data)) +
-#'   geom_flquantiles(probs=c(0.10, 0.90), fill="red", alpha=c(0.30)) +
+#'   geom_flquantiles(probs=c(0.10, 0.50, 0.90), fill="red", alpha=c(0.30)) +
 #'   facet_grid(qname~.)
 
 geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
@@ -91,7 +91,7 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     inherit.aes = inherit.aes,
     check.aes = FALSE,
     check.param = FALSE,
-    params = list(probs=probs[ceiling(length(probs)/2)], alpha=alpha, ...)
+    params = list(probs=probs[ceiling(length(probs)/2)], ...)
   )))
   }
 
