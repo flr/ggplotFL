@@ -135,7 +135,7 @@ ggplot(flq, aes(x=date, y=data)) +
 # Use it on an FLQuants, colouring by their name
 flqs <- FLQuants(A=rnorm(250, catch(ple4), 200000),
   B=rnorm(250, stock(ple4), 200000))
-ggplot(flqs, aes(x=date, y=data, group=qname)) +
+ggplot(flqs, aes(x=date, y=data, group=qname, colour=qname)) +
   geom_flquantiles(probs=c(0.10, 0.50, 0.90), aes(fill=qname), alpha=c(0.30))
 # Or facet them
 ggplot(flqs, aes(x=date, y=data)) +
