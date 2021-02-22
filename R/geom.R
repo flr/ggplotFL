@@ -60,7 +60,7 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
   position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = FALSE,
   probs=c(0.10, 0.50, 0.90), alpha=0.5, ...) {
 
-  list(
+  out <- list(
 
   # Quantile ribbon
   layer(
@@ -72,7 +72,13 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     show.legend = FALSE,
     inherit.aes = inherit.aes,
     params = list(probs=probs[c(1, length(probs))], alpha=alpha, ...)
-  ),
+  ))
+
+  # ADD line?
+
+  if((length(probs) %% 2) != 0) {
+
+  out <- c(out, list(
        
   # Median line
   layer(
@@ -86,8 +92,10 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     check.aes = FALSE,
     check.param = FALSE,
     params = list(probs=probs[ceiling(length(probs)/2)], alpha=alpha, ...)
-  )
-  )
+  )))
+  }
+
+  return(out)
 } # }}}
 
 # stat_flquantiles {{{
@@ -209,7 +217,7 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
   # DATA
   data <- as(data, "data.frame")
   data$yintercept <- data$data
-  data$y <- data$data * 0.90
+  data$y <- data$data - 0.90
   data$linetype <- letters[as.numeric(row.names(data)) + 1]
   data$label <- data$params
   
