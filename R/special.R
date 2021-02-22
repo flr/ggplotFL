@@ -6,6 +6,7 @@
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
+
 # cohcorrplot {{{
 
 #' cohcorrplot
@@ -236,6 +237,8 @@ dto <- function(flis, y0) {
 
   data.table(as.data.frame(lapply(flis, function(x) {
     dmns <- dimnames(x)
+    if(all(is.na(catch.wt(x))))
+      stop("catch.wt in FLIndex is NA, cannot compute biomass.")
     window(quantSums(index (x) * catch.wt(x)), start=y0)
   }), drop=TRUE, qname="index"))
 
