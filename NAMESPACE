@@ -17,6 +17,9 @@ importFrom("rlang",
   "as_name")
 importFrom("grid",
   "grid.draw")
+importFrom("cowplot",
+  "ggdraw",
+  "draw_grob")
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")
