@@ -643,15 +643,14 @@ setMethod("plot", signature(x="FLStock", y="FLStocks"),
 ) # }}}
 
 # plot(FLSR) {{{
+
 #' @aliases plot,FLSR,missing-method
 #' @docType methods
 #' @rdname plot
 #' @examples
-#'
-#'  # plot for FLSR
+#' # plot for FLSR
 #'  data(nsher)
 #'  plot(nsher)
-#'  
 
 setMethod('plot', signature(x='FLSR', y='missing'),
 	function(x, ...) {
@@ -706,11 +705,10 @@ setMethod('plot', signature(x='FLSR', y='missing'),
     geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3) +
     xlab(expression(hat(Recruits)))
 	
+  # ASSEMBLE grid and CONVERT to gg
+  res <- arrangeGrob(p1, p2, p3, p4, p5, p6, ncol=2)
 
-	# BUG Does not return a ggplot, but a grob
-	invisible(grid.arrange(p1, p2, p3, p4, p5, p6, ncol=2))
-
-#	p <- gridExtra::arrangeGrob(p1, p2, p3, p4, p5, p6, ncol=2)
+  return(ggdraw() + draw_grob(grid::grobTree(res)))
 	
 #	return(p)
 	}
