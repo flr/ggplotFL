@@ -6,6 +6,8 @@
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
+globalVariables(c("final", "y", "pred"))
+
 
 # cohcorrplot {{{
 
@@ -32,7 +34,7 @@ setGeneric("cohcorrplot", function(x, ...)
 #' @rdname cohcorrplot-methods
 #' @examples
 #' data(ple4)
-#' cohcorrplot(stock.n(ple4))
+#' cohcorrplot(catch.n(ple4))
 
 setMethod("cohcorrplot", signature(x="FLQuant"),
   function(x) {
@@ -46,88 +48,91 @@ setMethod("cohcorrplot", signature(x="FLQuant"),
 setMethod("cohcorrplot", signature(x="FLCohort"),
   function(x) {
 
-  # DATA.FRAME
-  flc <- as.data.frame(x)
+  # DF
+  dat <- as.data.frame(x)
 
-  # RESHAPE
-
-  flc.wide <-  reshape(flc, direction="wide", timevar=names(flc)[1],
-  idvar=names(flc)[2:6])
+  # DIMENSIONS
   
-  names(flc.wide) <-  gsub("data.","", names(flc.wide))
+  ages <- dimnames(x)$age
+  nag <- length(ages)
 
-  #
+  # DIAGONAL elements, for age labels
+  diag <- seq(nag) + nag * (seq(nag) - 1)
 
-  pL <- vector("list", length=max(flc$age)^2)
+  # UPPER and LOWER triangle
+  
+  matr <- matrix(seq(nag ^ 2), nag, nag, byrow=TRUE)
 
-  cMat <- matrix(NA, ncol = max(flc$age), nrow = max(flc$age))
+  # INVERTED positions as matr is column first
 
-  c2 <- numeric(max(flc$age)^2)
+  uppt <- which(lower.tri(matr))
+  lowt <- which(upper.tri(matr))
 
-  za <- 1
+  # COMBINATIONS for correlations
+  
+  combs <- lapply(seq(nag - 1), function(x) seq(x + 1, nag))
 
-  for (coh in min(flc$age):(max(flc$age))) {
-    # 
-  	if (coh > 1) {
+  combsdf <- do.call(rbind, Map(function(i, j)
+    data.frame(x=i, y=j), i=seq(nag - 1), j=combs))
 
-		  for (corZ in (max(flc$age)-inc):1) {
-  			d1 <- flc.wide[,c(ac(coh),ac(coh - corZ))]
-	  		names(d1) <- c("x","y")
-		  	c1 <- round(with(na.omit(d1),cor(x,y)),2)
-			  c2[za] <- c1
-  			pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(c1)), aes(.data$x,.data$y)) +
-	  		geom_text(aes(label = .data$text), size=8) +
-		  		theme(axis.title=element_blank(),
-        			axis.text=element_blank(),
-        			axis.ticks=element_blank(),
-        			panel.grid.major=element_blank(),
-    				panel.grid.minor=element_blank())
-			  za <- za + 1
-		  }
-	  }
+  # PLOTS list
+  plots <- vector("list", nag ^ 2)
 
-  	pL[[za]] <- ggplot(data.frame(x = 1, y = 1, text = ac(coh)), aes(.data$x,.data$y)) +
-	    geom_text(aes(label = .data$text), size=16) +
-		  theme(axis.title=element_blank(),
-        		axis.text=element_blank(),
-        		axis.ticks=element_blank(),
-        		panel.grid.major=element_blank(),
-    			panel.grid.minor=element_blank())
-  	c2[za] <- 1
-	  za <- za + 1
+  # EMPTY theme
+  empty <- theme(axis.title=element_blank(), axis.text=element_blank(),
+    axis.ticks=element_blank(), panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank())
 
-	  if (coh < max(flc$age)) {
-		
-      for (inc in 1:(max(flc$age)-coh)) {
-  			d1 <- flc.wide[,c(ac(coh),ac(coh + inc))]
-	  		names(d1) <- c("x","y")
-		  	cMat[coh, (coh+inc)] <- with(na.omit(d1),cor(x,y))
-			  c2[za] <- with(na.omit(d1),cor(x,y))
+  # EXTRACT data pairs for correlations, returns single list
+  pairs <- Reduce("c", Map(function(cs, na) {
+    lapply(cs, function(k) data.frame(x=c(x[k,]), y=c(x[na,])))
+    }, na=seq(nag - 1), cs=combs))
 
-        d1$za <- za
-        pL[[za]] <- ggplot(data = na.omit(d1), aes(x=.data$x, y=.data$y)) +
-		  		scale_fill_gradient2(low="blue", mid = "white", high="red",
-					limits=c(-1,1), guide = FALSE) +
-			  	geom_rect(aes(fill = c2[za]),xmin = -Inf,xmax = Inf,
-	               ymin = -Inf,ymax = Inf,alpha = 0.8) +
-				geom_point() +
-				geom_smooth(method = "lm", fullrange = TRUE, col = 1) +
-				theme(axis.title=element_blank(),
-	        		axis.text=element_blank(),
-	        		axis.ticks=element_blank())
+  # COMPUTE correlations
+  corrs <- lapply(pairs, function(i) round(cor(i$x, i$y, use="complete.obs"), 2))
 
-			za <- za + 1
-		}
-	}
-}
+  # PLOT correlations in lower triangle
+  plots[lowt] <- lapply(corrs, function(i)
+    ggplot(data.frame(x = 1, y = 1, text = i), aes(x, y)) +
+	  geom_text(aes(label = text), size=6) + empty)
 
-margin = theme(plot.margin = unit(c(0.01,0.01,0.01,0.01), "cm"))
-pL <- lapply(pL, "+", margin)
-suppressMessages(do.call("grid.arrange", c(pL, ncol =(length(unique(flc$age))))))
-}
-) # }}}
+  # PLOT correlations, returns gg
+  pcors <- Map(function(da, co) {
+    ggplot(da[!is.na(rowSums(da)),], aes(x=x, y=y)) +
+		  geom_rect(aes(fill = co), xmin = -Inf, xmax = Inf,
+	      ymin = -Inf, ymax = Inf, alpha = 0.8) +
+  		scale_fill_gradient2(low="blue", mid = "white", high="red",
+        limits=c(-1,1), guide = FALSE) +
+      geom_point() +
+      geom_smooth(method = "lm", fullrange = TRUE, col = 1, formula = y ~ x) +
+      empty
+    }, da = pairs, co = corrs)
 
-globalVariables(c("final", "y", "pred"))
+  # PLACE plots in upper triangle
+  plots[uppt] <- pcors
+
+  # PLOT diagonal labels
+  labs <- lapply(ages, function(i) {
+    ggplot(data.frame(x=1, y=1, text=i), aes(x=x, y=y, label=text)) +
+    geom_text(size=16) + empty
+    })
+
+  # PLACE labels in diagonal
+  plots[diag] <- labs
+
+  # PREPARE grid object
+
+  margin <- theme(plot.margin = unit(c(0.01, 0.01, 0.01, 0.01), "cm"))
+  
+  plots <- lapply(plots, "+", margin)
+
+  res <- do.call(arrangeGrob, c(grobs=plots, nrow=nag, ncol=nag))
+
+  # RETURN gg
+  return(ggdraw() + draw_grob(grid::grobTree(res)))
+  }
+)
+# }}}
 
 # plotXval (FLIndices, list) {{{
 
