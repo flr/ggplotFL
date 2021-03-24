@@ -8,7 +8,6 @@
 
 globalVariables(c("final", "y", "pred"))
 
-
 # cohcorrplot {{{
 
 #' cohcorrplot
@@ -126,7 +125,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   
   plots <- lapply(plots, "+", margin)
 
-  res <- do.call(arrangeGrob, c(grobs=plots, nrow=nag, ncol=nag))
+  res <- arrangeGrob(grobs=plots, nrow=nag, ncol=nag)
 
   # RETURN gg
   return(ggdraw() + draw_grob(grid::grobTree(res)))
@@ -172,10 +171,10 @@ plotXval <- function(x, y="missing", order="inverse") {
   # CONVERT inputs to data.tables
 
   # Original FLIndices
-  dato <- dto(x, y0)
+  dato <- .dto(x, y0)
 
   # Hindcasted list(FLIndices)
-  datp <- dtp(y, y0)
+  datp <- .dtp(y, y0)
 
   # CALCULATE mase
   if(order == "inverse")
@@ -226,9 +225,9 @@ plotXval <- function(x, y="missing", order="inverse") {
   return(p)
 } # }}}
 
-# data.tables {{{
+# xval data.tables {{{
 
-dtp <- function(flis, y0) {
+.dtp <- function(flis, y0) {
 
   rbindlist(lapply(names(flis), function(i) {
     pred <- pmin(an(i) + 1, an(names(flis)[1]))
@@ -238,7 +237,7 @@ dtp <- function(flis, y0) {
     }), drop=TRUE, qname="index"), final=i, pred=pred))}))
 }
 
-dto <- function(flis, y0) {
+.dto <- function(flis, y0) {
 
   data.table(as.data.frame(lapply(flis, function(x) {
     dmns <- dimnames(x)
