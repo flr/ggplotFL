@@ -8,8 +8,9 @@ importFrom("grDevices",
   "png")
 importFrom("stats",
   "as.formula",
-  "reshape",
-  "na.omit")
+  "cor",
+  "na.omit",
+  "reshape")
 importFrom("utils",
   "data")
 importFrom("rlang",

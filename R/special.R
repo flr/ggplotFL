@@ -6,7 +6,7 @@
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
-globalVariables(c("final", "y", "pred"))
+globalVariables(c("final", "y", "pred", "text"))
 
 # cohcorrplot {{{
 
@@ -15,8 +15,8 @@ globalVariables(c("final", "y", "pred"))
 #' A correlation plot that show and quantifies correlation along
 #' cohorts. Typically used on catch or survey abundances-at-age.
 #'
-#' The method prints a plot assembled as a combination of grid elements, not a
-#' *gg* object.
+#' The method prints a plot assembled as a combination of grid elements, but
+#' reurns it as a *gg* object.
 #'
 #' @param x An object with the abundance at age information. FLQuant or FLCohort.
 #' @param ... Any extra arguments
