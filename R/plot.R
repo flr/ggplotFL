@@ -132,11 +132,11 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       # ITERS? PLOT central ribbon and line by unit
   		p <- if(mds[3] == 1) {
           ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
-            geom_flquantiles(aes(alpha=0.3),
+            geom_flquantiles(alpha=0.3,
               probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       } else {
           ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-            geom_flquantiles(aes(alpha=0.3),
+            geom_flquantiles(alpha=0.3,
               probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       }
     }
