@@ -69,3 +69,15 @@ setMethod("ggplot", signature(data="FLComps"),
     try(data$cohort <- data$year - data$age)
     ggplot(data, mapping, ...)
 	}) # }}}
+
+# FLPar {{{
+
+#' @rdname ggplot
+#' @aliases ggplot,FLComp-method
+
+setMethod("ggplot", signature(data="FLPar"),
+  function(data, mapping=aes(), ..., environment=parent.frame()) {
+    data <- as.data.frame(data)
+	return(ggplot(data, mapping, ...))
+	}
+) # }}}

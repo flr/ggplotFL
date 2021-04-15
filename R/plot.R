@@ -401,6 +401,8 @@ setMethod("plot", signature(x="FLStock", y="missing"),
     
     metrics <- metrics(x, metrics=metrics)
 
+    if(missing(metrics)) {
+
     # HACK for F units
     if("F" %in% names(metrics))
       units(metrics$F) <- paste0(range(x, c("minfbar", "maxfbar")),
@@ -428,6 +430,8 @@ setMethod("plot", signature(x="FLStock", y="missing"),
       if(dim(metrics$Rec)[4] > 1) {
         metrics$Rec[metrics$Rec == 0] <- NA 
       }
+    }
+
     }
 
     p <- plot(metrics, ...) + ylim(c(0, NA))
@@ -900,9 +904,10 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
       xvar <- quote(date)
     else
       xvar <- quote(year)
-
+    
     p <- ggplot(fqs, aes_(x=xvar, y=quote(data), group=quote(qname),
-      colour=quote(qname))) + geom_line() +
+      colour=quote(qname), fill=flpalette_colours(quote(qname)))) +
+      geom_flquantiles(alpha=0.3) +
       ylab("Standardized relative abundance") + xlab("") +
       theme(legend.title=element_blank())
     
