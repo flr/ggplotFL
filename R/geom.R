@@ -201,7 +201,7 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' # geom works for multiple facets, separate params using name-matching FLPars()
 #' plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
 #'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
-#'   F=FLPar(FMSY=0.21)), x=c(1960))
+#'   F=FLPar(FMSY=0.21)), x=c(1964))
 #' # x and y positions can be altered by param
 #' plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
 #'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
@@ -213,11 +213,11 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
   if(is.null(mapping))
     mapping <- aes(x=x)
-
+  
   # DATA
   data <- as(data, "data.frame")
   data$yintercept <- data$data
-  data$y <- data$data - 0.90
+  data$y <- data$data 
   data$linetype <- letters[as.numeric(row.names(data)) + 1]
   data$label <- data$params
   
@@ -249,14 +249,14 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
   # geom_text
   layer(
-    geom = GeomText,
+    geom = GeomLabel,
     mapping = mapping[names(mapping) %in% atext],
     data = data,
     stat = StatIdentity,
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
-    params = c(list(na.rm=na.rm), args[names(args) %in% atext])
+    params = c(list(na.rm=na.rm,label.size = NA ), args[names(args) %in% atext])
   )
   )
 } # }}}
