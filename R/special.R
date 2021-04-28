@@ -61,7 +61,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   # INVERTED positions as matr is column first
 
   uppt <- which(lower.tri(matr))
-  lowt <- unlist(lapply(seq(nag-1), function(x) seq(x, 9) * 10 + x))
+  lowt <- unlist(lapply(seq(nag - 1), function(x) seq(x, nag - 1) * nag + x))
 
   # COMBINATIONS for correlations
   
