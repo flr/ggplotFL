@@ -47,9 +47,6 @@ setMethod("cohcorrplot", signature(x="FLQuant"),
 setMethod("cohcorrplot", signature(x="FLCohort"),
   function(x) {
 
-  # DF
-  dat <- as.data.frame(x)
-
   # DIMENSIONS
   
   ages <- dimnames(x)$age
@@ -59,20 +56,16 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   diag <- seq(nag) + nag * (seq(nag) - 1)
 
   # UPPER and LOWER triangle
-  
   matr <- matrix(seq(nag ^ 2), nag, nag, byrow=TRUE)
 
   # INVERTED positions as matr is column first
 
   uppt <- which(lower.tri(matr))
-  lowt <- which(upper.tri(matr))
+  lowt <- unlist(lapply(seq(nag-1), function(x) seq(x, 9) * 10 + x))
 
   # COMBINATIONS for correlations
   
   combs <- lapply(seq(nag - 1), function(x) seq(x + 1, nag))
-
-  combsdf <- do.call(rbind, Map(function(i, j)
-    data.frame(x=i, y=j), i=seq(nag - 1), j=combs))
 
   # PLOTS list
   plots <- vector("list", nag ^ 2)

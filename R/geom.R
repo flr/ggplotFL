@@ -256,7 +256,7 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
-    params = c(list(na.rm=na.rm,label.size = NA ), args[names(args) %in% atext])
+    params = c(list(na.rm=na.rm, label.size = NA ), args[names(args) %in% atext])
   )
   )
 } # }}}
