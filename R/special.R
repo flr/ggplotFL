@@ -284,15 +284,17 @@ setMethod("plotRunstest", signature(fit="FLQuants", obs="missing"),
   
   # MERGE s3dat into dat
   if(combine)
-    dat <- merge(dat, s3dat[, list(qname, lcl, ucl, pass)], by=c('qname'))
+    dat <- merge(dat, s3dat[, c('qname', 'lcl', 'ucl', 'pass')], by=c('qname'),
+      all=TRUE)
   else {
     # TODO CHECK reasons behind
-    s3dat[, age:=as.numeric(age)]
-    dat <- merge(dat, s3dat[, list(age, qname, lcl, ucl, pass)], by=c('qname', 'age'))
+    dat <- merge(dat, s3dat[, c('qname', 'lcl', 'ucl', 'pass', 'age')],
+      by=c('qname', 'age'), all = TRUE)
+
   }
 
   # ADD limits to colour outliers
-  dat[, outlier:=data < lcl | data > ucl]
+  dat$outlier <- dat$data < dat$lcl | dat$data > dat$ucl
   
   # PLOT
   p <- ggplot(dat) +
@@ -316,6 +318,8 @@ setMethod("plotRunstest", signature(fit="FLQuants", obs="missing"),
   return(p)
   }
 )
+
+#' @rdname plotRunstest
 
 setMethod("plotRunstest", signature(fit="FLQuants", obs="FLQuants"),
   function(fit, obs, combine=TRUE) {
