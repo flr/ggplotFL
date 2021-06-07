@@ -27,9 +27,6 @@ example, on the legend of the ggplot-based plot method for FLSRs
  }))
  eqlabel(model=lapply(srs, model),
    param=lapply(srs, params))
-
-
  modlabel(model=lapply(srs, model),
    param=lapply(srs, params))
-
 }

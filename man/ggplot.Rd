@@ -6,6 +6,7 @@
 \alias{ggplot,FLQuants-method}
 \alias{ggplot,FLComp-method}
 \alias{ggplot,FLComps-method}
+\alias{ggplot,FLPar-method}
 \title{ggplot method for various FLR classes}
 \usage{
 \S4method{ggplot}{FLQuant}(data = NULL, mapping = aes(), ..., environment = parent.frame())
@@ -15,6 +16,8 @@
 \S4method{ggplot}{FLComp}(data = NULL, mapping = aes(), ..., environment = parent.frame())
 
 \S4method{ggplot}{FLComps}(data = NULL, mapping = aes(), ..., environment = parent.frame())
+
+\S4method{ggplot}{FLPar}(data = NULL, mapping = aes(), ..., environment = parent.frame())
 }
 \arguments{
 \item{data}{An \code{FLQuant} object}

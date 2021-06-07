@@ -61,7 +61,7 @@ plot(ssb(ple4)) + geom_flpar(data=FLPar(Blim=300000, Bpa=230000), x=1960)
 # geom works for multiple facets, separate params using name-matching FLPars()
 plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
-  F=FLPar(FMSY=0.21)), x=c(1960))
+  F=FLPar(FMSY=0.21)), x=c(1964))
 # x and y positions can be altered by param
 plot(ple4, metrics=list(SSB=ssb, F=fbar)) +
   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),

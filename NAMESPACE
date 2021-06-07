@@ -10,6 +10,7 @@ importFrom("stats",
   "as.formula",
   "cor",
   "na.omit",
+  "setNames",
   "reshape")
 importFrom("utils",
   "data")

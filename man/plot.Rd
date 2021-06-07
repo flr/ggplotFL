@@ -26,9 +26,9 @@
 \alias{plot,FLIndices,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
-\S4method{plot}{FLQuant,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9), na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuant,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, iter = NULL)
 
-\S4method{plot}{FLQuants,missing}(x, probs = c(0.1, 0.33, 0.5, 0.66, 0.9), na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuants,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
@@ -73,7 +73,7 @@
 
 \S4method{plot}{FLSR,missing}(x, y, ...)
 
-\S4method{plot}{FLSRs,ANY}(x, legend_label = eqlabel, ...)
+\S4method{plot}{FLSRs,ANY}(x, legend_label = names(x), ...)
 
 \S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], B = tsb), ...)
 
@@ -189,23 +189,19 @@ plot(ple4, rps)
  data(ple4)
  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
  plot(pls)
-
- # plot for FLSR
+# plot for FLSR
  data(nsher)
  plot(nsher)
- 
-
  # plot for FLSRs
  data(nsher)
- srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
+ srs <- FLSRs(sapply(c('segreg', 'bevholt'), function(x) {
    y <- nsher
    model(y) <- x
    return(fmle(y))
  }))
  plot(srs)
- 
+ plot(srs, legend_label=eqlabel)
  plot(srs, legend_label=modlabel)
-
  # Plot a FLIndex object
  data(ple4.index)
  plot(ple4.index)

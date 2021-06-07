@@ -22,12 +22,12 @@ A correlation plot that show and quantifies correlation along
 cohorts. Typically used on catch or survey abundances-at-age.
 }
 \details{
-The method prints a plot assembled as a combination of grid elements, not a
-\emph{gg} object.
+The method prints a plot assembled as a combination of grid elements, but
+reurns it as a \emph{gg} object.
 }
 \examples{
 data(ple4)
-cohcorrplot(stock.n(ple4))
+cohcorrplot(catch.n(ple4))
 cohcorrplot(FLCohort(stock.n(ple4)))
 }
 \author{
