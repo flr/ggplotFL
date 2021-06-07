@@ -69,7 +69,7 @@
 #'   geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=FALSE, iter=NULL) {
+	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, iter=NULL) {
 
     # GET base plot from plot(FLQuants)
     p <- plot(FLQuants(x), probs=probs, na.rm=na.rm, iter=iter)
@@ -104,7 +104,7 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=FALSE, iter=NULL) {
+	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, iter=NULL) {
 
 		# CHECK probs length is odd
 		if(is.integer(length(probs)/2))
@@ -725,21 +725,19 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 #' @rdname plot
 #' @param legend_label function to create the legend labels
 #' @examples
-#'
 #'  # plot for FLSRs
 #'  data(nsher)
-#'  srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
+#'  srs <- FLSRs(sapply(c('segreg', 'bevholt'), function(x) {
 #'    y <- nsher
 #'    model(y) <- x
 #'    return(fmle(y))
 #'  }))
 #'  plot(srs)
-#'  
+#'  plot(srs, legend_label=eqlabel)
 #'  plot(srs, legend_label=modlabel)
-#'
 
 setMethod("plot", signature(x="FLSRs"),
-  function(x, legend_label=eqlabel, ...) {
+  function(x, legend_label=names(x), ...) {
 
     uns <- units(x[[1]])
 
@@ -758,11 +756,18 @@ setMethod("plot", signature(x="FLSRs"),
     inp <- data.frame(ssb=seq(0, max(dat$ssb), length=100), rec=NA)
 
     # RESULTS
-    res <- lapply(names(mods), function(x) {
-      data.frame(sr=x, ssb=inp$ssb,
-        rec=eval(as.list(mods[[x]])[[3]], c(list(ssb=inp$ssb), as(pars[[x]], 'list')))
-        )
+    res <- lapply(names(mods), function(i) {
+      data.frame(sr=i, ssb=inp$ssb,
+        rec=c(eval(as.list(mods[[i]])[[3]], c(list(ssb=inp$ssb), as(pars[[i]],
+          'list'))))
+      )
     })
+
+    #
+    if(!is(legend_label, 'function')) {
+      legend_label <- function(model, params)
+        return(setNames(nm=names(model)))
+    }
 
     res <- Reduce('rbind', res)
 

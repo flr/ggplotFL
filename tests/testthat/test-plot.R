@@ -54,3 +54,27 @@ test_that("plot(FLStock) works as expected", {
 }) # }}}
 
 # -- FLStocks
+
+# --- probs
+
+
+# --- geom_hash
+
+# ADD the md5 hash of the input (FLR) object to a plot
+#  - As small light text
+#  - As attribute to the ggplot object
+
+library(digest)
+digest(ple4)
+
+plot(ple4) +
+  geom_text(data=data.frame(year=1958,data=0,label=digest(ple4), qname="F"),
+    aes(label=label), colour="#BBBBBB", size=3)
+
+plot(ple4) +
+  theme(plot.margin=margin(t = 8, r = 0, b = 0, l = 0, unit = "pt")) +
+  annotation_custom(grid::textGrob(digest(ple4), x=unit(0.85, "npc"),
+    y = unit(0.99, "npc"), just = "right"))
+   
+plot(ple4) +
+  labs(title=digest(ple4))

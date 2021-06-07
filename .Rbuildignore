@@ -1,7 +1,11 @@
-^.travis.yml$
-appveyor.yml
 NEWS.md
 docs/
-^Makefile$
+man-roxygen/
+data-raw/
+Makefile
 .git/
+.github/
 _pkgdown.yml
+CONTRIBUTORS.md
+CONTRIBUTING.md
+^\.github$

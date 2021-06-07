@@ -6,7 +6,8 @@
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
-globalVariables(c("final", "y", "pred", "text"))
+globalVariables(c("final", "y", "pred", "text", "pass", "p.value", "qname",
+  "age", "lcl", "ucl", "outlier"))
 
 # cohcorrplot {{{
 
@@ -216,9 +217,7 @@ plotXval <- function(x, y="missing", order="inverse") {
   theme(legend.position="bottom")
 
   return(p)
-} # }}}
-
-# xval data.tables {{{
+} 
 
 .dtp <- function(flis, y0) {
 
@@ -240,4 +239,110 @@ plotXval <- function(x, y="missing", order="inverse") {
   }), drop=TRUE, qname="index"))
 
 }
+# }}}
+
+# plotRunstest {{{
+
+#' Plot the runs test result for one or more time series
+#'
+#' @param fit The result of a model fit.
+#' @param obs The observations used in the fit.
+#' @param combine Should ages be combined by addition, defaults to TRUE.
+#' @param ... Extra arguments.
+#'
+#' @return An object of class ggplot2::gg
+#'
+#' @examples
+#' data(nsher)
+#' plotRunstest(fitted(nsher), rec(nsher))
+
+setGeneric("plotRunstest", function(fit, obs, ...)
+		standardGeneric("plotRunstest"))
+
+#' @rdname plotRunstest
+
+setMethod("plotRunstest", signature(fit="FLQuants", obs="missing"),
+  function(fit, combine=TRUE) {
+
+  # COMBINE
+  if(combine) {
+    fit <- lapply(fit, quantSums)
+  }
+
+  # RESIDUALS
+  res <- fit
+  
+  # CREATE data.frame
+  dat <- data.table(as.data.frame(res))
+
+  # sigma3, by index
+  s3dat <- runstest(res, combine=combine)
+  
+  # FIND single limits for all indices
+  lims <- c(min=min(unlist(lapply(res, dims, c("minyear")))),
+    max=max(unlist(lapply(res, dims, c("maxyear")))))
+  
+  # MERGE s3dat into dat
+  if(combine)
+    dat <- merge(dat, s3dat[, list(qname, lcl, ucl, pass)], by=c('qname'))
+  else {
+    # TODO CHECK reasons behind
+    s3dat[, age:=as.numeric(age)]
+    dat <- merge(dat, s3dat[, list(age, qname, lcl, ucl, pass)], by=c('qname', 'age'))
+  }
+
+  # ADD limits to colour outliers
+  dat[, outlier:=data < lcl | data > ucl]
+  
+  # PLOT
+  p <- ggplot(dat) +
+    geom_rect(data=s3dat, aes(xmin=lims[1] - 1, xmax=lims[2] + 1,
+      ymin=lcl, ymax=ucl, fill=pass), alpha=0.8) +
+    scale_fill_manual(values=c("TRUE"="#cbe368", "FALSE"="#ef8575")) +
+    geom_hline(yintercept=0, linetype=2) +
+    geom_segment(aes(x=year, y=0, xend=year, yend=data), na.rm=TRUE) +
+    geom_point(aes(x=year, y=data), size=1.5, na.rm=TRUE) +
+    geom_point(aes(x=year, y=data, colour=outlier), size=1, na.rm=TRUE) +
+    scale_colour_manual(values=c("FALSE"="#ffffff", "TRUE"="#d50102")) +
+    xlab("") + ylab("Residuals") +
+    theme(legend.position="none")
+
+  if(combine)
+    p <- p + facet_grid(qname ~ .)
+  else
+    p <- p + facet_grid(factor(age, levels=order(unique(age))) ~ qname,
+      scales="free_y")
+
+  return(p)
+  }
+)
+
+setMethod("plotRunstest", signature(fit="FLQuants", obs="FLQuants"),
+  function(fit, obs, combine=TRUE) {
+  
+  # COMBINE
+  if(combine) {
+    fit <- lapply(fit, quantSums)
+    obs <- lapply(obs, quantSums)
+  }
+
+  # RESIDUALS
+  res <- FLQuants(mapply(residuals, obs, fit, SIMPLIFY=FALSE))
+
+  return(plotRunstest(res, combine=combine))
+  }
+)
+
+#' @rdname plotRunstest
+
+setMethod("plotRunstest", signature(fit="FLQuant", obs="FLQuant"),
+  function(fit, obs, combine=TRUE) {
+
+    fit <- FLQuants(A=fit)
+    obs <- FLQuants(A=obs)
+
+    plotRunstest(fit, obs, combine=combine) +
+      theme(strip.text = element_blank(), strip.background = element_blank())
+  }
+)
 # }}}

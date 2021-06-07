@@ -26,7 +26,7 @@ utils::globalVariables(c("qname", "time"))
 #'  }))
 #'  eqlabel(model=lapply(srs, model),
 #'    param=lapply(srs, params))
-#'
+
 eqlabel <- function(model, param) {
 
   # CREATE model formula labels
@@ -47,13 +47,13 @@ eqlabel <- function(model, param) {
 } # }}}
 
 # modlabel {{{
+
 #' @aliases modlabel
 #' @rdname labels
 #' @examples
-#'
 #'  modlabel(model=lapply(srs, model),
 #'    param=lapply(srs, params))
-#'
+
 modlabel <- function(model, param) {
 
   # GET model name
