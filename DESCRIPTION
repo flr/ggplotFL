@@ -24,6 +24,7 @@ Suggests:
   knitr,
   rmarkdown,
   testthat
+VignetteBuilder: knitr
 URL: http://flr-project.org/ggplotFL
 BugReports: https://github.com/flr/ggplotFL/issues
 Additional_repositories: http://flr-project.org/R
