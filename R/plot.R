@@ -387,6 +387,25 @@ setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
   })
 # }}}
 
+# plot(FLPar, missing) {{{
+
+setMethod("plot", signature(x="FLPar", y="missing"),
+  function(x) {
+
+  ggplot(as.data.frame(x), aes(x=data)) + 
+    geom_density(alpha=.2, aes(fill=params)) +
+    geom_histogram(aes(y=..density..), bins=20, colour="black", fill=NA) +
+    facet_wrap(~params, scales="free") +
+    xlab("") + ylab("") +
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    theme(axis.text.x = element_text(angle = 90)) +
+    scale_x_continuous(n.breaks = 7) +
+    guides(fill=FALSE)
+
+  }
+)
+# }}}
+
 # plot(FLStock) {{{
 
 #' @aliases plot,FLStock,missing-method
