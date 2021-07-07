@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • ggplotFL</title>
+<title>Plot the runs test result for one or more time series — plotRunstest • ggplotFL</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Plot the runs test result for one or more time series — plotRunstest" />
+<meta property="og:description" content="Plot the runs test result for one or more time series" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -111,18 +112,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Plot the runs test result for one or more time series</h1>
+    <small class="dont-index">Source: <a href='https://github.com/flr/ggplotFL/blob/master/R/special.R'><code>R/special.R</code></a></small>
+    <div class="hidden name"><code>plotRunstest.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="ggplotFL.html">ggplotFL</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    <p>Plot the runs test result for one or more time series</p>
     </div>
+
+    <pre class="usage"><span class='fu'>plotRunstest</span><span class='op'>(</span><span class='va'>fit</span>, <span class='va'>obs</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S4 method for FLQuants,missing</span>
+<span class='fu'>plotRunstest</span><span class='op'>(</span><span class='va'>fit</span>, combine <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='co'># S4 method for FLQuants,FLQuants</span>
+<span class='fu'>plotRunstest</span><span class='op'>(</span><span class='va'>fit</span>, <span class='va'>obs</span>, combine <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='co'># S4 method for FLQuant,FLQuant</span>
+<span class='fu'>plotRunstest</span><span class='op'>(</span><span class='va'>fit</span>, <span class='va'>obs</span>, combine <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>fit</th>
+      <td><p>The result of a model fit.</p></td>
+    </tr>
+    <tr>
+      <th>obs</th>
+      <td><p>The observations used in the fit.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra arguments.</p></td>
+    </tr>
+    <tr>
+      <th>combine</th>
+      <td><p>Should ages be combined by addition, defaults to TRUE.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of class ggplot2::gg</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>nsher</span><span class='op'>)</span>
+<span class='fu'>plotRunstest</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span><span class='op'>(</span><span class='va'>nsher</span><span class='op'>)</span>, <span class='fu'>rec</span><span class='op'>(</span><span class='va'>nsher</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='plotRunstest-1.png' alt='' width='700' height='433' /></div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 

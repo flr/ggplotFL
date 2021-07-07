@@ -81,7 +81,7 @@ range plus a line for the median (50% quantile)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="http://github.com/flr/ggplotFL">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     Source
   </a>
@@ -274,7 +274,7 @@ in the `probs` argument, all of the above will be returned, in the right order.<
 </div><div class='img'><img src='geom_flquantiles-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Use it on an FLQuants, colouring by their name</span>
 <span class='va'>flqs</span> <span class='op'>&lt;-</span> <span class='fu'>FLQuants</span><span class='op'>(</span>A<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>250</span>, <span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>, <span class='fl'>200000</span><span class='op'>)</span>,
   B<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>250</span>, <span class='fu'>stock</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>, <span class='fl'>200000</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>flqs</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>date</span>, y<span class='op'>=</span><span class='va'>data</span>, group<span class='op'>=</span><span class='va'>qname</span>, colour<span class='op'>=</span><span class='va'>qname</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>flqs</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>date</span>, y<span class='op'>=</span><span class='va'>data</span>, colour<span class='op'>=</span><span class='va'>qname</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>geom_flquantiles</span><span class='op'>(</span>probs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.10</span>, <span class='fl'>0.50</span>, <span class='fl'>0.90</span><span class='op'>)</span>, <span class='fu'>aes</span><span class='op'>(</span>fill<span class='op'>=</span><span class='va'>qname</span><span class='op'>)</span>, alpha<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.30</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='geom_flquantiles-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Or facet them</span>
 <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>flqs</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>date</span>, y<span class='op'>=</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>

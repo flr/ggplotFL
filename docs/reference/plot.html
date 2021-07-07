@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="http://github.com/flr/ggplotFL">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     Source
   </a>
@@ -122,10 +122,20 @@
     </div>
 
     <pre class="usage"><span class='co'># S4 method for FLQuant,missing</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.33</span>, <span class='fl'>0.5</span>, <span class='fl'>0.66</span>, <span class='fl'>0.9</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.95</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='co'># S4 method for FLQuant,FLQuant</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  <span class='va'>...</span>,
+  probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.95</span><span class='op'>)</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  iter <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for FLQuants,missing</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.33</span>, <span class='fl'>0.5</span>, <span class='fl'>0.66</span>, <span class='fl'>0.9</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, probs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.95</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='co'># S4 method for FLQuants,FLPar</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -141,6 +151,9 @@
 
 <span class='co'># S4 method for FLQuantPoint,FLQuants</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, iter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='co'># S4 method for FLPar,missing</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for FLStock,missing</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, metrics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Rec <span class='op'>=</span> <span class='va'>rec</span>, SSB <span class='op'>=</span> <span class='va'>ssb</span>, Catch <span class='op'>=</span> <span class='va'>catch</span>, F <span class='op'>=</span> <span class='va'>fbar</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -183,7 +196,7 @@
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for FLSRs,ANY</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, legend_label <span class='op'>=</span> <span class='va'>eqlabel</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, legend_label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for FLBiol,missing</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, metrics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Rec <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>n</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span>, B <span class='op'>=</span> <span class='va'>tsb</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -290,96 +303,91 @@ plot.</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>300</span>, <span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>, <span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>, probs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.10</span>, <span class='fl'>0.5</span>, <span class='fl'>0.90</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='geom_flquantiles.html'>geom_flquantiles</a></span><span class='op'>(</span>probs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span><span class='op'>)</span>, linetype<span class='op'>=</span><span class='fl'>3</span>, colour<span class='op'>=</span><span class='st'>"red"</span>, alpha<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='geom_flquantiles.html'>geom_flquantiles</a></span><span class='op'>(</span>probs<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.99</span><span class='op'>)</span>, linetype<span class='op'>=</span><span class='fl'>3</span>, colour<span class='op'>=</span><span class='st'>"red"</span>, alpha<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-7.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Plot an FLQuants created from ple4 FLStock</span>
+</div><div class='img'><img src='plot-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot(FLQuant, FLQuant, ...) to place in one facet</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>, <span class='fu'>landings</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='plot-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Add legend by hand</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fu'>landings</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>, <span class='fl'>8000</span><span class='op'>)</span>, <span class='fu'>discards</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_colour_discrete</span><span class='op'>(</span>name<span class='op'>=</span><span class='st'>"Yield (t)"</span>, labels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Landings"</span>, <span class='st'>"Discards"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>legend.position<span class='op'>=</span><span class='st'>"bottom"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot-9.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Plot an FLQuants created from ple4 FLStock</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>FLQuants</span><span class='op'>(</span>SSB<span class='op'>=</span><span class='fu'>ssb</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>, rec<span class='op'>=</span><span class='fu'>rec</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-8.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLQuants, FLPar</span>
+</div><div class='img'><img src='plot-10.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLQuants, FLPar</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
  <span class='va'>rps</span> <span class='op'>&lt;-</span> <span class='fu'>FLPar</span><span class='op'>(</span>F<span class='op'>=</span><span class='fl'>0.14</span>, Catch<span class='op'>=</span><span class='fl'>1.29e5</span>, Rec<span class='op'>=</span><span class='fl'>9.38e5</span>, SSB<span class='op'>=</span><span class='fl'>1.8e5</span><span class='op'>)</span>
  <span class='va'>fqs</span> <span class='op'>&lt;-</span> <span class='fu'>metrics</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fqs</span>, <span class='va'>rps</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-9.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Works also if reptsa are given for some panels</span>
+</div><div class='img'><img src='plot-11.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Works also if reptsa are given for some panels</span>
  <span class='va'>rps</span> <span class='op'>&lt;-</span> <span class='fu'>FLPar</span><span class='op'>(</span>F<span class='op'>=</span><span class='fl'>0.14</span>, Catch<span class='op'>=</span><span class='fl'>1.29e5</span>, SSB<span class='op'>=</span><span class='fl'>1.8e5</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fqs</span>, <span class='va'>rps</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-10.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLQuants, FLPars</span>
+</div><div class='img'><img src='plot-12.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLQuants, FLPars</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
  <span class='va'>rps</span> <span class='op'>&lt;-</span> <span class='fu'>FLPars</span><span class='op'>(</span>F<span class='op'>=</span><span class='fu'>FLPar</span><span class='op'>(</span>Fmsy<span class='op'>=</span><span class='fl'>0.14</span>, Fpa<span class='op'>=</span><span class='fl'>0.35</span><span class='op'>)</span>, SSB<span class='op'>=</span><span class='fu'>FLPar</span><span class='op'>(</span>SBmsy<span class='op'>=</span><span class='fl'>1.8e5</span>, SBlim<span class='op'>=</span><span class='fl'>1.1e5</span><span class='op'>)</span><span class='op'>)</span>
  <span class='va'>fqs</span> <span class='op'>&lt;-</span> <span class='fu'>metrics</span><span class='op'>(</span><span class='va'>ple4</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>SSB<span class='op'>=</span><span class='va'>ssb</span>, F<span class='op'>=</span><span class='va'>fbar</span><span class='op'>)</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fqs</span>, <span class='va'>rps</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLQuantPoint</span>
+</div><div class='img'><img src='plot-13.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLQuantPoint</span>
 <span class='va'>fqp</span> <span class='op'>&lt;-</span> <span class='fu'>FLQuantPoint</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>300</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>0.20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fqp</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-12.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLQuantPoint, FLQuant</span>
+</div><div class='img'><img src='plot-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLQuantPoint, FLQuant</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fqp</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>0.20</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-13.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLQuantPoint, FLQuants</span>
+</div><div class='img'><img src='plot-15.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLQuantPoint, FLQuants</span>
 <span class='va'>fqp</span> <span class='op'>&lt;-</span> <span class='fu'>FLQuantPoint</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>300</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>0.20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>fqs</span> <span class='op'>&lt;-</span> <span class='fu'>divide</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='fu'>catch</span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>0.20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fqp</span>, <span class='va'>fqs</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot of an FLStock</span>
+</div><div class='img'><img src='plot-16.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>par</span> <span class='op'>&lt;-</span> <span class='fu'>FLPar</span><span class='op'>(</span>alpha<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>0.6</span>, <span class='fl'>0.2</span><span class='op'>)</span>, beta<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Lognormal.html'>rlnorm</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>0.8</span>, <span class='fl'>0.3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>par</span><span class='op'>)</span>
+</div><div class='img'><img src='plot-17.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot of an FLStock</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-15.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLStock, FLPar</span>
+</div><div class='img'><img src='plot-18.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLStock, FLPar</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
 <span class='va'>rps</span> <span class='op'>&lt;-</span> <span class='fu'>FLPar</span><span class='op'>(</span>F<span class='op'>=</span><span class='fl'>0.14</span>, Catch<span class='op'>=</span><span class='fl'>1.29e5</span>, Rec<span class='op'>=</span><span class='fl'>9.38e5</span>, SSB<span class='op'>=</span><span class='fl'>1.8e5</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>ple4</span>, <span class='va'>rps</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-16.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLStocks</span>
+</div><div class='img'><img src='plot-19.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLStocks</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4</span><span class='op'>)</span>
  <span class='va'>pls</span> <span class='op'>&lt;-</span> <span class='fu'>FLStocks</span><span class='op'>(</span>runA<span class='op'>=</span><span class='va'>ple4</span>, runB<span class='op'>=</span><span class='fu'>qapply</span><span class='op'>(</span><span class='va'>ple4</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span><span class='op'>*</span><span class='fl'>1.10</span><span class='op'>)</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>pls</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-17.png' alt='' width='700' height='433' /></div><div class='input'>
- <span class='co'># plot for FLSR</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.</span></div><div class='img'><img src='plot-20.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># plot for FLSR</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>nsher</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>nsher</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-18.png' alt='' width='700' height='433' /></div><div class='input'> 
-
- <span class='co'># plot for FLSRs</span>
+</div><div class='img'><img src='plot-21.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># plot for FLSRs</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>nsher</span><span class='op'>)</span>
- <span class='va'>srs</span> <span class='op'>&lt;-</span> <span class='fu'>FLSRs</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'ricker'</span>, <span class='st'>'bevholt'</span><span class='op'>)</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+ <span class='va'>srs</span> <span class='op'>&lt;-</span> <span class='fu'>FLSRs</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'segreg'</span>, <span class='st'>'bevholt'</span><span class='op'>)</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>nsher</span>
    <span class='fu'>model</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>x</span>
    <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fu'>fmle</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
  <span class='op'>}</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   Nelder-Mead direct search function minimizer
-#&gt; function value for initial parameters = -15.862252
-#&gt;   Scaled convergence tolerance is 2.36366e-07
-#&gt; Stepsize computed as 11.939303
-#&gt; BUILD              3 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 -15.862252
-#&gt; SHRINK             7 10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104.000000 -15.862252
-#&gt; HI-REDUCTION       9 267.632807 -15.862252
-#&gt; HI-REDUCTION      11 236.438352 -15.862252
-#&gt; HI-REDUCTION      13 205.241529 -15.862252
-#&gt; HI-REDUCTION      15 174.041331 -15.862252
-#&gt; HI-REDUCTION      17 142.839861 -15.862252
-#&gt; HI-REDUCTION      19 111.657775 -15.862252
-#&gt; HI-REDUCTION      21 80.601711 -15.862252
-#&gt; HI-REDUCTION      23 50.133420 -15.862252
-#&gt; HI-REDUCTION      25 21.954719 -15.862252
-#&gt; HI-REDUCTION      27 0.340450 -15.862252
-#&gt; HI-REDUCTION      29 -10.920787 -15.862252
-#&gt; HI-REDUCTION      31 -14.696800 -15.862252
-#&gt; HI-REDUCTION      33 -15.639120 -15.862252
-#&gt; HI-REDUCTION      35 -15.676851 -15.862252
-#&gt; HI-REDUCTION      37 -15.816477 -15.862252
-#&gt; HI-REDUCTION      39 -15.825739 -15.862252
-#&gt; LO-REDUCTION      41 -15.847989 -15.862252
-#&gt; LO-REDUCTION      43 -15.852490 -15.862252
-#&gt; LO-REDUCTION      45 -15.857566 -15.862252
-#&gt; LO-REDUCTION      47 -15.860412 -15.862252
-#&gt; LO-REDUCTION      49 -15.861062 -15.862252
-#&gt; LO-REDUCTION      51 -15.861647 -15.862252
-#&gt; LO-REDUCTION      53 -15.862025 -15.862252
-#&gt; LO-REDUCTION      55 -15.862108 -15.862252
-#&gt; LO-REDUCTION      57 -15.862175 -15.862252
-#&gt; LO-REDUCTION      59 -15.862224 -15.862252
-#&gt; LO-REDUCTION      61 -15.862235 -15.862252
-#&gt; LO-REDUCTION      63 -15.862243 -15.862252
-#&gt; LO-REDUCTION      65 -15.862249 -15.862252
-#&gt; LO-REDUCTION      67 -15.862250 -15.862252
-#&gt; LO-REDUCTION      69 -15.862251 -15.862252
-#&gt; LO-REDUCTION      71 -15.862252 -15.862252
-#&gt; LO-REDUCTION      73 -15.862252 -15.862252
+#&gt; function value for initial parameters = -14.190173
+#&gt;   Scaled convergence tolerance is 2.1145e-07
+#&gt; Stepsize computed as 6.789002
+#&gt; BUILD              3 -13.430599 -15.242851
+#&gt; EXTENSION          5 -14.190173 -16.074769
+#&gt; EXTENSION          7 -15.242851 -17.135003
+#&gt; HI-REDUCTION       9 -16.074769 -17.135003
+#&gt; LO-REDUCTION      11 -16.401987 -17.135003
+#&gt; LO-REDUCTION      13 -16.738659 -17.135003
+#&gt; HI-REDUCTION      15 -16.967762 -17.135003
+#&gt; HI-REDUCTION      17 -16.990440 -17.135003
+#&gt; LO-REDUCTION      19 -17.053124 -17.135003
+#&gt; LO-REDUCTION      21 -17.107715 -17.135003
+#&gt; REFLECTION        23 -17.132087 -17.139431
+#&gt; HI-REDUCTION      25 -17.135003 -17.139841
+#&gt; HI-REDUCTION      27 -17.139431 -17.140713
+#&gt; HI-REDUCTION      29 -17.139841 -17.142261
+#&gt; LO-REDUCTION      31 -17.140713 -17.142261
+#&gt; LO-REDUCTION      33 -17.141732 -17.142261
+#&gt; HI-REDUCTION      35 -17.141925 -17.142261
+#&gt; LO-REDUCTION      37 -17.142098 -17.142261
+#&gt; LO-REDUCTION      39 -17.142233 -17.142261
+#&gt; HI-REDUCTION      41 -17.142238 -17.142265
+#&gt; LO-REDUCTION      43 -17.142261 -17.142268
+#&gt; HI-REDUCTION      45 -17.142265 -17.142270
+#&gt; HI-REDUCTION      47 -17.142268 -17.142271
+#&gt; HI-REDUCTION      49 -17.142270 -17.142271
+#&gt; HI-REDUCTION      51 -17.142270 -17.142271
 #&gt; Exiting from Nelder Mead minimizer
-#&gt;     75 function evaluations used
+#&gt;     53 function evaluations used
 #&gt;   Nelder-Mead direct search function minimizer
 #&gt; function value for initial parameters = -10.336211
 #&gt;   Scaled convergence tolerance is 1.54022e-07
@@ -414,18 +422,17 @@ plot.</p>
 #&gt; HI-REDUCTION      65 -12.200179 -12.200179
 #&gt; Exiting from Nelder Mead minimizer
 #&gt;     67 function evaluations used</div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>srs</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-19.png' alt='' width='700' height='433' /></div><div class='input'> 
- <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>srs</span>, legend_label<span class='op'>=</span><span class='va'>modlabel</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-20.png' alt='' width='700' height='433' /></div><div class='input'>
- <span class='co'># Plot a FLIndex object</span>
+</div><div class='img'><img src='plot-22.png' alt='' width='700' height='433' /></div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>srs</span>, legend_label<span class='op'>=</span><span class='va'>eqlabel</span><span class='op'>)</span>
+</div><div class='img'><img src='plot-23.png' alt='' width='700' height='433' /></div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>srs</span>, legend_label<span class='op'>=</span><span class='va'>modlabel</span><span class='op'>)</span>
+</div><div class='img'><img src='plot-24.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Plot a FLIndex object</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4.index</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>ple4.index</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-21.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Plot a FLIndices object</span>
+</div><div class='img'><img src='plot-25.png' alt='' width='700' height='433' /></div><div class='input'> <span class='co'># Plot a FLIndices object</span>
  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ple4.indices</span><span class='op'>)</span>
  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>ple4.indices</span><span class='op'>)</span>
-</div><div class='img'><img src='plot-22.png' alt='' width='700' height='433' /></div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>ple4.indices</span><span class='op'>)</span> <span class='op'>+</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 43 rows containing non-finite values (stat_fl_quantiles).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 43 rows containing non-finite values (stat_fl_quantiles).</span></div><div class='img'><img src='plot-26.png' alt='' width='700' height='433' /></div><div class='input'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>ple4.indices</span><span class='op'>)</span> <span class='op'>+</span>
    <span class='fu'>geom_smooth</span><span class='op'>(</span>formula<span class='op'>=</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>x</span>, se<span class='op'>=</span><span class='cn'>FALSE</span>, method<span class='op'>=</span><span class='st'>"loess"</span>, size<span class='op'>=</span><span class='fl'>0.2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 43 rows containing non-finite values (stat_smooth).</span></div><div class='img'><img src='plot-23.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 43 rows containing non-finite values (stat_fl_quantiles).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 43 rows containing non-finite values (stat_fl_quantiles).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 43 rows containing non-finite values (stat_smooth).</span></div><div class='img'><img src='plot-27.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
