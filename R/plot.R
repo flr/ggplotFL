@@ -4,6 +4,9 @@
 # Copyright 2012-2018 FLR Team. Distributed under the GPL 2
 # Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
+
+globalVariables(c("..density.."))
+
 # plot(FLQuant) {{{
 
 #' ggplot versions of FLR class plot() methods
@@ -92,6 +95,32 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 
     return(p)
   })
+# }}}
+
+# plot(FLQuant, FLQuant) {{{
+
+#' @rdname plot
+#' @examples
+#' # plot(FLQuant, FLQuant, ...) to place in one facet
+#' plot(catch(ple4), landings(ple4))
+#' # Add legend by hand
+#' plot(rnorm(200, landings(ple4), 8000), discards(ple4)) +
+#'   scale_colour_discrete(name="Yield (t)", labels=c("Landings", "Discards")) +
+#'   theme(legend.position="bottom")
+
+setMethod("plot", signature(x="FLQuant", y="FLQuant"),
+  function(x, y, ..., probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, iter=NULL) {
+
+    # ASSEMBLE FLQuants
+    fqs <- FLQuants(c(list(x, y), list(...)))
+
+    # PLOT as 
+    ggplot(fqs, aes(x=year, y=data, fill=qname, colour=qname)) +
+      geom_flquantiles(alpha=0.3, probs=probs, na.rm=na.rm) +
+      theme(legend.position="none") +
+      xlab("") + ylab("")
+  }
+)
 # }}}
 
 # plot(FLQuants) {{{
@@ -389,18 +418,23 @@ setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
 
 # plot(FLPar, missing) {{{
 
+#' @rdname plot
+#' @examples
+#' par <- FLPar(alpha=rnorm(200, 0.6, 0.2), beta=rlnorm(200, 0.8, 0.3))
+#' plot(par)
+
 setMethod("plot", signature(x="FLPar", y="missing"),
   function(x) {
 
   ggplot(as.data.frame(x), aes(x=data)) + 
     geom_density(alpha=.2, aes(fill=params)) +
     geom_histogram(aes(y=..density..), bins=20, colour="black", fill=NA) +
-    facet_wrap(~params, scales="free") +
+    facet_wrap(~params, scales="free", labeller="label_parsed") +
     xlab("") + ylab("") +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
     theme(axis.text.x = element_text(angle = 90)) +
     scale_x_continuous(n.breaks = 7) +
-    guides(fill=FALSE)
+    guides(fill="none")
 
   }
 )
