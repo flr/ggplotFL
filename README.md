@@ -1,6 +1,6 @@
 # ggplotFL
 - Version: 2.6.9
-- Date: 2021-03-24
+- Date: 15-06-2021
 - Author: FLR Team and various contributors.
 - Maintainer: Iago Mosqueira <iago.mosqueira@ec.europa.eu>
 - Repository: <https://github.com/flr/ggplotFL/>

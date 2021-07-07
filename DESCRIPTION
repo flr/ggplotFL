@@ -37,7 +37,6 @@ Collate:
   'plot.R'
   'special.R'
 License: GPL-2
-VignetteBuilder: knitr
 LazyLoad: Yes
 LazyData: Yes
 Encoding: UTF-8

@@ -8,6 +8,7 @@
 - Default probs for plot(FLQuant) amd plot(FLQuants) are now set as
   probs=c(0.05, 0.25, 0.50, 0.75, 0.95).
 - plot(FLPar) with histogram and density for each param.
+- plot(FLQuant, FLQuant, ...) to place them on a single plot.
 
  ggplotFL 2.6.8
 
