@@ -3,12 +3,14 @@
 \docType{methods}
 \name{plot,FLQuant,missing-method}
 \alias{plot,FLQuant,missing-method}
+\alias{plot,FLQuant,FLQuant-method}
 \alias{plot,FLQuants,missing-method}
 \alias{plot,FLQuants,FLPar-method}
 \alias{plot,FLQuants,FLPars-method}
 \alias{plot,FLQuantPoint,missing-method}
 \alias{plot,FLQuantPoint,FLQuant-method}
 \alias{plot,FLQuantPoint,FLQuants-method}
+\alias{plot,FLPar,missing-method}
 \alias{plot,FLStock,missing-method}
 \alias{plot,FLStock,FLStock-method}
 \alias{plot,FLStock,FLPar-method}
@@ -28,6 +30,15 @@
 \usage{
 \S4method{plot}{FLQuant,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, iter = NULL)
 
+\S4method{plot}{FLQuant,FLQuant}(
+  x,
+  y,
+  ...,
+  probs = c(0.05, 0.25, 0.5, 0.75, 0.95),
+  na.rm = FALSE,
+  iter = NULL
+)
+
 \S4method{plot}{FLQuants,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
@@ -39,6 +50,8 @@
 \S4method{plot}{FLQuantPoint,FLQuant}(x, y, na.rm = FALSE, iter = NULL)
 
 \S4method{plot}{FLQuantPoint,FLQuants}(x, y, na.rm = FALSE, iter = NULL)
+
+\S4method{plot}{FLPar,missing}(x)
 
 \S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar), ...)
 
@@ -153,6 +166,12 @@ plot.
 plot(rnorm(300, catch(ple4), catch(ple4)/2), probs=c(0.10, 0.5, 0.90)) +
   geom_flquantiles(probs=c(0.01), linetype=3, colour="red", alpha=0.1) +
   geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
+# plot(FLQuant, FLQuant, ...) to place in one facet
+plot(catch(ple4), landings(ple4))
+# Add legend by hand
+plot(rnorm(200, landings(ple4), 8000), discards(ple4)) +
+  scale_colour_discrete(name="Yield (t)", labels=c("Landings", "Discards")) +
+  theme(legend.position="bottom")
  # Plot an FLQuants created from ple4 FLStock
  data(ple4)
  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
@@ -178,6 +197,8 @@ plot(fqp, rlnorm(3, log(catch(ple4)), 0.20))
 fqp <- FLQuantPoint(rlnorm(300, log(catch(ple4)), 0.20))
 fqs <- divide(rlnorm(3, log(catch(ple4)), 0.20))
 plot(fqp, fqs)
+par <- FLPar(alpha=rnorm(200, 0.6, 0.2), beta=rlnorm(200, 0.8, 0.3))
+plot(par)
 # plot of an FLStock
  data(ple4)
  plot(ple4)
