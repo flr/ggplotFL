@@ -153,20 +153,20 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data)) +
           geom_line(na.rm=na.rm)
-    } else {
+      } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
           geom_line(na.rm=na.rm)
       }
     } else {
       # ITERS? PLOT central ribbon and line by unit
   		p <- if(mds[3] == 1) {
-          ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
-            geom_flquantiles(alpha=0.3,
-              probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+        ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
+          geom_flquantiles(alpha=0.3,
+            probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       } else {
-          ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-            geom_flquantiles(alpha=0.3,
-              probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+        ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
+          geom_flquantiles(alpha=0.3,
+            probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       }
     }
     
@@ -450,11 +450,10 @@ setMethod("plot", signature(x="FLPar", y="missing"),
 #'  plot(ple4)
 
 setMethod("plot", signature(x="FLStock", y="missing"),
-	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), ...) {
+	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), na.rm=TRUE,
+    ...) {
     
     metrics <- metrics(x, metrics=metrics)
-
-    if(missing(metrics)) {
 
     # HACK for F units
     if("F" %in% names(metrics))
@@ -462,20 +461,22 @@ setMethod("plot", signature(x="FLStock", y="missing"),
         collapse="-")
   
     # ADAPT for 2-sex model
-    if("SSB" %in% names(metrics))
-    if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
+    if("SSB" %in% names(metrics)) {
 
-      # FIND spawning season, if it exists
-      if(dim(metrics$SSB)[4] > 1) {
-        metrics$SSB[is.na(metrics$SSB)] <- 0
-      }
+      if(all(dimnames(metrics$SSB)$unit %in% c("F", "M"))) {
+
+        # FIND spawning season, if it exists
+        #if(dim(metrics$SSB)[4] > 1) {
+        #  metrics$SSB[is.na(metrics$SSB)] <- 0
+        #}
       
-      # DROP M ssb if missing
-      metrics$SSB <- metrics$SSB[,,'F'] + metrics$SSB[,,'M']
+        # DROP M ssb if missing
+        metrics$SSB <- metrics$SSB[,,'F'] + metrics$SSB[,,'M']
 
-      # SUM rec across units
-      if("Rec" %in% names(metrics))
-      metrics$Rec <- unitSums(metrics$Rec)
+        # SUM rec across units
+        if("Rec" %in% names(metrics))
+        metrics$Rec <- unitSums(metrics$Rec)
+      }
     }
 
     # ADAPT for seasonal recruitment
@@ -485,9 +486,7 @@ setMethod("plot", signature(x="FLStock", y="missing"),
       }
     }
 
-    }
-
-    p <- plot(metrics, ...) + ylim(c(0, NA))
+    p <- plot(metrics, na.rm=na.rm, ...) + ylim(c(0, NA))
   
     # ADD legend if 2 sexes  
     if("SSB" %in% names(metrics))
@@ -613,7 +612,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
       # SET legend with no title
       theme(legend.title = element_blank()) +
       # and only with lines and no title
-      guides(fill = FALSE)
+      guides(fill = "none")
 		
 		return(p)
 	}
@@ -890,7 +889,7 @@ setMethod("plot", signature(x="FLBiols", y="missing"),
       # SET legend with no title
       theme(legend.title = element_blank()) +
       # and only with lines and no title
-      guides(fill = FALSE)
+      guides(fill = "none")
 		
 		return(p)
   }
