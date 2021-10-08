@@ -237,10 +237,10 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
   # geom_hline
   layer(
-    geom = GeomHline,
-    mapping = mapping[names(mapping) %in% ahline],
     data = data,
+    mapping = mapping[names(mapping) %in% ahline],
     stat = StatIdentity,
+    geom = GeomHline,
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
@@ -249,10 +249,10 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
   # geom_text
   layer(
-    geom = GeomLabel,
-    mapping = mapping[names(mapping) %in% atext],
     data = data,
+    mapping = mapping[names(mapping) %in% atext],
     stat = StatIdentity,
+    geom = GeomLabel,
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
@@ -295,3 +295,5 @@ geom_worm <- function(data, mapping = aes(colour=iter), ...,
   )
 }
 # }}}
+
+# geom_fwd
