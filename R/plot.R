@@ -789,7 +789,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 #'  plot(srs, legend_label=modlabel)
 
 setMethod("plot", signature(x="FLSRs"),
-  function(x, legend_label=names(x), ...) {
+  function(x, legend_label=names(x), facets=FALSE, ...) {
 
     uns <- units(x[[1]])
 
@@ -805,13 +805,14 @@ setMethod("plot", signature(x="FLSRs"),
     # EXTRACT models & pars
     mods <- lapply(x, 'model')
     pars <- lapply(x, 'params')
-    inp <- data.frame(ssb=seq(0, max(dat$ssb), length=100), rec=NA)
+    ssbs <- seq(0, max(dat$ssb), length=100)
 
     # RESULTS
     res <- lapply(names(mods), function(i) {
-      data.frame(sr=i, ssb=inp$ssb,
-        rec=c(eval(as.list(mods[[i]])[[3]], c(list(ssb=inp$ssb), as(pars[[i]],
-          'list'))))
+      if(facets)
+        ssbs <- seq(0, max(dat[dat$sr == i, 'ssb']), length=100)
+      data.frame(sr=i, ssb=ssbs, rec=c(eval(as.list(mods[[i]])[[3]],
+        c(list(ssb=ssbs), as(pars[[i]], 'list'))))
       )
     })
 
