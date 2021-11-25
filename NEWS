@@ -1,3 +1,10 @@
+ ggplotFL 2.6.11
+
+ NEW FEATURES
+
+- plot(FLSRs) has now argument facets=FALSE to output plot in a format suitable
+  for facetting.
+
  ggplotFL 2.6.9
 
  NEW FEATURES

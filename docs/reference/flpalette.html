@@ -75,7 +75,7 @@ This palette can be inspected at the [colorbrewe2.org site](http://colorbrewer2.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggplotFL</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.6.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.6.10.9001</span>
       </span>
     </div>
 
@@ -180,16 +180,21 @@ between two or more of the palette colours, *flpalette_grads*.</p>
     <p>The FLR Team</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># CHECK flpalette</span>
- <span class='va'>flpalette</span>
-</div><div class='output co'>#&gt;       red      blue     green    violet    orange    yellow     brown 
-#&gt; "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" "#a65628" </div><div class='input'><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" "#a65628"</div><div class='input'><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" "#ff7f00"</div><div class='input'><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "#377eb8" "#4daf4a"</div><div class='input'><span class='fu'>flpalette_grads</span><span class='op'>(</span><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "#E41A1C" "#D1242C" "#BF2F3C" "#AD394D" "#9B445D" "#884E6E" "#76597E"
-#&gt;  [8] "#64638E" "#526E9F" "#4078AF" "#3880B2" "#3A85A6" "#3C8A9B" "#3F908F"
-#&gt; [15] "#419583" "#439A78" "#469F6C" "#48A461" "#4AA955" "#4DAF4A"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># CHECK flpalette</span></span>
+<span class='r-in'> <span class='va'>flpalette</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       red      blue     green    violet    orange    yellow     brown </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" "#a65628" </span>
+<span class='r-in'><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" "#ff7f00" "#ffff33" "#a65628"</span>
+<span class='r-in'><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "#e41a1c" "#377eb8" "#4daf4a" "#984ea3" "#ff7f00"</span>
+<span class='r-in'><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "#377eb8" "#4daf4a"</span>
+<span class='r-in'><span class='fu'>flpalette_grads</span><span class='op'>(</span><span class='fu'>flpalette_colours</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "#E41A1C" "#D1242C" "#BF2F3C" "#AD394D" "#9B445D" "#884E6E" "#76597E"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "#64638E" "#526E9F" "#4078AF" "#3880B2" "#3A85A6" "#3C8A9B" "#3F908F"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "#419583" "#439A78" "#469F6C" "#48A461" "#4AA955" "#4DAF4A"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
