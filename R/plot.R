@@ -72,10 +72,10 @@ globalVariables(c("..density.."))
 #'   geom_flquantiles(probs=c(0.99), linetype=3, colour="red", alpha=0.1)
 
 setMethod("plot", signature(x="FLQuant", y="missing"),
-	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, iter=NULL) {
+	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, ...) {
 
     # GET base plot from plot(FLQuants)
-    p <- plot(FLQuants(x), probs=probs, na.rm=na.rm, iter=iter)
+    p <- plot(FLQuants(x), probs=probs, na.rm=na.rm, ...)
     
     # PARSE dimensions > 1 for new facets
     ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
@@ -133,7 +133,8 @@ setMethod("plot", signature(x="FLQuant", y="FLQuant"),
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, iter=NULL) {
+	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, worm=iter,
+    iter=NULL) {
 
 		# CHECK probs length is odd
 		if(is.integer(length(probs)/2))
@@ -159,14 +160,28 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       }
     } else {
       # ITERS? PLOT central ribbon and line by unit
+      if(isTRUE(worm)) {
   		p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
-          geom_flquantiles(alpha=0.3,
+          geom_line(aes(group=iter), alpha=0.2, size=1, colour="#adadad") +
+          geom_flquantiles(alpha=0.5,
             probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-          geom_flquantiles(alpha=0.3,
+          geom_line(aes(group=iter), alpha=0.1, size=1) +
+          geom_flquantiles(alpha=0.5,
             probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+      }
+      } else {
+  		p <- if(mds[3] == 1) {
+        ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
+          geom_flquantiles(alpha=0.5,
+            probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+      } else {
+        ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
+          geom_flquantiles(alpha=0.5,
+            probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+      }
       }
     }
     
@@ -174,7 +189,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     if(length(probs) > 3 & mds[6] > 1) {
       geoms <- lapply(seq((length(probs)-3)/2), function(x) {
         geom_flquantiles(probs=probs[seq(idx - x - 1, idx + x + 1)],
-          alpha=0.2)
+          alpha=0.3)
       })
       p <- p + geoms
     }
@@ -185,10 +200,10 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
           p <- p + geom_point(aes(y=0), cex=0.6, colour='darkgrey',
             data=subset(p$data, is.na(data)))
     }
-
+    
     # PLOT iter worms
-    if(!is.null(iter)) {
-      idata <- p$data[p$data$iter %in% iter,]
+    if(is.numeric(worm)) {
+      idata <- p$data[p$data$iter %in% worm,]
       p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter))
     }
 
@@ -363,11 +378,11 @@ setMethod("plot", signature(x="FLQuantPoint", y="missing"),
 #' plot(fqp, rlnorm(3, log(catch(ple4)), 0.20))
 
 setMethod("plot", signature(x="FLQuantPoint", y="FLQuant"),
-	function(x, y, na.rm=FALSE, iter=NULL) {
+	function(x, y, na.rm=FALSE, ...) {
     if(dim(y)[6] > 1)
-      plot(x, divide(y))
+      plot(x, divide(y), ...)
     else
-      plot(x, FLQuants(y=y))
+      plot(x, FLQuants(y=y), ...)
   }
 ) # }}}
 
@@ -382,7 +397,7 @@ setMethod("plot", signature(x="FLQuantPoint", y="FLQuant"),
 #' plot(fqp, fqs)
 
 setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
-	function(x, y, na.rm=FALSE, iter=NULL) {
+	function(x, y, na.rm=FALSE, ...) {
 
     # PLOT FLQuantPoint
     p <- plot(x)

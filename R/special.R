@@ -141,7 +141,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 #' # SEE vignette
 
 plotXval <- function(x, y="missing", order="inverse") {
-  
+
   # SINGLE input
   if(missing(y) & is.list(x) & "data" %in% names(x)) {
     y <- x[!names(x) %in% "data"]
