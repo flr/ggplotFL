@@ -1,4 +1,5 @@
-# ggplotFL <img src="man/figures/ggplotfl.png" align="right" width="120" />
+# ggplotFL <img src="man/figures/logo.png" align="right" width="120" alt="" />
+
 [![R-CMD-check](https://github.com/flr/ggplotFL/workflows/R-CMD-check/badge.svg)](https://github.com/flr/ggplotFL/actions)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
