@@ -272,7 +272,7 @@ setMethod("plot", signature(x="FLQuants", y="FLPar"),
 #'  data(ple4)
 #'  rps <- FLPars(F=FLPar(Fmsy=0.14, Fpa=0.35), SSB=FLPar(SBmsy=1.8e5, SBlim=1.1e5))
 #'  fqs <- metrics(ple4, list(SSB=ssb, F=fbar))
-#'  plot(fqs, rps)
+#'  plot(fqs, rps) + ylim(c(0, NA))
 
 setMethod("plot", signature(x="FLQuants", y="FLPars"),
 	function(x, y, ...) {

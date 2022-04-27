@@ -46,7 +46,7 @@ setMethod("cohcorrplot", signature(x="FLQuant"),
 #' cohcorrplot(FLCohort(stock.n(ple4)))
 
 setMethod("cohcorrplot", signature(x="FLCohort"),
-  function(x) {
+  function(x, diag_size=16, lower_size=6) {
 
   # DIMENSIONS
   
@@ -87,7 +87,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   # PLOT correlations in lower triangle
   plots[lowt] <- lapply(corrs, function(i)
     ggplot(data.frame(x = 1, y = 1, text = i), aes(x, y)) +
-	  geom_text(aes(label = text), size=6) + empty)
+	  geom_text(aes(label = text), size=lower_size) + empty)
 
   # PLOT correlations, returns gg
   pcors <- Map(function(da, co) {
@@ -107,7 +107,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   # PLOT diagonal labels
   labs <- lapply(ages, function(i) {
     ggplot(data.frame(x=1, y=1, text=i), aes(x=x, y=y, label=text)) +
-    geom_text(size=16) + empty
+    geom_text(size=diag_size) + empty
     })
 
   # PLACE labels in diagonal
