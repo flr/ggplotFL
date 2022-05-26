@@ -32,6 +32,6 @@ You are welcome to:
 
 - Submit suggestions and bug-reports at: <https://github.com/flr/ggplotFL/issues>
 - Send a pull request on: <https://github.com/flr/ggplotFL/>
-- Compose a friendly e-mail to: <iago.mosqueira AT ec.europa.eu>
+- Compose a friendly e-mail to: <iago.mosqueira AT wur.nl>
 - Author: FLR Team and various contributors.
-- Maintainer: Iago Mosqueira <iago.mosqueira@ec.europa.eu>
+- Maintainer: Iago Mosqueira <iago.mosqueira@wur.nl>

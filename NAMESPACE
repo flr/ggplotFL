@@ -46,6 +46,7 @@ export(
   "integer_breaks",
   "label_flqs",
   "modlabel",
+  "plotLengths",
   "plotRunstest",
   "plotXval",
   "pubpng",
