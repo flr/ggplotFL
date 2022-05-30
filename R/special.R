@@ -353,8 +353,8 @@ setMethod("plotRunstest", signature(fit="FLQuant", obs="FLQuant"),
 
 #' @examples
 #' data(ple4)
-#' iak <- invALK(FLPar(linf=90, k=2.1, t0=0.1), age=1:10)
-#' les <- lenSamples(catch.n(ple4)[,1:10], iak)
+#' iak <- invALK(FLPar(linf=42, k=2.1, t0=0.1), age=1:10)
+#' les <- lenSamples(catch.n(ple4)[, 1:10], iak)
 #' plotLengths(les)
 #' plotLengths(les, block="decade")
 #' plotLengths(les, direction="vertical")

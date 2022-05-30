@@ -524,7 +524,8 @@ setMethod("plot", signature(x="FLStock", y="missing"),
 #' @rdname plot
 
 setMethod("plot", signature(x="FLStock", y="FLStock"),
-	function(x, y, probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL, ...) {
+	function(x, y, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
+    probs=c(0.10, 0.33, 0.50, 0.66, 0.90), na.rm=TRUE, iter=NULL, ...) {
 
     args <- list(...)
 
@@ -532,7 +533,7 @@ setMethod("plot", signature(x="FLStock", y="FLStock"),
 
     names(sts) <- unlist(lapply(sts, name))
 
-    p <- plot(sts, probs=probs, na.rm=na.rm, iter=iter)
+    p <- plot(sts, probs=probs, na.rm=na.rm, iter=iter, metrics=metrics)
 
 		return(p)
 	}
