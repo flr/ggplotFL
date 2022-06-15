@@ -351,6 +351,10 @@ setMethod("plotRunstest", signature(fit="FLQuant", obs="FLQuant"),
 )
 # }}}
 
+# plotLengths {{{
+
+setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths')) 
+
 #' @examples
 #' data(ple4)
 #' iak <- invALK(FLPar(linf=42, k=2.1, t0=0.1), age=1:10)
@@ -359,9 +363,16 @@ setMethod("plotRunstest", signature(fit="FLQuant", obs="FLQuant"),
 #' plotLengths(les, block="decade")
 #' plotLengths(les, direction="vertical")
 #' plotLengths(les, direction="vertical", block="decade")
+#' plotLengths(les) +
+#'   geom_vline(data=as.data.frame(FLPar(L50=38)), aes(xintercept=data),
+#'   size=1)
+#' plotLengths(les) +
+#'   geom_vline(data=as.data.frame(FLPar(seq(38, 46, length=10), dimnames=list(params='L50', year=1957:1966, iter=1))), aes(xintercept=data),
+#'   size=1)
 
-plotLengths <- function(x, direction = c("horizontal", "vertical"),
-  block=c("lustrum", "decade"), palette=flpalette) {
+setMethod("plotLengths", signature(x="FLQuant"),
+  function(x, direction = c("horizontal", "vertical"),
+    block=c("lustrum", "decade"), palette=flpalette) {
 
   # args
   direction <- match.arg(direction)
@@ -427,5 +438,4 @@ plotLengths <- function(x, direction = c("horizontal", "vertical"),
   }
 
   return(p)
-}
-
+})
