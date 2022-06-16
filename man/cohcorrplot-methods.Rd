@@ -10,7 +10,7 @@ cohcorrplot(x, ...)
 
 \S4method{cohcorrplot}{FLQuant}(x)
 
-\S4method{cohcorrplot}{FLCohort}(x)
+\S4method{cohcorrplot}{FLCohort}(x, diag_size = 16, lower_size = 6)
 }
 \arguments{
 \item{x}{An object with the abundance at age information. FLQuant or FLCohort.}

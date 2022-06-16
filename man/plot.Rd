@@ -28,7 +28,7 @@
 \alias{plot,FLIndices,missing-method}
 \title{ggplot versions of FLR class plot() methods}
 \usage{
-\S4method{plot}{FLQuant,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuant,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, ...)
 
 \S4method{plot}{FLQuant,FLQuant}(
   x,
@@ -39,7 +39,13 @@
   iter = NULL
 )
 
-\S4method{plot}{FLQuants,missing}(x, probs = c(0.05, 0.25, 0.5, 0.75, 0.95), na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuants,missing}(
+  x,
+  probs = c(0.05, 0.25, 0.5, 0.75, 0.95),
+  na.rm = FALSE,
+  worm = iter,
+  iter = NULL
+)
 
 \S4method{plot}{FLQuants,FLPar}(x, y, ...)
 
@@ -47,17 +53,23 @@
 
 \S4method{plot}{FLQuantPoint,missing}(x)
 
-\S4method{plot}{FLQuantPoint,FLQuant}(x, y, na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuantPoint,FLQuant}(x, y, na.rm = FALSE, ...)
 
-\S4method{plot}{FLQuantPoint,FLQuants}(x, y, na.rm = FALSE, iter = NULL)
+\S4method{plot}{FLQuantPoint,FLQuants}(x, y, na.rm = FALSE, ...)
 
 \S4method{plot}{FLPar,missing}(x)
 
-\S4method{plot}{FLStock,missing}(x, metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar), ...)
+\S4method{plot}{FLStock,missing}(
+  x,
+  metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar),
+  na.rm = TRUE,
+  ...
+)
 
 \S4method{plot}{FLStock,FLStock}(
   x,
   y,
+  metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar),
   probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
   na.rm = TRUE,
   iter = NULL,
@@ -86,7 +98,7 @@
 
 \S4method{plot}{FLSR,missing}(x, y, ...)
 
-\S4method{plot}{FLSRs,ANY}(x, legend_label = names(x), ...)
+\S4method{plot}{FLSRs,ANY}(x, legend_label = names(x), facets = FALSE, ...)
 
 \S4method{plot}{FLBiol,missing}(x, metrics = list(Rec = function(x) n(x)[1, ], B = tsb), ...)
 
@@ -105,11 +117,11 @@
 
 \item{na.rm}{Should NAs be deleted in quantile calculations?, defaults to TRUE.}
 
-\item{iter}{Individual iterations to show as worm plots over the quantiles.}
+\item{...}{Other arguments to be passed to the corresponding ggplot call.}
 
 \item{y}{FLR object to plot}
 
-\item{...}{Other arguments to be passed to the corresponding ggplot call.}
+\item{iter}{Individual iterations to show as worm plots over the quantiles.}
 
 \item{metrics}{function returning an FLQuants for each FLStock}
 
@@ -187,7 +199,7 @@ plot(rnorm(200, landings(ple4), 8000), discards(ple4)) +
  data(ple4)
  rps <- FLPars(F=FLPar(Fmsy=0.14, Fpa=0.35), SSB=FLPar(SBmsy=1.8e5, SBlim=1.1e5))
  fqs <- metrics(ple4, list(SSB=ssb, F=fbar))
- plot(fqs, rps)
+ plot(fqs, rps) + ylim(c(0, NA))
 # plot for FLQuantPoint
 fqp <- FLQuantPoint(rlnorm(300, log(catch(ple4)), 0.20))
 plot(fqp)
