@@ -139,7 +139,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		# CHECK probs length is odd
 		if(is.integer(length(probs)/2))
 		  stop("quantile probs can only be a vector of odd length")
-
+    
     # FIND center of probs
     idx <- ceiling(length(probs)/2)
 

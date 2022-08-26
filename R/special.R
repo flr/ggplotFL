@@ -359,6 +359,7 @@ setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths'))
 #' data(ple4)
 #' iak <- invALK(FLPar(linf=42, k=2.1, t0=0.1), age=1:10)
 #' les <- lenSamples(catch.n(ple4)[, 1:10], iak)
+#' units(les) <- "cm"
 #' plotLengths(les)
 #' plotLengths(group(les, sum, year=year - year%%5))
 #' plotLengths(group(les, mean, year=year - year%%5))
@@ -376,6 +377,9 @@ setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths'))
 #' plotLengths(les, block="lustrum") +
 #'   geom_vline(data=as.data.frame(FLPar(seq(38, 46, length=10), dimnames=list(params='L50', year=1957:1966, iter=1))), aes(xintercept=data),
 #'   size=1)
+
+# TODO: plotComps
+# TODO: OPTION to remove mean/median
 
 setMethod("plotLengths", signature(x="FLQuant"),
   function(x, direction = c("horizontal", "vertical"),

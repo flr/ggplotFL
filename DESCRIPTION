@@ -3,7 +3,7 @@ Title: Using ggplot2 in FLR
 Version: 2.6.10.9003
 Authors@R: c(
   person("Iago", "Mosqueira", email = "iago.mosqueira@wur.nl",
-    role = "cre", comment=c(c(ORCID = "0000-0002-3252-0591"))),
+    role = c("cre", "aut"), comment=c(c(ORCID = "0000-0002-3252-0591"))),
   person("Laurence T.", "Kell", email = "laurie.kell@iccat.int", role = "aut"))
 Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
     various FLR classes, (2) ggplot-based versions of standard plots in
