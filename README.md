@@ -25,7 +25,7 @@ or directly from the github repository by using:
 - [Help pages](http://flr-project.org/ggplotFL)
 
 ## License
-Copyright (c) 2014-2021 The FLR Team. Released under the [GPL v2](http://www.gnu.org/licenses/gpl-2.0.html).
+Copyright (c) 2014-2022 The FLR Team. Released under the [GPL v2](http://www.gnu.org/licenses/gpl-2.0.html).
 
 ## Contact
 You are welcome to:
