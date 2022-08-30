@@ -1,6 +1,6 @@
 Package: ggplotFL
 Title: Using ggplot2 in FLR
-Version: 2.6.10.9003
+Version: 2.7.0
 Authors@R: c(
   person("Iago", "Mosqueira", email = "iago.mosqueira@wur.nl",
     role = c("cre", "aut"), comment=c(c(ORCID = "0000-0002-3252-0591"))),
@@ -41,4 +41,4 @@ License: GPL-2
 LazyLoad: Yes
 LazyData: Yes
 Encoding: UTF-8
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

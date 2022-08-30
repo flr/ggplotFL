@@ -90,8 +90,8 @@
   x,
   y,
   na.rm = TRUE,
-  metrics = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F = fbar(x)/y[,
-    "harvest", ], Catch = catch(x))
+  metrics = function(x, y) FLQuants(SSB = ssb(x)/y[, "ssb", ], F = fbar(x)/y[, "harvest",
+    ], Catch = catch(x))
 )
 
 \S4method{plot}{FLStock,FLStocks}(x, y, ...)
