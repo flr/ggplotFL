@@ -573,7 +573,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
     probs=c(0.10, 0.33, 0.50, 0.66, 0.90), alpha=c(0.10, 0.40), worm=iter,
-    iter=NULL...) {
+    iter=NULL, ...) {
 	
 		# CHECK names not repeated
 		dup <- duplicated(names(x))
