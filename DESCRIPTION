@@ -9,6 +9,7 @@ Description: Using ggplot2 for FLR. Provides (1) overloaded ggplot methods for
     various FLR classes, (2) ggplot-based versions of standard plots in
     the FLCore package, and (3) new geoms for using FLR objects.
 X-schema.org-keywords: visualization, ggplot2, fisheries, flr, R
+License: GPL-2
 Depends:
   R(>= 4.0),
   ggplot2(>= 2.0.0),
@@ -37,7 +38,6 @@ Collate:
   'ggplot.R'
   'plot.R'
   'special.R'
-License: GPL-2
 LazyLoad: Yes
 LazyData: Yes
 Encoding: UTF-8
