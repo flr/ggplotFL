@@ -572,7 +572,8 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
-    probs=c(0.10, 0.33, 0.50, 0.66, 0.90), alpha=c(0.10, 0.40), ...) {
+    probs=c(0.10, 0.33, 0.50, 0.66, 0.90), alpha=c(0.10, 0.40), worm=iter,
+    iter=NULL...) {
 	
 		# CHECK names not repeated
 		dup <- duplicated(names(x))
@@ -629,7 +630,13 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
       theme(legend.title = element_blank()) +
       # and only with lines and no title
       guides(fill = "none")
-		
+	
+    # PLOT iter worms
+    if(is.numeric(worm)) {
+      idata <- p$data[p$data$iter %in% worm,]
+      p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter))
+    }
+
 		return(p)
 	}
 ) # }}}
