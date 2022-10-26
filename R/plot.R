@@ -202,8 +202,12 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     }
     
     # PLOT iter worms
-    if(is.numeric(worm)) {
-      idata <- p$data[p$data$iter %in% worm,]
+    if(is.numeric(worm) | is.character(worm)) {
+      # SELECT by position if numbers, avoids issues with names not matching
+      if(is.numeric(worm)) {
+        worm <- unique(p$data$iter)[worm]
+      }
+      idata <- subset(p$data, iter %in% worm)
       p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter))
     }
 
