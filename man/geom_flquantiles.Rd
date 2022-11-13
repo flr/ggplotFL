@@ -30,10 +30,10 @@ stat_flquantiles(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
-\code{\link[ggplot2:aes_]{aes_()}}. If specified and \code{inherit.aes = TRUE} (the
-default), it is combined with the default mapping at the top level of the
-plot. You must supply \code{mapping} if there is no plot mapping.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
 
 \item{data}{The data to be displayed in this layer. There are three
 options:
@@ -51,10 +51,14 @@ will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this
-layer, as a string.}
+layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
+stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
+\code{"stat_count"})}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function.}
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
@@ -79,7 +83,9 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{geom}{The geometric object to use display the data}
+\item{geom}{The geometric object to use to display the data, either as a
+\code{ggproto} \code{Geom} subclass or as a string naming the geom stripped of the
+\code{geom_} prefix (e.g. \code{"point"} rather than \code{"geom_point"})}
 }
 \description{
 This `geom` calculates sampling quantiles and draws a ribbon for the quantile
@@ -111,7 +117,8 @@ in the `probs` argument, all of the above will be returned, in the right order.
 - `fill`
 - `group`
 - `linetype`
-- `size`
+- `linewidth`
+where some of them apply to the ribbons and some of them to the lines.
 }
 
 \section{Computed variables}{
@@ -151,7 +158,7 @@ ggplot(flq, aes(x=year, y=data)) +
    colour = "green4", linetype=3) +
  stat_flquantiles(probs=c(0.25, 0.75), geom = "ribbon",
    fill="green4", alpha=0.30) +
- stat_flquantiles(probs=c(0.50), geom = "line", size=1.5,
+ stat_flquantiles(probs=c(0.50), geom = "line", linewidth=1.5,
    colour = "lightgreen") +
  stat_flquantiles(probs=c(0.50), geom = "line",
    colour = "darkgreen")

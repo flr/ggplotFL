@@ -83,6 +83,8 @@
   metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar),
   probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
   alpha = c(0.1, 0.4),
+  worm = iter,
+  iter = NULL,
   ...
 )
 
@@ -242,7 +244,7 @@ plot(ple4, rps)
  data(ple4.indices)
  plot(ple4.indices)
  plot(ple4.indices) +
-   geom_smooth(formula=y ~ x, se=FALSE, method="loess", size=0.2)
+   geom_smooth(formula=y ~ x, se=FALSE, method="loess", linewidth=0.2)
 }
 \seealso{
 \code{\link{ISOdate}} \code{\link{ggplot}}
