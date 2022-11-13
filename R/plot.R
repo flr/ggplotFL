@@ -135,8 +135,8 @@ setMethod("plot", signature(x="FLQuant", y="FLQuant"),
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, worm=iter,
     iter=NULL) {
-
-		# CHECK probs length is odd
+		
+    # CHECK probs length is odd
 		if(is.integer(length(probs)/2))
 		  stop("quantile probs can only be a vector of odd length")
     
@@ -163,12 +163,12 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       if(isTRUE(worm)) {
   		p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
-          geom_line(aes(group=iter), alpha=0.2, size=1, colour="#adadad") +
+          geom_line(aes(group=iter), alpha=0.2, linewidth=1, colour="#adadad") +
           geom_flquantiles(alpha=0.5,
             probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-          geom_line(aes(group=iter), alpha=0.1, size=1) +
+          geom_line(aes(group=iter), alpha=0.1, linewidth=1) +
           geom_flquantiles(alpha=0.5,
             probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
       }
@@ -316,7 +316,8 @@ setMethod("plot", signature(x="FLQuants", y="FLPars"),
 
     dat <- merge(dat, lim)
 
-		p <- p + geom_hline(data=dat, aes(yintercept=data), linetype=2, size=0.25) +
+		p <- p + geom_hline(data=dat, aes(yintercept=data), linetype=2,
+        linewidth=0.25) +
       geom_text(data=dat, aes(y=data + ((max-min) * 0.05), label=params),
         x=dims(x[[1]])$minyear - 1, size=3, hjust="inward")
 
@@ -583,7 +584,7 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 		dup <- duplicated(names(x))
 		if(any(dup)) {
 			names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
-			warning('Duplicated names in object, changed to differentiate')
+			# warning('Duplicated names in object, changed to differentiate')
 		}
 		
 		# EXTRACT slots by stock
@@ -761,7 +762,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		c(eval(form, c(list(ssb=FLQuant(x)), pars)))
   }
 	
-	p1 <- p1 + stat_function(fun=fmo,  colour='red', size=0.5)
+	p1 <- p1 + stat_function(fun=fmo,  colour='red', linewidth=0.5)
 	
 	# P2
 	p2 <- ggplot(data=na.omit(dat), aes_string(x='year', y='Residuals')) +
@@ -975,7 +976,7 @@ setMethod("plot", signature(x="FLIndex", y="missing"),
 #'  data(ple4.indices)
 #'  plot(ple4.indices)
 #'  plot(ple4.indices) +
-#'    geom_smooth(formula=y ~ x, se=FALSE, method="loess", size=0.2)
+#'    geom_smooth(formula=y ~ x, se=FALSE, method="loess", linewidth=0.2)
 setMethod("plot", signature(x="FLIndices", y="missing"),
   function(x) {
 

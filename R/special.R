@@ -370,13 +370,13 @@ setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths'))
 #' plotLengths(les, direction="vertical", block="decade")
 #' plotLengths(les) +
 #'   geom_vline(data=as.data.frame(FLPar(L50=38)), aes(xintercept=data),
-#'   size=1)
+#'   linewidth=1)
 #' plotLengths(les) +
 #'   geom_vline(data=as.data.frame(FLPar(seq(38, 46, length=10), dimnames=list(params='L50', year=1957:1966, iter=1))), aes(xintercept=data),
-#'   size=1)
+#'   linewidth=1)
 #' plotLengths(les, block="lustrum") +
 #'   geom_vline(data=as.data.frame(FLPar(seq(38, 46, length=10), dimnames=list(params='L50', year=1957:1966, iter=1))), aes(xintercept=data),
-#'   size=1)
+#'   linewidth=1)
 
 # TODO: plotComps
 # TODO: OPTION to remove mean/median
@@ -410,9 +410,9 @@ setMethod("plotLengths", signature(x="FLQuant"),
     ylab("") + xlab(paste0("Length (", units(x), ")")) +
     theme(axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
-    geom_vline(aes(xintercept=mean), color=palette[1], size=1, alpha=0.5) +
+    geom_vline(aes(xintercept=mean), color=palette[1], linewidth=1, alpha=0.5) +
     geom_point(aes(x=mean, y=1), color=palette[1], size=2, alpha=0.5) + 
-    geom_vline(aes(xintercept=median), color=palette[2], size=1, alpha=0.5) +
+    geom_vline(aes(xintercept=median), color=palette[2], linewidth=1, alpha=0.5) +
     geom_point(aes(x=median, y=1), color=palette[2], size=2, alpha=0.5) +
     geom_point(aes(x=min, y=1), size=2, alpha=0.5, shape=15) +
     geom_point(aes(x=max, y=1), size=2, alpha=0.5, shape=15) +
@@ -436,7 +436,7 @@ setMethod("plotLengths", signature(x="FLQuant"),
     p <- p + facet_grid(facets, scale="free") +
       coord_flip() + scale_y_reverse() +
       geom_vline(aes(xintercept=0,
-        color=as.factor(year -  year %% step)), size=3)
+        color=as.factor(year -  year %% step)), linewidth=3)
   } else {
 
   # SET facetting

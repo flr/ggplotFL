@@ -31,7 +31,8 @@
 #' - `fill`
 #' - `group`
 #' - `linetype`
-#' - `size`
+#' - `linewidth`
+#' where some of them apply to the ribbons and some of them to the lines.
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_line
 #' @inheritParams ggplot2::geom_ribbon
@@ -162,7 +163,7 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
 #'    colour = "green4", linetype=3) +
 #'  stat_flquantiles(probs=c(0.25, 0.75), geom = "ribbon",
 #'    fill="green4", alpha=0.30) +
-#'  stat_flquantiles(probs=c(0.50), geom = "line", size=1.5,
+#'  stat_flquantiles(probs=c(0.50), geom = "line", linewidth=1.5,
 #'    colour = "lightgreen") +
 #'  stat_flquantiles(probs=c(0.50), geom = "line",
 #'    colour = "darkgreen")
@@ -235,7 +236,7 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
   mapping$linetype <- aes_string(linetype="linetype")$linetype
   
   # ACCEPTED aesthetics by geom
-  ahline <- c("alpha", "colour", "linetype", "size", "yintercept")
+  ahline <- c("alpha", "colour", "linetype", "linewidth", "yintercept")
   atext <- c("x", "y", "label", "alpha", "angle", "colour", "family",
     "fontface", "group", "hjust", "lineheight", "size", "vjust")
   
@@ -275,7 +276,7 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 #' `geom_worm` understands the following aesthetics (required aesthetics are in bold):
 #' - `colour`
 #' - `linetype`
-#' - `size`
+#' - `linewidth`
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_line
 #' @param data Subset of data, select from full object using iter().
