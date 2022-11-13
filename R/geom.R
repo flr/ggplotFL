@@ -60,9 +60,11 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
   position = "identity", show.legend = NA, inherit.aes = TRUE, na.rm = FALSE,
   probs=c(0.10, 0.50, 0.90), alpha=0.5, ...) {
 
+  # Quantile ribbon, IF length(probs) > 1
+  if(length(probs) > 1) {
+
   out <- list(
 
-  # Quantile ribbon
   layer(
     geom = GeomRibbon,
     mapping = mapping,
@@ -71,8 +73,11 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     position = position,
     show.legend = FALSE,
     inherit.aes = inherit.aes,
-    params = list(probs=probs[c(1, length(probs))], alpha=alpha, linewidth=0, ...)
-  ))
+    params = list(probs=probs[c(1, length(probs))], alpha=alpha, 
+      linewidth=0, ...)))
+  } else {
+    out <- list()
+  }
 
   # ADD line?
 
@@ -107,7 +112,7 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
     
     grid <- as.data.frame(do.call("rbind",
       as.list(tapply(data$y, data$x, quantile, na.rm=TRUE, probs=probs))))
-
+    
     grid$x <- as.numeric(rownames(grid))
     grid$PANEL <- unique(data$PANEL)
     grid$group <- unique(data$group)
