@@ -7,7 +7,7 @@
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
 globalVariables(c("final", "y", "pred", "text", "pass", "p.value", "qname",
-  "age", "lcl", "ucl", "outlier"))
+  "age", "lcl", "ucl", "outlier", "prop", "timestep", "len", "."))
 
 # cohcorrplot {{{
 
@@ -42,6 +42,8 @@ setMethod("cohcorrplot", signature(x="FLQuant"),
   })
 
 #' @rdname cohcorrplot-methods
+#' @param diag_size Font size for labels in diagonal row
+#' @param lower_size Font size for labels in lower triangle
 #' @examples
 #' cohcorrplot(FLCohort(stock.n(ple4)))
 
@@ -433,7 +435,7 @@ setMethod("plotLengths", signature(x="FLQuant"),
     else
       facets <- ~ year
 
-    p <- p + facet_grid(facets, scale="free") +
+    p <- p + facet_grid(facets, scales="free") +
       coord_flip() + scale_y_reverse() +
       geom_vline(aes(xintercept=0,
         color=as.factor(year -  year %% step)), linewidth=3)

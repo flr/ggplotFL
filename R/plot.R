@@ -36,6 +36,7 @@ globalVariables(c("..density.."))
 #' @param ... Other arguments to be passed to the corresponding ggplot call.
 #' @param metrics FlQuants computed from complex objects (e.g. FLStock)
 #' @param iter Individual iterations to show as worm plots over the quantiles.
+#' @param worm Individual iterations to show as worm plots over the quantiles.
 #'
 #' @aliases plot,FLQuant,missing-method
 #' @seealso \code{\link{ISOdate}} \code{\link{ggplot}} 
@@ -804,6 +805,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 #' @docType methods
 #' @rdname plot
 #' @param legend_label function to create the legend labels
+#' @param facets
 #' @examples
 #'  # plot for FLSRs
 #'  data(nsher)
@@ -822,13 +824,16 @@ setMethod("plot", signature(x="FLSRs"),
     uns <- units(x[[1]])
 
     # DIFFERENT data?
+    browser()
     if(all(unlist(lapply(x[-1],
-      function(y) isTRUE(all.equal(rec(y), rec(x[[1]])))))))
-      dat <- cbind(sr=NA, model.frame(FLQuants(ssb=ssb(x[[1]]), rec=rec(x[[1]]))))
-    else
+      function(y) isTRUE(all.equal(rec(y), rec(x[[1]]))))))) {
+      dat <- cbind(sr=NA, model.frame(FLQuants(ssb=ssb(x[[1]]),
+        rec=rec(x[[1]]))))
+    } else {
       dat <- Reduce(rbind, Map(function(x, i)
         cbind(sr=i, model.frame(FLQuants(ssb=ssb(x), rec=rec(x)), drop=TRUE)),
         x, names(x)))
+    }
     
     # EXTRACT models & pars
     mods <- lapply(x, 'model')
