@@ -71,7 +71,7 @@ geom_flquantiles <- function(mapping = NULL, data = NULL, stat = "FLQuantiles",
     position = position,
     show.legend = FALSE,
     inherit.aes = inherit.aes,
-    params = list(probs=probs[c(1, length(probs))], alpha=alpha, size=0, ...)
+    params = list(probs=probs[c(1, length(probs))], alpha=alpha, linewidth=0, ...)
   ))
 
   # ADD line?
@@ -116,14 +116,15 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
 
     # TODO Output to vary with stat_flquantiles$geom, not probs
     if(length(probs) == 1) {
-      grid$y <- grid[,1]
+      grid$y <- grid[, 1]
     } else if(length(probs) == 2) {
-      grid$ymin <- grid[,1]
-      grid$ymax <- grid[,2]
+      grid$ymin <- grid[, 1]
+      grid$y <- NA
+      grid$ymax <- grid[, 2]
     } else if(length(probs) == 3) {
-      grid$ymin <- grid[,1]
-      grid$y <- grid[,2]
-      grid$ymax <- grid[,3]
+      grid$ymin <- grid[, 1]
+      grid$y <- grid[, 2]
+      grid$ymax <- grid[, 3]
     } else { 
       stop("stat_flquantiles can only return a maximum of 3 quantiles")
     }
