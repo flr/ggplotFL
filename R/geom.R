@@ -220,26 +220,26 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
 
   if(is.null(mapping))
     mapping <- aes(x=x)
-  
+ 
   # DATA
   data <- as(data, "data.frame")
   data$yintercept <- data$data
   data$y <- data$data 
   data$linetype <- letters[as.numeric(row.names(data)) + 1]
   data$label <- data$params
-  
+
   # MAPPINGS from data: y, yintercept, label, linetype
 
   mapping$y <- aes_string(y="y")$y
   mapping$label <- aes(label=params)$label
   mapping$yintercept <- aes_string(yintercept="yintercept")$yintercept
   mapping$linetype <- aes_string(linetype="linetype")$linetype
-  
+
   # ACCEPTED aesthetics by geom
   ahline <- c("alpha", "colour", "linetype", "linewidth", "yintercept")
   atext <- c("x", "y", "label", "alpha", "angle", "colour", "family",
     "fontface", "group", "hjust", "lineheight", "size", "vjust")
-  
+ 
   list(
 
   # geom_hline
@@ -254,9 +254,10 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
     params = c(list(na.rm=na.rm), args[names(args) %in% ahline])
   ),
 
-  # geom_text
+  # geom_label
   layer(
-    data = data,
+    data = do.call(cbind, c(list(data),
+      args[!names(args) %in% c(ahline, atext)])),
     mapping = mapping[names(mapping) %in% atext],
     stat = StatIdentity,
     geom = GeomLabel,

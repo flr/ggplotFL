@@ -571,11 +571,16 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #' @param probs Quantiles to calculate along the iter dimension. A vector of length 5, for the lower outer, lower inner, central, upper inner and upper outer quantiles. Defaults to the 66 and 80 percent quantiles, plus median line.
 #' @param alpha alpha values for the quantile ribbons, defaults to 0.10 and 0.40.
 #' @examples
-#'  # plot for FLStocks
-#'  data(ple4)
-#'  pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
-#'  plot(pls)
-
+#' # plot for FLStocks
+#' data(ple4)
+#' pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+#' plot(pls)
+#' # geom_flpar can be used draw refpts lines and labels
+#' plot(pls, metrics=list(SSB=ssb, F=fbar)) +
+#'   facet_grid(qname~stock, scales='free') +
+#'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+#'   F=FLPar(FMSY=0.21)), x=c(1964), stock='runA')
+  
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
     probs=c(0.10, 0.33, 0.50, 0.66, 0.90), alpha=c(0.10, 0.40), worm=iter,
