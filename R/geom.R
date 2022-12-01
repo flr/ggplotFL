@@ -184,11 +184,15 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' Horizontal lines for FLPar objects
 #'
 #' This `geom` shows a horizontal line for each `param` in a `FLPar` object and
-#' labels it using the `param` dimnames
+#' labels it using the `param` dimnames, by calling `geom_hline` and
+#' `ggrepel::geom_label_repel`. Separate labels and lines can be specified for
+#' different facets by providing the `data` argument with an object of class
+#' `FLPars` in which each element is named as the values of the facetting
+#' variable.
 #'
 #' @name geom_flpar
 #' @section Aesthetics:
-#' `geom_flpar` understands the following aesthetics (required aesthetics are in bold):
+#' `geom_flpar` understands the following aesthetics (required aesthetics are in bold). Some aesthetics apply to only one of the two elements, in parenthesis:
 #' - `*x*`
 #' - `y`, defaults to 90% of params value (text).
 #' - `yintercept`, defaults to params value (line).
@@ -196,6 +200,10 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' - `alpha`
 #' - `colour`
 #' - `linetype` (line)
+#' - `linewidth` (line)
+#' - `fill` (label)
+#' - `angle` (label)
+#' - `family` (label)
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_hline
 #' @inheritParams ggplot2::geom_label_repel
