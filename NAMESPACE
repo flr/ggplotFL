@@ -22,6 +22,9 @@ importFrom("grid",
 importFrom("cowplot",
   "ggdraw",
   "draw_grob")
+importFrom("ggrepel",
+  "geom_label_repel",
+  "geom_text_repel")
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")

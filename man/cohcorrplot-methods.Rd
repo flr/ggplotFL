@@ -16,6 +16,10 @@ cohcorrplot(x, ...)
 \item{x}{An object with the abundance at age information. FLQuant or FLCohort.}
 
 \item{...}{Any extra arguments}
+
+\item{diag_size}{Font size for labels in diagonal row}
+
+\item{lower_size}{Font size for labels in lower triangle}
 }
 \description{
 A correlation plot that show and quantifies correlation along

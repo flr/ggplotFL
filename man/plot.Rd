@@ -125,6 +125,8 @@
 
 \item{iter}{Individual iterations to show as worm plots over the quantiles.}
 
+\item{worm}{Individual iterations to show as worm plots over the quantiles.}
+
 \item{metrics}{function returning an FLQuants for each FLStock}
 
 \item{alpha}{alpha values for the quantile ribbons, defaults to 0.10 and 0.40.}
@@ -220,10 +222,15 @@ plot(par)
 data(ple4)
 rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
 plot(ple4, rps)
- # plot for FLStocks
- data(ple4)
- pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
- plot(pls)
+# plot for FLStocks
+data(ple4)
+pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+plot(pls)
+# geom_flpar can be used draw refpts lines and labels
+plot(pls, metrics=list(SSB=ssb, F=fbar)) +
+  facet_grid(qname~stock, scales='free') +
+  geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+  F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha(0.1))
 # plot for FLSR
  data(nsher)
  plot(nsher)
