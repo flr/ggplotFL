@@ -579,7 +579,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #' plot(pls, metrics=list(SSB=ssb, F=fbar)) +
 #'   facet_grid(qname~stock, scales='free') +
 #'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
-#'   F=FLPar(FMSY=0.21)), x=c(1964), stock='runA')
+#'   F=FLPar(FMSY=0.21)), x=c(1964), stock='runA', fill=alpha(0.1))
   
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
