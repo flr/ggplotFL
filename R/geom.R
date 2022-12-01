@@ -198,7 +198,7 @@ stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
 #' - `linetype` (line)
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_hline
-#' @inheritParams ggplot2::geom_text
+#' @inheritParams ggplot2::geom_label_repel
 #' @param x Position for params labels on the x axis
 #' @examples
 #' data(ple4)
@@ -229,7 +229,6 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
   data$label <- data$params
 
   # MAPPINGS from data: y, yintercept, label, linetype
-
   mapping$y <- aes_string(y="y")$y
   mapping$label <- aes(label=params)$label
   mapping$yintercept <- aes_string(yintercept="yintercept")$yintercept
@@ -238,7 +237,7 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
   # ACCEPTED aesthetics by geom
   ahline <- c("alpha", "colour", "linetype", "linewidth", "yintercept")
   atext <- c("x", "y", "label", "alpha", "angle", "colour", "family",
-    "fontface", "group", "hjust", "lineheight", "size", "vjust")
+    "fontface", "group", "hjust", "lineheight", "size", "vjust", "fill")
  
   list(
 
@@ -260,7 +259,7 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
       args[!names(args) %in% c(ahline, atext)])),
     mapping = mapping[names(mapping) %in% atext],
     stat = StatIdentity,
-    geom = GeomLabel,
+    geom = GeomLabelRepel,
     position = PositionIdentity,
     show.legend = FALSE,
     inherit.aes = FALSE,
