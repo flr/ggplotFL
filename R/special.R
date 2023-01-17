@@ -124,7 +124,17 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   res <- arrangeGrob(grobs=plots, nrow=nag, ncol=nag)
 
   # RETURN gg
-  return(ggdraw() + draw_grob(grid::grobTree(res)))
+  res <- ggdraw() + draw_grob(grid::grobTree(res))
+
+  # ADD corr table
+  corr <- data.frame(x=unlist(Map(function(x,y) rep(x, y),
+    x=seq(length(combs)), y=lapply(combs, length))),
+    y=unlist(combs),
+    corr=unlist(corrs))
+
+  res$corr <- corr
+
+  return(res)
   }
 )
 # }}}
