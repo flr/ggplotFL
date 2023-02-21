@@ -143,7 +143,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     if(is.null(probs)) {
       probs <- rep(0, 3)
       if(missing(worm))
-        worm <- seq(dims(x[[1]])$iter)
+        worm <- TRUE
     }
     
     # CHECK probs length is odd
