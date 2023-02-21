@@ -132,11 +132,20 @@ setMethod("plot", signature(x="FLQuant", y="FLQuant"),
 #'  # Plot an FLQuants created from ple4 FLStock
 #'  data(ple4)
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
+#'
+#'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)), probs = NULL)
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
 	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, worm=iter,
     iter=NULL) {
-		
+
+    # SWITCH off ribbons
+    if(is.null(probs)) {
+      probs <- rep(0, 3)
+      if(missing(worm))
+        worm <- seq(dims(x[[1]])$iter)
+    }
+    
     # CHECK probs length is odd
 		if(is.integer(length(probs)/2))
 		  stop("quantile probs can only be a vector of odd length")
@@ -412,7 +421,7 @@ setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
     dat <- as.data.frame(y, drop=TRUE, date=TRUE)
 
     # ADD FLQuants as lines
-    p <- p + geom_line(data=dat, aes(x=date, y=data, colour=qname))
+    p <- p + geom_flquantiles(data=dat, aes(x=date, y=data, colour='red'))
 
     # PARSE dimensions > 1 for new facets
     ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
@@ -579,7 +588,7 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 #' plot(pls, metrics=list(SSB=ssb, F=fbar)) +
 #'   facet_grid(qname~stock, scales='free') +
 #'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
-#'   F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha(0.1))
+#'   F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha('white', 0.4))
   
 setMethod("plot", signature(x="FLStocks", y="missing"),
 	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar),
