@@ -112,7 +112,8 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
   compute_group = function(data, scales, probs=c(0.10, 0.50, 0.90), na.rm=TRUE) {
     
     grid <- as.data.frame(do.call("rbind",
-      as.list(tapply(data$y, data$x, quantile, na.rm=TRUE, probs=probs))))
+      as.list(tapply(data$y, data$x, quantile, na.rm=TRUE, names=FALSE,
+      probs=probs))))
     
     grid$x <- as.numeric(rownames(grid))
     grid$PANEL <- unique(data$PANEL)
