@@ -153,8 +153,8 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 #' # SEE vignette
 
 plotXval <- function(x, y="missing", order="inverse") {
-
-  # SINGLE input
+  
+  # SINGLE input and $data in y
   if(missing(y) & is.list(x) & "data" %in% names(x)) {
     y <- x[!names(x) %in% "data"]
     x <- x[["data"]]
@@ -196,7 +196,7 @@ plotXval <- function(x, y="missing", order="inverse") {
   }
 
   # CALCULATE mase, exclude ref run
-  imase <- mase(x, y[-idr], order=order)
+  imase <- mase(x, y, order=order)
 
   # GENERATE facet labels
   lbs <- unlist(lapply(seq(length(imase)), function(x)
@@ -206,8 +206,9 @@ plotXval <- function(x, y="missing", order="inverse") {
   llb[idr] <- paste(llb[idr], "(ref)")
 
   # LINES colors
-  colors <- c(c("#0072B2", "#D55E00", "#009E73", "#56B4E9", "#E69F00", "#D55E00",
-    "#009E73", "#56B4E9", "#E69F00")[seq(length(llb)) - 1], "#000000")
+  colors <- c(c("#0072B2", "#D55E00", "#009E73", "#56B4E9", "#E69F00", 
+    "#D55E00", "#009E73", "#56B4E9", "#E69F00")[seq(length(llb)) - 1],
+    "#000000")
   
   # PLOT
   p <- ggplot(datp, aes(x=year, y=data, colour=final)) +
