@@ -376,6 +376,7 @@ setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths'))
 #' plotLengths(les)
 #' plotLengths(les) + geom_vline(aes(xintercept=mean), colour="red")
 #' plotLengths(les) + geom_vline(aes(xintercept=median, colour="green"))
+#' plotLengths(les) + geom_vline(aes(xintercept=mode), colour="black")
 #' plotLengths(group(les, sum, year=year - year%%5))
 #' plotLengths(group(les, mean, year=year - year%%5))
 #' plotLengths(group(les, sum, year=year - year%%10))
@@ -415,6 +416,9 @@ setMethod("plotLengths", signature(x="FLQuant"),
   dat[, median:=median(rep(len, prop)), by=.(timestep, unit)]
   # mean
   dat[, mean:=mean(rep(len, prop)), by=.(timestep, unit)]
+  # mode
+  dat[, mode:=unique(len[prop == max(prop)]), by=.(timestep, unit)]
+  
   # min & max
   dat[, min:=min(len[data > 0]), by=.(timestep, unit)]
   dat[, max:=max(len[data > 0]), by=.(timestep, unit)]

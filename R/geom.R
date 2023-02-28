@@ -313,3 +313,7 @@ geom_worm <- function(data, mapping = aes(colour=iter), ...,
 # }}}
 
 # geom_fwd
+
+# geom_vline(FLArray/FLQuant/FLPar)
+
+# geom_hline(FLArray/FLQuant/FLPar)
