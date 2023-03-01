@@ -101,11 +101,10 @@ modlabel <- function(model, param) {
 
 label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 		
-    # GET named vector of uoms
-    units <- unlist(lapply(lapply(x, units), paste, collapse=" "))
-
-    return(format_label_flqs(units, names(x), drop=drop))
-
+  # GET named vector of uoms
+  units <- unlist(lapply(lapply(x, units), paste, collapse=" "))
+    
+  return(format_label_flqs(units, names(x), drop=drop))
 } # }}}
 
 # format_label_flqs {{{
@@ -121,21 +120,23 @@ format_label_flqs <- function(units, names,
     units[units == " "] <- character(1)
     units <- gsub(" ", "~", units)
 
-    # DROP unparseable strings
-    units <- unlist(lapply(units, function(x)
-      ifelse(class(try(parse(text=x), silent=TRUE)) == "try-error", character(1), x)
-      ))
+  # DROP unparseable strings
+  units <- unlist(lapply(units, function(x)
+    ifelse(class(try(parse(text=x), silent=TRUE)) == "try-error",
+    character(1), x)))
 
-    # DROP more unparseable units (w/o any alnum & not in uomTable)
-    units[!uomUnits(units) & !grepl("[[:alnum:]]", units)]  <- character(1)
+  # DROP more unparseable units (w/o any alnum & not in uomTable)
+  units[!uomUnits(units) & !grepl("[[:alnum:]]", units)]  <- character(1)
 
-    # FORMAT
-    idx <- units != ""
-    units[idx] <- paste0("~(", units[idx], ")")
-    
-    units[] <- paste0("`", names, "`", as.expression(units))
+  # FORMAT
+  idx <- units != ""
+  units[idx] <- paste0("~(", units[idx], ")")
 
-    return(as_labeller(units, label_parsed))
+  # COERCE to expression
+  units <- Map(function(x, y) parse(text=paste0(x, y)),
+    x=names, y=units)
+
+  return(as_labeller(units, label_parsed))
 } # }}}
 
 # human_numbers {{{

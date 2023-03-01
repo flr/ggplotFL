@@ -51,6 +51,7 @@ export(
   "label_flqs",
   "modlabel",
   "plotLengths",
+  "plotListFLQuants",
   "plotRunstest",
   "plotXval",
   "pubpng",

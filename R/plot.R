@@ -662,6 +662,40 @@ setMethod("plot", signature(x="FLStocks", y="missing"),
 	}
 ) # }}}
 
+# plot(FLStocks) {{{
+
+#' @aliases plot,FLStocks,missing-method
+#' @rdname plot
+#' @param metrics function returning an FLQuants for each FLStock
+#' @param probs Quantiles to calculate along the iter dimension. A vector of length 5, for the lower outer, lower inner, central, upper inner and upper outer quantiles. Defaults to the 66 and 80 percent quantiles, plus median line.
+#' @param alpha alpha values for the quantile ribbons, defaults to 0.10 and 0.40.
+#' @examples
+#' # plot for FLStocks
+#' data(ple4)
+#' pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+#' plot(pls)
+#' # geom_flpar can then be used draw refpts lines and labels
+#' plot(pls, metrics=list(SSB=ssb, F=fbar)) +
+#'   facet_grid(qname~stock, scales='free') +
+#'   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+#'   F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha('white', 0.4))
+  
+setMethod("plot", signature(x="FLStocks", y="missing"),
+	function(x, metrics=list(Rec=function(x) unitSums(rec(x)),
+    SB=function(x) unitSums(ssb(x)), C=function(x) unitSums(catch(x)), 
+    F=function(x) unitMeans(fbar(x))),
+    probs=c(0.10, 0.33, 0.50, 0.66, 0.90), alpha=c(0.10, 0.40), worm=iter,
+    iter=NULL, ...) {
+	
+		# EXTRACT slots by stock
+		fqs <- lapply(x, "metrics", metrics=metrics)
+
+    p <- plotListFLQuants(fqs, probs=probs, alpha=alpha, worm=worm, iter=iter)
+
+		return(p)
+	}
+) # }}}
+
 # plot(FLStocks, FLPar) {{{
 # TODO Move to geom_flquantiles
 
@@ -839,7 +873,6 @@ setMethod("plot", signature(x="FLSRs"),
     uns <- units(x[[1]])
 
     # DIFFERENT data?
-    browser()
     if(all(unlist(lapply(x[-1],
       function(y) isTRUE(all.equal(rec(y), rec(x[[1]]))))))) {
       dat <- cbind(sr=NA, model.frame(FLQuants(ssb=ssb(x[[1]]),
@@ -1024,3 +1057,70 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
     }
   }
 ) # }}}
+
+# plotListFLQuants {{{
+plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
+  alpha=c(0.10, 0.40), worm=iter, iter=NULL, fages=NULL) {
+	
+	# CHECK names not repeated
+	dup <- duplicated(names(x))
+	if(any(dup)) {
+		names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
+	}
+		
+  # HACK for F units
+  if("F" %in% names(x[[1]]))
+    x <- lapply(x, function(i) {
+      units(i$F) <- paste0(fages, collapse="-")
+      return(i)
+  })
+  
+  fqs <- x
+
+  # GET labels
+  labeller <- label_flqs(fqs[[1]])
+
+  # ASSEMBLE data
+  data <- lapply(fqs, as.data.frame, date=TRUE, drop=FALSE)
+
+  # SET stock names
+		stk <- rep.int(names(fqs), unlist(lapply(data, nrow)))
+		
+  # RBIND dfs
+		data <- do.call(rbind, data)
+		rownames(data) <- NULL
+
+  # USE year or date for x axis
+  xvar <- sym(ifelse(length(unique(data$season)) == 1, "year", "date"))
+		
+  # ADD stock names
+	data <- transform(data, stock=factor(stk, levels=names(x)))
+  
+  # PLOT using geom_flquantiles
+  p <- ggplot(data, aes(x=!!xvar, y=data, fill=stock, colour=stock)) + 
+    facet_grid(qname~., labeller=labeller, scales="free_y") +
+    # outer quantile
+    geom_flquantiles(probs=probs[c(1, 5)], alpha=alpha[1],
+      colour="white") +
+    # inner quantile
+    geom_flquantiles(probs=probs[c(2, 4)], alpha=alpha[2],
+      colour="white") +
+    # median
+    geom_flquantiles(probs=probs[3], alpha=1) +
+    xlab("") + ylab("") +
+			# SET limits to include 0
+			expand_limits(y=0) +
+    # SET legend with no title
+    theme(legend.title = element_blank()) +
+    # and only with lines and no title
+    guides(fill = "none")
+	
+  # PLOT iter worms
+  if(is.numeric(worm)) {
+    idata <- p$data[p$data$iter %in% worm,]
+    p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter))
+  }
+
+		return(p)
+}
+# }}}
