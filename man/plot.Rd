@@ -80,7 +80,19 @@
 
 \S4method{plot}{FLStocks,missing}(
   x,
-  metrics = list(Rec = rec, SSB = ssb, Catch = catch, F = fbar),
+  metrics = list(Rec = function(x) unitSums(rec(x)), SB = function(x) unitSums(ssb(x)), C
+    = function(x) unitSums(catch(x)), F = function(x) unitMeans(fbar(x))),
+  probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
+  alpha = c(0.1, 0.4),
+  worm = iter,
+  iter = NULL,
+  ...
+)
+
+\S4method{plot}{FLStocks,missing}(
+  x,
+  metrics = list(Rec = function(x) unitSums(rec(x)), SB = function(x) unitSums(ssb(x)), C
+    = function(x) unitSums(catch(x)), F = function(x) unitMeans(fbar(x))),
   probs = c(0.1, 0.33, 0.5, 0.66, 0.9),
   alpha = c(0.1, 0.4),
   worm = iter,
@@ -191,6 +203,7 @@ plot(rnorm(200, landings(ple4), 8000), discards(ple4)) +
  # Plot an FLQuants created from ple4 FLStock
  data(ple4)
  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
+ plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)), probs = NULL)
  # plot for FLQuants, FLPar
  data(ple4)
  rps <- FLPar(F=0.14, Catch=1.29e5, Rec=9.38e5, SSB=1.8e5)
@@ -230,7 +243,16 @@ plot(pls)
 plot(pls, metrics=list(SSB=ssb, F=fbar)) +
   facet_grid(qname~stock, scales='free') +
   geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
-  F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha(0.1))
+  F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha('white', 0.4))
+# plot for FLStocks
+data(ple4)
+pls <- FLStocks(runA=ple4, runB=qapply(ple4, function(x) x*1.10))
+plot(pls)
+# geom_flpar can then be used draw refpts lines and labels
+plot(pls, metrics=list(SSB=ssb, F=fbar)) +
+  facet_grid(qname~stock, scales='free') +
+  geom_flpar(data=FLPars(SSB=FLPar(Blim=300000, Bpa=230000),
+  F=FLPar(FMSY=0.21)), x=c(1960), stock='runA', fill=alpha('white', 0.4))
 # plot for FLSR
  data(nsher)
  plot(nsher)

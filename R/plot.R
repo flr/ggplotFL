@@ -132,7 +132,6 @@ setMethod("plot", signature(x="FLQuant", y="FLQuant"),
 #'  # Plot an FLQuants created from ple4 FLStock
 #'  data(ple4)
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)))
-#'
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)), probs = NULL)
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
@@ -1075,16 +1074,14 @@ plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
       return(i)
   })
   
-  fqs <- x
-
   # GET labels
-  labeller <- label_flqs(fqs[[1]])
+  labeller <- label_flqs(x[[1]])
 
   # ASSEMBLE data
-  data <- lapply(fqs, as.data.frame, date=TRUE, drop=FALSE)
+  data <- lapply(x, as.data.frame, date=TRUE, drop=FALSE)
 
   # SET stock names
-		stk <- rep.int(names(fqs), unlist(lapply(data, nrow)))
+		stk <- rep.int(names(x), unlist(lapply(data, nrow)))
 		
   # RBIND dfs
 		data <- do.call(rbind, data)
@@ -1121,6 +1118,6 @@ plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
     p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter))
   }
 
-		return(p)
+	return(p)
 }
 # }}}
