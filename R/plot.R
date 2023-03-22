@@ -862,7 +862,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 #'    model(y) <- x
 #'    return(fmle(y))
 #'  }))
-#'  plot(srs)
+#'  plot(srs, facets=TRUE)
 #'  plot(srs, legend_label=eqlabel)
 #'  plot(srs, legend_label=modlabel)
 
