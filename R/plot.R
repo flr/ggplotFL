@@ -218,11 +218,12 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
         worm <- unique(p$data$iter)[worm]
       }
       idata <- subset(p$data, iter %in% worm)
-      p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter), na.rm=TRUE) 
+      p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter),
+        na.rm=TRUE) 
     }
 
     # BUILD facet formula
-    ldi <- c("qname", names(x[[1]])[-c(2,3,4,6)][mds[-c(2,3,4,6)] > 1])
+    ldi <- c("qname", names(x[[1]])[-c(2, 3, 4, 6)][mds[-c(2, 3, 4, 6)] > 1])
     
     if(length(ldi) == 1) {
   			p <- p + facet_grid(as.formula(paste0(ldi, "~.")), scales="free", 

@@ -112,13 +112,13 @@ label_flqs <- function(x, drop=c("NA", "NC", "m", "f", "z", "prop")) {
 format_label_flqs <- function(units, names, 
   drop=c("NA", "NC", "m", "f", "z", "prop")) {
     
-    # DROP certain units
-    units[units %in% drop] <- ""
+  # DROP certain units
+  units[units %in% drop] <- ""
     
-    # DROP NAs and empty characters
-    units <- gsub("NA", "", units)
-    units[units == " "] <- character(1)
-    units <- gsub(" ", "~", units)
+  # DROP NAs and empty characters
+  units <- gsub("NA", "", units)
+  units[units == " "] <- character(1)
+  units <- gsub(" ", "~", units)
 
   # DROP unparseable strings
   units <- unlist(lapply(units, function(x)
@@ -136,7 +136,8 @@ format_label_flqs <- function(units, names,
   units <- Map(function(x, y) parse(text=paste0(x, y)),
     x=names, y=units)
 
-  return(as_labeller(units, label_parsed))
+  #return(as_labeller(units, label_parsed))
+  return(as_labeller(unlist(lapply(units, as.character)), label_parsed))
 } # }}}
 
 # human_numbers {{{
