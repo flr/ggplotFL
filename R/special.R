@@ -97,7 +97,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 		  geom_rect(aes(fill = co), xmin = -Inf, xmax = Inf,
 	      ymin = -Inf, ymax = Inf, alpha = 0.8) +
   		scale_fill_gradient2(low="blue", mid = "white", high="red",
-        limits=c(-1,1), guide = FALSE) +
+        limits=c(-1,1), guide = "none") +
       geom_point() +
       geom_smooth(method = "lm", fullrange = TRUE, col = 1, formula = y ~ x) +
       empty
@@ -472,3 +472,18 @@ setMethod("plotLengths", signature(x="FLQuant"),
 
   return(p)
 })
+
+# }}}
+
+# plotRatios
+
+plotRatios <- function(x) {
+
+ggplot(x, aes(x=factor(year), y=factor(age), fill=data)) +
+  geom_tile() +
+  geom_text(aes(label=round(data, digits=2)), size=4) +
+  scale_fill_gradient2(low = "red", high = "green", mid = "white",
+    midpoint = 1) +
+  xlab("Year") + ylab("Age") +
+  theme(legend.position="none")
+}
