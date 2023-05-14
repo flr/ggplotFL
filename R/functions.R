@@ -132,8 +132,8 @@ format_label_flqs <- function(units, names,
   idx <- units != ""
   units[idx] <- paste0("~(", units[idx], ")")
 
-  # COERCE to expression by joining names and units
-  units <- Map(function(x, y) parse(text=paste0(x, y)),
+  # COERCE to expression by joining names, in backticks, and units
+  units <- Map(function(x, y) parse(text=paste0("`", x, "`", y)),
     x=names, y=units)
 
   #return(as_labeller(units, label_parsed))
