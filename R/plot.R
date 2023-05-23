@@ -346,16 +346,16 @@ setMethod("plot", signature(x="FLQuants", y="FLPars"),
 #' plot(fqp)
 
 setMethod("plot", signature(x="FLQuantPoint", y="missing"),
-	function(x) {
+	function(x, mean=TRUE, median=TRUE) {
     
     # BASE plot 
     p <- ggplot(x, aes(x=date))
    
     # ELEMENTS to add
-    if(!all(is.na(p$data$median)))
+    if(!all(is.na(p$data$median)) & mean)
        p <- p + geom_line(aes(y=median), linetype=1)
 
-    if(!all(is.na(p$data$mean)))
+    if(!all(is.na(p$data$mean)) & median)
        p <- p + geom_line(aes(y=mean), linetype=2)
 
     if(!all(is.na(p$data[, c("lowq", "uppq")])))
@@ -413,16 +413,16 @@ setMethod("plot", signature(x="FLQuantPoint", y="FLQuant"),
 #' plot(fqp, fqs)
 
 setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
-	function(x, y, na.rm=FALSE, ...) {
+	function(x, y, na.rm=FALSE, mean=TRUE, median=TRUE, ...) {
 
     # PLOT FLQuantPoint
-    p <- plot(x)
+    p <- plot(x, mean=mean, median=median)
 
     # EXTRACT FLQuants
     dat <- as.data.frame(y, drop=TRUE, date=TRUE)
 
     # ADD FLQuants as lines
-    p <- p + geom_flquantiles(data=dat, aes(x=date, y=data, colour='red'))
+    p <- p + geom_flquantiles(data=dat, aes(x=date, y=data, colour=qname))
 
     # PARSE dimensions > 1 for new facets
     ldi <- c(names(x)[-c(2,3,4,6)][dim(x)[-c(2,3,4,6)] > 1])
