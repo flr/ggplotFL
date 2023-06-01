@@ -5,8 +5,6 @@
 # Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
 
-globalVariables(c("..density.."))
-
 # plot(FLQuant) {{{
 
 #' ggplot versions of FLR class plot() methods
@@ -459,7 +457,7 @@ setMethod("plot", signature(x="FLPar", y="missing"),
 
   ggplot(as.data.frame(x), aes(x=data)) + 
     geom_density(alpha=.2, aes(fill=params)) +
-    geom_histogram(aes(y=..density..), bins=20, colour="black", fill=NA) +
+    geom_histogram(aes(y=after_stat(density)), bins=20, colour="black", fill=NA) +
     facet_wrap(~params, scales="free", labeller="label_parsed") +
     xlab("") + ylab("") +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
