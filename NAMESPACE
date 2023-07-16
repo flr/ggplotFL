@@ -58,3 +58,4 @@ export(
   "scale_colour_flr",
   "scale_fill_flr",
   "stat_flquantiles")
+S3method("-",gg)
