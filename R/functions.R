@@ -241,3 +241,16 @@ pubpng <- function(file, plot, width=1600, height=1400, res=200) {
   dev.off()
 invisible(TRUE)
 } # }}}
+
+# -.gg {{{
+`-.gg` <- function(plot, layer) {
+    if (missing(layer)) {
+        stop("Cannot use `-.gg()` with a single argument. Did you accidentally put - on a new line?")
+    }
+    if (!is.ggplot(plot)) {
+        stop('Need a plot on the left side')
+    }
+    plot$layers = c(layer, plot$layers)
+    plot
+}
+# }}}

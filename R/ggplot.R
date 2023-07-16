@@ -48,7 +48,7 @@ setMethod("ggplot", signature(data="FLQuant"),
 setMethod("ggplot", signature(data="FLQuants"),
   function(data, mapping=aes(), ..., environment=parent.frame()) {
     data <- as.data.frame(data, cohort=TRUE, timestep=TRUE, date=TRUE)
-		ggplot(data, mapping, ...)
+		return(ggplot(data, mapping, ...))
 	}) # }}}
 
 # FLComp {{{
