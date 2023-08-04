@@ -453,12 +453,17 @@ setMethod("plot", signature(x="FLQuantPoint", y="FLQuants"),
 #' plot(par)
 
 setMethod("plot", signature(x="FLPar", y="missing"),
-  function(x) {
+  function(x, names=NULL) {
+
+    # EXTRACT units
+    ups <- units(x)
 
   ggplot(as.data.frame(x), aes(x=data)) + 
     geom_density(alpha=.2, aes(fill=params)) +
-    geom_histogram(aes(y=after_stat(density)), bins=20, colour="black", fill=NA) +
-    facet_wrap(~params, scales="free", labeller="label_parsed") +
+    geom_histogram(aes(y=after_stat(density)), bins=20,
+      colour="black", fill=NA) +
+    facet_wrap(~params, scales="free", labeller=
+    format_label_flqs(ups, dimnames(x)$params)) +
     xlab("") + ylab("") +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
     theme(axis.text.x = element_text(angle = 90)) +
