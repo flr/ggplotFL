@@ -37,9 +37,11 @@
 #' @examples
 #' # CHECK flpalette
 #'  flpalette
+#'  scales::show_col(flpalette)
 
-flpalette <- c(red='#e41a1c', blue='#377eb8', green='#4daf4a', violet='#984ea3',
-  orange='#ff7f00', yellow='#ffff33', brown='#a65628')
+flpalette <- c("#cc79a7", "#009e73", "#e69f00", "#56b4e9",
+  "#999999", "#f0e442", "#0072b2", "#d55e00")
+
 
 #' @rdname flpalette
 #' @examples
@@ -49,16 +51,14 @@ flpalette <- c(red='#e41a1c', blue='#377eb8', green='#4daf4a', violet='#984ea3',
 
 flpalette_colours <- function(n=length(flpalette)) {
 
-  if(length(n) > 1)
-    return(unname(flpalette[n]))
-
   return(unname(flpalette[seq(n)]))
 }
 
 #' @rdname flpalette
 #' @examples
 #' flpalette_grads(flpalette_colours(3))(20)
-flpalette_grads <- function(palette = flpalette, reverse = FALSE, ...) {
+flpalette_grads <- function(palette = flpalette, reverse = FALSE,
+  ...) {
 
   if (reverse)
     palette <- rev(palette)

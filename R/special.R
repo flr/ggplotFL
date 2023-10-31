@@ -300,10 +300,9 @@ setMethod("plotRunstest", signature(fit="FLQuants", obs="missing"),
     dat <- merge(dat, s3dat[, c('qname', 'lcl', 'ucl', 'pass')], by=c('qname'),
       all=TRUE)
   else {
-    # TODO CHECK reasons behind
+    # TODO: CHECK reasons behind
     dat <- merge(dat, s3dat[, c('qname', 'lcl', 'ucl', 'pass', 'age')],
       by=c('qname', 'age'), all = TRUE)
-
   }
 
   # ADD limits to colour outliers
