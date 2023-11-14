@@ -220,7 +220,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
         ma <- data.table(p$data)[, .(iter=unique(iter)[worm]), by=qname]
  
         # SUBSET for combinations
-        idata <- ma[DT(p$data), , nomatch=0L, on=c("qname", "iter")]
+        idata <- ma[data.table(p$data), , nomatch=0L, on=c("qname", "iter")]
         # RENAME iters so colours (factor) match
         idata[, iter:=as.character(rep(rep(seq(length(worm)),
           each=uniqueN(idata$year)), uniqueN(idata$qname)))]
