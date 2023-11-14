@@ -217,7 +217,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       if(is.numeric(worm)) {
 
         # FIND iter dimnames for given positions
-        ma <- DT(p$data)[, .(iter=unique(iter)[worm]), by=qname]
+        ma <- data.table(p$data)[, .(iter=unique(iter)[worm]), by=qname]
  
         # SUBSET for combinations
         idata <- ma[DT(p$data), , nomatch=0L, on=c("qname", "iter")]
