@@ -166,7 +166,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
           geom_line(na.rm=na.rm)
       }
     } else {
-      # ITERS? PLOT central ribbon and line by unit
+      # worm=TRUE? PLOT central ribbon and line by unit
       if(isTRUE(worm)) {
   		p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
@@ -210,12 +210,21 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     
     # PLOT iter worms
     if(is.numeric(worm) | is.character(worm)) {
-      
-      # SELECT by position if numbers, avoids issues with names not matching
-      if(is.numeric(worm)) {
-        worm <- unique(p$data$iter)[worm]
-      }
+
       idata <- subset(p$data, iter %in% worm)
+      
+      # SELECT by position if numbers
+      if(is.numeric(worm)) {
+
+        # FIND iter dimnames for given positions
+        ma <- DT(p$data)[, .(iter=unique(iter)[worm]), by=qname]
+ 
+        # SUBSET for combinations
+        idata <- ma[DT(p$data), , nomatch=0L, on=c("qname", "iter")]
+        # RENAME iters so colours (factor) match
+        idata[, iter:=as.character(rep(rep(seq(length(worm)),
+          each=uniqueN(idata$year)), uniqueN(idata$qname)))]
+      }
       p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter),
         na.rm=TRUE) 
     }
