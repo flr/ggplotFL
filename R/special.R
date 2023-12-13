@@ -195,8 +195,7 @@ plotXval <- function(x, y="missing", order="inverse") {
   }
 
   # CALCULATE mase, exclude ref run
-  browser()
-  imase <- mase(x, y[-idr], order=order)
+ imase <- mase(x, y[-idr], order=order)
 
   # GENERATE facet labels
   lbs <- unlist(lapply(seq(length(imase)), function(x)

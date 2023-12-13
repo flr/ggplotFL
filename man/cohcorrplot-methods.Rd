@@ -8,7 +8,7 @@
 \usage{
 cohcorrplot(x, ...)
 
-\S4method{cohcorrplot}{FLQuant}(x)
+\S4method{cohcorrplot}{FLQuant}(x, ...)
 
 \S4method{cohcorrplot}{FLCohort}(x, diag_size = 16, lower_size = 6)
 }

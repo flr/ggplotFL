@@ -8,7 +8,7 @@
 \alias{scale_colour_flr}
 \title{A high-contrast palette to use in ggplotFL}
 \format{
-An object of class \code{character} of length 7.
+An object of class \code{character} of length 8.
 }
 \usage{
 flpalette
@@ -48,6 +48,7 @@ between two or more of the palette colours, *flpalette_grads*.
 \examples{
 # CHECK flpalette
  flpalette
+ scales::show_col(flpalette)
 flpalette_colours()
 flpalette_colours(5)
 flpalette_colours(2:3)

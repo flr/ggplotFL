@@ -51,13 +51,13 @@
 
 \S4method{plot}{FLQuants,FLPars}(x, y, ...)
 
-\S4method{plot}{FLQuantPoint,missing}(x)
+\S4method{plot}{FLQuantPoint,missing}(x, mean = TRUE, median = TRUE)
 
 \S4method{plot}{FLQuantPoint,FLQuant}(x, y, na.rm = FALSE, ...)
 
-\S4method{plot}{FLQuantPoint,FLQuants}(x, y, na.rm = FALSE, ...)
+\S4method{plot}{FLQuantPoint,FLQuants}(x, y, na.rm = FALSE, mean = TRUE, median = TRUE, ...)
 
-\S4method{plot}{FLPar,missing}(x)
+\S4method{plot}{FLPar,missing}(x, names = NULL)
 
 \S4method{plot}{FLStock,missing}(
   x,
@@ -263,7 +263,7 @@ plot(pls, metrics=list(SSB=ssb, F=fbar)) +
    model(y) <- x
    return(fmle(y))
  }))
- plot(srs)
+ plot(srs, facets=TRUE)
  plot(srs, legend_label=eqlabel)
  plot(srs, legend_label=modlabel)
  # Plot a FLIndex object
