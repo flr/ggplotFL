@@ -37,8 +37,8 @@ setGeneric("cohcorrplot", function(x, ...)
 #' cohcorrplot(catch.n(ple4))
 
 setMethod("cohcorrplot", signature(x="FLQuant"),
-  function(x) {
-    cohcorrplot(FLCohort(x))
+  function(x, ...) {
+    cohcorrplot(FLCohort(x), ...)
   })
 
 #' @rdname cohcorrplot-methods
@@ -51,7 +51,6 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   function(x, diag_size=16, lower_size=6) {
 
   # DIMENSIONS
-  
   ages <- dimnames(x)$age
   nag <- length(ages)
 
@@ -67,7 +66,6 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   lowt <- unlist(lapply(seq(nag - 1), function(x) seq(x, nag - 1) * nag + x))
 
   # COMBINATIONS for correlations
-  
   combs <- lapply(seq(nag - 1), function(x) seq(x + 1, nag))
 
   # PLOTS list
@@ -80,11 +78,12 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 
   # EXTRACT data pairs for correlations, returns single list
   pairs <- Reduce("c", Map(function(cs, na) {
-    lapply(cs, function(k) data.frame(x=c(x[k,]), y=c(x[na,])))
-    }, na=seq(nag - 1), cs=combs))
+    lapply(cs, function(k) data.frame(x=c(x[k,]), y=c(x[ac(na),])))
+  }, na=seq(nag - 1), cs=combs))
 
   # COMPUTE correlations
-  corrs <- lapply(pairs, function(i) round(cor(i$x, i$y, use="complete.obs"), 2))
+  corrs <- lapply(pairs, function(i)
+    round(cor(i$x, i$y, use="complete.obs"), 2))
 
   # PLOT correlations in lower triangle
   plots[lowt] <- lapply(corrs, function(i)
@@ -196,7 +195,8 @@ plotXval <- function(x, y="missing", order="inverse") {
   }
 
   # CALCULATE mase, exclude ref run
-  imase <- mase(x, y, order=order)
+  browser()
+  imase <- mase(x, y[-idr], order=order)
 
   # GENERATE facet labels
   lbs <- unlist(lapply(seq(length(imase)), function(x)
