@@ -61,7 +61,6 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
   matr <- matrix(seq(nag ^ 2), nag, nag, byrow=TRUE)
 
   # INVERTED positions as matr is column first
-
   uppt <- which(lower.tri(matr))
   lowt <- unlist(lapply(seq(nag - 1), function(x) seq(x, nag - 1) * nag + x))
 
@@ -78,7 +77,7 @@ setMethod("cohcorrplot", signature(x="FLCohort"),
 
   # EXTRACT data pairs for correlations, returns single list
   pairs <- Reduce("c", Map(function(cs, na) {
-    lapply(cs, function(k) data.frame(x=c(x[k,]), y=c(x[ac(na),])))
+    lapply(cs, function(k) data.frame(x=c(x[k,]), y=c(x[na,])))
   }, na=seq(nag - 1), cs=combs))
 
   # COMPUTE correlations
