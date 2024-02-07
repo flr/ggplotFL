@@ -4,6 +4,7 @@
 # Copyright 2012-2018 FLR Team. Distributed under the GPL 2
 # Maintainer: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu
 
+globalVariables("density")
 
 # plot(FLQuant) {{{
 
@@ -885,15 +886,15 @@ setMethod("plot", signature(x="FLSRs"),
     uns <- units(x[[1]])
 
     # DIFFERENT data?
-    if(all(unlist(lapply(x[-1],
-      function(y) isTRUE(all.equal(rec(y), rec(x[[1]]))))))) {
-      dat <- cbind(sr=NA, model.frame(FLQuants(ssb=ssb(x[[1]]),
-        rec=rec(x[[1]]))))
-    } else {
+ #   if(all(unlist(lapply(x[-1],
+ #     function(y) isTRUE(all.equal(rec(y), rec(x[[1]]))))))) {
+ #     dat <- cbind(sr=NA, model.frame(FLQuants(ssb=ssb(x[[1]]),
+ #       rec=rec(x[[1]]))))
+ #   } else {
       dat <- Reduce(rbind, Map(function(x, i)
         cbind(sr=i, model.frame(FLQuants(ssb=ssb(x), rec=rec(x)), drop=TRUE)),
         x, names(x)))
-    }
+ #   }
     
     # EXTRACT models & pars
     mods <- lapply(x, 'model')
