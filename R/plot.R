@@ -149,6 +149,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		  stop("quantile probs can only be a vector of odd length")
     
     # FIND center of probs
+    # BUG: MESSES UP probs=0.50?
     idx <- ceiling(length(probs)/2)
 
     # GET max dimensions
@@ -156,7 +157,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 
     # USE year or date for x axis
     xvar <- sym(ifelse(mds[4] == 1, "year", "date"))
-    
+
     if(mds[6] == 1) {
       # NO ITERS? PLOT central line by unit
       p <- if(mds[3] == 1) {
@@ -524,11 +525,11 @@ setMethod("plot", signature(x="FLStock", y="missing"),
     }
 
     # ADAPT for seasonal recruitment
-    if("Rec" %in% names(metrics)) {
-      if(dim(metrics$Rec)[4] > 1) {
-        metrics$Rec[metrics$Rec == 0] <- NA 
-      }
-    }
+#    if("Rec" %in% names(metrics)) {
+#      if(dim(metrics$Rec)[4] > 1) {
+#        metrics$Rec[metrics$Rec == 0] <- NA 
+#      }
+#    }
 
     p <- plot(metrics, na.rm=na.rm, ...) + ylim(c(0, NA))
   
@@ -1095,11 +1096,11 @@ plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
   data <- lapply(x, as.data.frame, date=TRUE, drop=FALSE)
 
   # SET stock names
-		stk <- rep.int(names(x), unlist(lapply(data, nrow)))
+	stk <- rep.int(names(x), unlist(lapply(data, nrow)))
 		
   # RBIND dfs
-		data <- do.call(rbind, data)
-		rownames(data) <- NULL
+	data <- do.call(rbind, data)
+	rownames(data) <- NULL
 
   # USE year or date for x axis
   xvar <- sym(ifelse(length(unique(data$season)) == 1, "year", "date"))

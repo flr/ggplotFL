@@ -254,3 +254,13 @@ invisible(TRUE)
     plot
 }
 # }}}
+
+# total (metrics) {{{
+
+total <- list(
+  R = function(x) areaSums(unitSums(rec(x))),
+  SB = function(x) areaSums(unitSums(ssb(x))),
+  C = function(x) areaSums(unitSums(catch(x))),
+  F = function(x) areaMeans(unitMeans(fbar(x))))
+
+# }}}

@@ -168,6 +168,11 @@ StatFLQuantiles <- ggproto("StatFLQuantiles", Stat,
 #'    colour = "lightgreen") +
 #'  stat_flquantiles(probs=c(0.50), geom = "line",
 #'    colour = "darkgreen")
+#' ggplot(flq, aes(x=year, y=data)) +
+#'  stat_flquantiles(probs=c(0.50), geom = "line",
+#'    colour = "darkgreen")
+#' plot(flq, probs=0.50)
+
 
 stat_flquantiles <- function(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = TRUE, show.legend = NA, 

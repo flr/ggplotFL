@@ -397,7 +397,7 @@ setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths'))
 setMethod("plotLengths", signature(x="FLQuant"),
   function(x, direction = c("horizontal", "vertical"),
     block=c("lustrum", "decade"), palette=flpalette) {
-
+browser()
   # args
   direction <- match.arg(direction)
   block <- match.arg(block)
@@ -414,7 +414,7 @@ setMethod("plotLengths", signature(x="FLQuant"),
   # mean
   dat[, mean:=mean(rep(len, prop)), by=.(timestep, unit)]
   # mode
-  dat[, mode:=unique(len[prop == max(prop)]), by=.(timestep, unit)]
+  dat[, mode:=unique(len[prop == max(prop)])[1], by=.(timestep, unit)]
   
   # min & max
   dat[, min:=min(len[data > 0]), by=.(timestep, unit)]
@@ -472,7 +472,7 @@ setMethod("plotLengths", signature(x="FLQuant"),
 
 # }}}
 
-# plotRatios
+# plotRatios {{{
 
 plotRatios <- function(x) {
 
@@ -484,3 +484,6 @@ ggplot(x, aes(x=factor(year), y=factor(age), fill=data)) +
   xlab("Year") + ylab("Age") +
   theme(legend.position="none")
 }
+# }}}
+
+# plotBubbles

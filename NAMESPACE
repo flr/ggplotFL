@@ -57,5 +57,6 @@ export(
   "pubpng",
   "scale_colour_flr",
   "scale_fill_flr",
-  "stat_flquantiles")
+  "stat_flquantiles",
+  "total")
 S3method("-",gg)
