@@ -1089,7 +1089,7 @@ plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
       units(i$F) <- paste0(fages, collapse="-")
       return(i)
   })
-  
+
   # GET labels
   labeller <- label_flqs(x[[1]])
 
@@ -1108,25 +1108,36 @@ plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
 		
   # ADD stock names
 	data <- transform(data, stock=factor(stk, levels=names(x)))
-  
+
   # PLOT using geom_flquantiles
   p <- ggplot(data, aes(x=!!xvar, y=data, fill=stock, colour=stock)) + 
     facet_grid(qname~., labeller=labeller, scales="free_y") +
-    # outer quantile
-    geom_flquantiles(probs=probs[c(1, 5)], alpha=alpha[1],
-      colour="white") +
-    # inner quantile
-    geom_flquantiles(probs=probs[c(2, 4)], alpha=alpha[2],
-      colour="white") +
-    # median
-    geom_flquantiles(probs=probs[3], alpha=1) +
     xlab("") + ylab("") +
-			# SET limits to include 0
-			expand_limits(y=0) +
+		# SET limits to include 0
+		expand_limits(y=0) +
     # SET legend with no title
     theme(legend.title = element_blank()) +
     # and only with lines and no title
     guides(fill = "none")
+
+  if(length(probs) == 5) {
+    # outer quantile
+    p <- p + geom_flquantiles(probs=probs[c(1, 5)], alpha=alpha[1],
+      colour="white") +
+      # inner quantile
+      geom_flquantiles(probs=probs[c(2, 4)], alpha=alpha[2],
+      colour="white") +
+      # median
+      geom_flquantiles(probs=probs[3], alpha=1)
+  } else if (length(probs) == 3) {
+    p <- p + geom_flquantiles(probs=probs[c(1, 3)], alpha=alpha[2],
+      colour="white") +
+      geom_flquantiles(probs=probs[2], alpha=1)
+  } else if (length(probs) == 1) {
+    p <- p + geom_flquantiles(probs=probs, alpha=1)
+  } else {
+    stop("probs can only be of length 1, 3 or 5")
+  }
 	
   # PLOT iter worms
   if(is.numeric(worm)) {
