@@ -142,6 +142,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
       probs <- rep(0, 3)
       if(missing(worm))
         worm <- TRUE
+    } else if(length(probs) == 1) {
+      probs <- rep(probs, 3)
     }
     
     # CHECK probs length is odd
@@ -149,7 +151,6 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
 		  stop("quantile probs can only be a vector of odd length")
     
     # FIND center of probs
-    # BUG: MESSES UP probs=0.50?
     idx <- ceiling(length(probs)/2)
 
     # GET max dimensions
