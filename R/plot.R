@@ -498,6 +498,10 @@ setMethod("plot", signature(x="FLPar", y="missing"),
 setMethod("plot", signature(x="FLStock", y="missing"),
 	function(x, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), na.rm=TRUE,
     ...) {
+
+    # PLOT unfitted
+    if(all(is.na(harvest(x))) & missing(metrics))
+      metrics <- list(Catch=catch, Landings=landings, Discards=discards)
     
     metrics <- metrics(x, metrics=metrics)
 
