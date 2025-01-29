@@ -397,7 +397,7 @@ setGeneric('plotLengths', function(x, ...) standardGeneric('plotLengths'))
 setMethod("plotLengths", signature(x="FLQuant"),
   function(x, direction = c("horizontal", "vertical"),
     block=c("lustrum", "decade"), palette=flpalette) {
-browser()
+
   # args
   direction <- match.arg(direction)
   block <- match.arg(block)
