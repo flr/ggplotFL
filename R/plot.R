@@ -1006,7 +1006,8 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
 
     flqs <- FLQuants(Index=index(x))
 
-    p <- plot(flqs, ...) + geom_smooth(formula=y ~ x, na.rm=TRUE, method="loess")
+    p <- plot(flqs, ...) + geom_smooth(formula=y ~ x, na.rm=TRUE,
+      method="loess", se=FALSE)
 
     return(p)
   }
@@ -1022,6 +1023,7 @@ setMethod("plot", signature(x="FLIndexBiomass", y="missing"),
 #'  # Plot a FLIndex object
 #'  data(ple4.index)
 #'  plot(ple4.index)
+
 setMethod("plot", signature(x="FLIndex", y="missing"),
   function(x) {
 
@@ -1052,9 +1054,9 @@ setMethod("plot", signature(x="FLIndex", y="missing"),
 setMethod("plot", signature(x="FLIndices", y="missing"),
   function(x) {
 
-    fqs <- lapply(x, function(x) (index(x) %-% yearMeans(index(x)) %/%
-      sqrt(yearVars(index(x)))))
-     
+    fqs <- lapply(x, function(x)
+    (index(x) %-% yearMeans(index(x)) %/% sqrt(yearVars(index(x)))))
+
     aes_(quote(mpg), quote(wt), col = quote(cyl))
 
     # CHOOSE xvar = date if seasons
