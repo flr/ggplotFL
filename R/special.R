@@ -487,3 +487,131 @@ ggplot(x, aes(x=factor(year), y=factor(age), fill=data)) +
 # }}}
 
 # plotBubbles
+
+# plotKobe {{{
+
+#' Kobe plot of biomass and fishing mortality over MSY
+#'
+#' 'Kobe' plot is the common name given to a phase plot that show the time series and
+#' current status of stock status using two metrics: fihsing mortality over FMSY and
+#'
+#' @param x An object of class FLStock
+#' @param refpts A list of reference points.
+#'
+#' @return A ggplot object
+#'
+#' @name plotKobe
+#' @rdname plotKobe
+#'
+#' @author Iago Mosqueira (WMR)
+#' @seealso [FLStock]
+#' @keywords classes
+#' @examples
+#' data(ple4)
+#' plotKobe(ple4, refpts=FLPar(FMSY=0.28, SBMSY=555000))
+#' plotKobe(ple4, refpts=FLPar(FMSY=0.28, SBMSY=555000, SB0=8e5),X=SB/SB[0]~ssb/SB0)
+
+plotKobe <- function(x, refpts, X=SB/SB[MSY]~ssb/SBMSY, Y=F/F[MSY]~fbar/FMSY) {
+
+  # GET metrics
+  mets <- FLQuants(c(.evalFormula(X, x, refpts), .evalFormula(Y, x, refpts)))
+  dat <- model.frame(mets, drop=TRUE)
+
+  # COMPUTE medians
+  meddat <- model.frame(iterMedians(mets), drop=TRUE)
+
+  # HACK for names, .data[[x]] alter order of data
+  names(meddat)[2:3] <- c('X', 'Y')
+
+  # GET dims
+  amax <- ceiling(max((meddat[, 2:3])))
+  its <- dims(x)$iter
+
+  # phase PLOT
+  p <- phasePlot(meddat, aes(x=X, y=Y)) +
+    # SET lims
+    xlim(0, amax) + ylim(0, amax) +
+    # ADD axis labels
+    labs(x=parse(text=names(mets)[1]), y=parse(text=names(mets)[2]))
+
+  # ADD contour lines
+  if(its > 1) {
+    p <- p + stat_density_2d(data=subset(dat, year==max(year)),
+      aes(fill = after_stat(level)), colour = "black", bins = 4, linewidth = 0.25,
+      geom = "polygon", contour = TRUE, alpha=0.5, show.legend = FALSE) +
+      scale_fill_distiller(palette = "Greys", direction = 1)
+  }
+
+  # ADD data
+  p <- p + geom_path(alpha=0.6) + geom_point() +
+    # ADD dots on first and last year
+    geom_point(data=subset(meddat, year %in% range(meddat$year)),
+     colour="black", fill=c("gray", "white"), pch=21, size=3) +
+    # ADD year labels, 1st and last
+    geom_text_repel(data=subset(meddat, year %in% range(meddat$year)),
+     aes(label=year))
+
+  # ADD legend for contour + percentages per square
+
+  return(p)
+}
+# }}}
+
+# phasePlot {{{
+
+phasePlot <- function(...) {
+
+  p <- ggplot(...) +
+    # DRAW Kobe background
+    geom_rect(aes(xmin=1, xmax=Inf, ymin=0, ymax=1), colour='green',
+      fill='green') +
+    geom_rect(aes(xmin=0, xmax=1, ymin=0, ymax=1), colour='yellow',
+      fill='yellow') +
+    geom_rect(aes(xmin=1, xmax=Inf, ymin=1, ymax=Inf), colour='orange', 
+      fill='orange') +
+    geom_rect(aes(xmin=0, xmax=1, ymin=1, ymax=Inf), colour='red',
+      fill='red') +
+    # DRAW central GRID
+    geom_hline(aes(yintercept=1)) + geom_vline(aes(xintercept=1)) +
+    # DROP background grid
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+      panel.background = element_blank(), axis.line = element_blank())
+
+  return(p)
+}
+# }}}
+
+# formula functions {{{
+
+.splitformula <- function(f) {
+
+  rhs <- if(length(f) > 2) f[[3L]] else f[[2L]]
+  lhs <- if(length(f) > 2) f[[2L]] else NULL
+
+  return(list(rhs=rhs, lhs=lhs))
+}
+
+
+.evalFormula <- function(f, x, p) {
+
+  # SPLIT formula
+  f <- .splitformula(f)
+
+  # EXTRACT elements and name
+  elems <- all.vars(f$rhs)
+  nam <- format(f$lhs)
+
+  # COERCE params into list
+  pl <- as(p, 'list')
+
+  # COMPUTE on x
+  ms <- lapply(setNames(nm=elems[!elems %in% names(pl)]), function(e)
+  do.call(e, list(x)))
+
+  res <- FLQuants(A=eval(f$rhs, c(ms, pl)))
+
+  names(res) <- nam
+
+  return(res)
+}
+# }}}

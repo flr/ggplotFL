@@ -134,14 +134,14 @@ setMethod("plot", signature(x="FLQuant", y="FLQuant"),
 #'  plot(FLQuants(SSB=ssb(ple4), rec=rec(ple4)), probs = NULL)
 
 setMethod("plot", signature(x="FLQuants", y="missing"),
-	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, worm=iter,
+	function(x, probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, worms=iter,
     iter=NULL) {
 
     # SWITCH off ribbons
     if(is.null(probs)) {
       probs <- rep(0, 3)
-      if(missing(worm))
-        worm <- TRUE
+      if(missing(worms))
+        worms <- TRUE
     } else if(length(probs) == 1) {
       probs <- rep(probs, 3)
     }
@@ -169,8 +169,8 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
           geom_line(na.rm=na.rm)
       }
     } else {
-      # worm=TRUE? PLOT central ribbon and line by unit
-      if(isTRUE(worm)) {
+      # worms=TRUE? PLOT central ribbon and line by unit
+      if(isTRUE(worms)) {
   		p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
           geom_line(aes(group=iter), alpha=0.2, linewidth=1, colour="#adadad") +
@@ -212,20 +212,24 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     }
     
     # PLOT iter worms
-    if(is.numeric(worm) | is.character(worm)) {
+    if(is.numeric(worms) | is.character(worms)) {
 
-      idata <- subset(p$data, iter %in% worm)
+      # CHECK iters exist
+      if(!all(worms %in% p$data$iter))
+
+      idata <- subset(p$data, iter %in% worms)
       
       # SELECT by position if numbers
-      if(is.numeric(worm)) {
+      if(is.numeric(worms)) {
 
         # FIND iter dimnames for given positions
-        ma <- data.table(p$data)[, .(iter=unique(iter)[worm]), by=qname]
+        ma <- data.table(p$data)[, .(iter=unique(iter)[worms]), by=qname]
  
         # SUBSET for combinations
         idata <- ma[data.table(p$data), , nomatch=0L, on=c("qname", "iter")]
+
         # RENAME iters so colours (factor) match
-        idata[, iter:=as.character(rep(rep(seq(length(worm)),
+        idata[, iter:=as.character(rep(rep(seq(length(unique(idata$iter))),
           each=uniqueN(idata$year)), uniqueN(idata$qname)))]
       }
       p <- p + geom_line(data=idata, aes(x=!!xvar, y=data, colour=iter),

@@ -50,6 +50,8 @@ export(
   "integer_breaks",
   "label_flqs",
   "modlabel",
+  "phasePlot",
+  "plotKobe",
   "plotLengths",
   "plotListFLQuants",
   "plotRunstest",
