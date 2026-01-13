@@ -109,15 +109,24 @@ setMethod("plot", signature(x="FLQuant", y="missing"),
 #'   theme(legend.position="bottom")
 
 setMethod("plot", signature(x="FLQuant", y="FLQuant"),
-  function(x, y, ..., probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, iter=NULL) {
+  function(x, y, ..., probs=c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm=FALSE, worms=iter, 
+    iter=NULL, names=NULL) {
 
     # ASSEMBLE FLQuants
-    fqs <- FLQuants(c(list(x, y), list(...)))
+    fqs <- FLQuants(c(list(x=x, y=y), list(...)))
 
-    # PLOT as 
-    ggplot(fqs, aes(x=year, y=data, fill=qname, colour=qname)) +
+    # SET proba, HACK
+    its <- max(unlist(lapply(fqs, function(i) dim(i)[6])))
+    if(its == 1) probs <- 0.50
+
+    # RENAME
+    if(!is.null(names))
+      names(fqs) <- names
+
+    # PLOT in a single panel
+    ggplot(fqs, aes(x=date, y=data, fill=qname, colour=qname)) +
       geom_flquantiles(alpha=0.3, probs=probs, na.rm=na.rm) +
-      theme(legend.position="none") +
+      theme(legend.position="bottom", legend.title=element_blank()) +
       xlab("") + ylab("")
   }
 )
@@ -145,7 +154,7 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     } else if(length(probs) == 1) {
       probs <- rep(probs, 3)
     }
-    
+  
     # CHECK probs length is odd
 		if(is.integer(length(probs)/2))
 		  stop("quantile probs can only be a vector of odd length")
@@ -159,11 +168,12 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     # USE year or date for x axis
     xvar <- sym(ifelse(mds[4] == 1, "year", "date"))
 
+    # NO ITERS? PLOT central line
     if(mds[6] == 1) {
-      # NO ITERS? PLOT central line by unit
       p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data)) +
           geom_line(na.rm=na.rm)
+      # by unit if available
       } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
           geom_line(na.rm=na.rm)
@@ -171,22 +181,24 @@ setMethod("plot", signature(x="FLQuants", y="missing"),
     } else {
       # worms=TRUE? PLOT central ribbon and line by unit
       if(isTRUE(worms)) {
+        p <- if(mds[3] == 1) {
+          ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
+            geom_line(aes(group=iter), alpha=0.2, linewidth=1, colour="#adadad") +
+            geom_flquantiles(alpha=0.5,
+              probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+      # by unit if available
+        } else {
+          ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
+            geom_line(aes(group=iter), alpha=0.1, linewidth=1) +
+            geom_flquantiles(alpha=0.5,
+              probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+        }
+      } else {
   		p <- if(mds[3] == 1) {
         ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
-          geom_line(aes(group=iter), alpha=0.2, linewidth=1, colour="#adadad") +
           geom_flquantiles(alpha=0.5,
             probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
-      } else {
-        ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
-          geom_line(aes(group=iter), alpha=0.1, linewidth=1) +
-          geom_flquantiles(alpha=0.5,
-            probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
-      }
-      } else {
-  		p <- if(mds[3] == 1) {
-        ggplot(x, aes(x=!!xvar, y=data, fill=flpalette_colours(1))) +
-          geom_flquantiles(alpha=0.5,
-            probs=probs[seq(idx - 1, idx + 1)], na.rm=na.rm)
+      # by unit if available
       } else {
         ggplot(x, aes(x=!!xvar, y=data, fill=unit, colour=unit)) +
           geom_flquantiles(alpha=0.5,
@@ -823,7 +835,7 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 		'%*%', uns$ssb, fixed=TRUE), ')')))
 
 	# SSB vs. REC
-	p1 <- ggplot(data=na.omit(dat), aes_string(x='SSB', y='Rec')) + geom_point() +
+	p1 <- ggplot(data=na.omit(dat), aes(x=SSB, y=Rec)) + geom_point() +
 		geom_smooth(formula= y ~ x, method='loess', span=3) + xlab(uns) + ylab(unr) +
 		expand_limits(y=0) + expand_limits(x=0)
 
@@ -838,27 +850,27 @@ setMethod('plot', signature(x='FLSR', y='missing'),
 	p1 <- p1 + stat_function(fun=fmo,  colour='red', linewidth=0.5)
 	
 	# P2
-	p2 <- ggplot(data=na.omit(dat), aes_string(x='year', y='Residuals')) +
+	p2 <- ggplot(data=na.omit(dat), aes(x=year, y=Residuals)) +
     geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3) + xlab("Year")
 
 	# P3
 	p3 <- ggplot(data=na.omit(data.frame(res1=dat$Residuals[-length(dat$Residuals)],
-		res2=dat$Residuals[-1])), aes_string(x='res1', y='res2')) + geom_point() +
+		res2=dat$Residuals[-1])), aes(x=res1, y=res2)) + geom_point() +
 		xlab(expression(Residuals[t])) + ylab(expression(Residuals[t + 1])) +
 	  geom_smooth(formula= y ~ x, method='lm')
 
 	# P4
-	p4 <- ggplot(data=na.omit(dat), aes_string(x='SSB', y='Residuals')) +
+	p4 <- ggplot(data=na.omit(dat), aes(x=SSB, y=Residuals)) +
     geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3)
 
 	# P5
-	p5 <- ggplot(data=na.omit(dat), aes_string(sample = 'Residuals')) +
+	p5 <- ggplot(data=na.omit(dat), aes(sample = Residuals)) +
     stat_qq(color="red", alpha=1) +
-    geom_abline(aes_q(intercept = quote(mean(Residuals)),
-		slope = quote(sd(Residuals)))) + xlab("Theoretical") + ylab("Sample")
+    geom_abline(aes(intercept = mean(Residuals),
+		slope = sd(Residuals))) + xlab("Theoretical") + ylab("Sample")
 
 	# P6
-	p6 <- ggplot(data=na.omit(dat), aes_string(x='RecHat', y='Residuals')) +
+	p6 <- ggplot(data=na.omit(dat), aes(x=RecHat, y=Residuals)) +
     geom_point() + geom_smooth(formula= y ~ x, method='loess', span=3) +
     xlab(expression(hat(Recruits)))
 	
@@ -1060,8 +1072,6 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
 
     fqs <- lapply(x, function(x)
     (index(x) %-% yearMeans(index(x)) %/% sqrt(yearVars(index(x)))))
-
-    aes_(quote(mpg), quote(wt), col = quote(cyl))
 
     # CHOOSE xvar = date if seasons
     if(dim(fqs[[1]])[4] > 1)

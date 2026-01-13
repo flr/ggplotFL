@@ -43,7 +43,7 @@
   x,
   probs = c(0.05, 0.25, 0.5, 0.75, 0.95),
   na.rm = FALSE,
-  worm = iter,
+  worms = iter,
   iter = NULL
 )
 
@@ -137,11 +137,11 @@
 
 \item{iter}{Individual iterations to show as worm plots over the quantiles.}
 
-\item{worm}{Individual iterations to show as worm plots over the quantiles.}
-
 \item{metrics}{function returning an FLQuants for each FLStock}
 
 \item{alpha}{alpha values for the quantile ribbons, defaults to 0.10 and 0.40.}
+
+\item{worm}{Individual iterations to show as worm plots over the quantiles.}
 
 \item{legend_label}{function to create the legend labels}
 }

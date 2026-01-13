@@ -239,10 +239,13 @@ pubpng <- function(file, plot, width=1600, height=1400, res=200) {
   png(filename=file, type="cairo", width=width, height=height, res=res)
   print(plot)
   dev.off()
-invisible(TRUE)
+  
+  invisible(TRUE)
 } # }}}
 
 # -.gg {{{
+# from: https://stackoverflow.com/questions/20249653/insert-layer-underneath-existing-layers-in-ggplot2-object
+
 `-.gg` <- function(plot, layer) {
     if (missing(layer)) {
         stop("Cannot use `-.gg()` with a single argument. Did you accidentally put - on a new line?")
@@ -263,4 +266,39 @@ total <- list(
   C = function(x) areaSums(unitSums(catch(x))),
   F = function(x) areaMeans(unitMeans(fbar(x))))
 
+# }}}
+
+# .formula functions {{{
+
+.splitformula <- function(f) {
+
+  rhs <- if(length(f) > 2) f[[3L]] else f[[2L]]
+  lhs <- if(length(f) > 2) f[[2L]] else NULL
+
+  return(list(rhs=rhs, lhs=lhs))
+}
+
+
+.evalFormula <- function(f, x, p) {
+
+  # SPLIT formula
+  f <- .splitformula(f)
+
+  # EXTRACT elements and name
+  elems <- all.vars(f$rhs)
+  nam <- format(f$lhs)
+
+  # COERCE params into list
+  pl <- as(p, 'list')
+
+  # COMPUTE on x
+  ms <- lapply(setNames(nm=elems[!elems %in% names(pl)]), function(e)
+  do.call(e, list(x)))
+
+  res <- FLQuants(A=eval(f$rhs, c(ms, pl)))
+
+  names(res) <- nam
+
+  return(res)
+}
 # }}}

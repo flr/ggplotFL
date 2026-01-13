@@ -1,8 +1,8 @@
-# cohcorrplot.R - DESC
-# /cohcorrplot.R
+# special.R - DESC
+# ggplotFL/R/special.R
 
-# Copyright European Union, 2019
-# Author: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu>
+# Copyright European Union, 2019-2025
+# Author: Iago Mosqueira (WMR) <iago.mosqueira@wur.nl>
 #
 # Distributed under the terms of the European Union Public Licence (EUPL) V.1.1.
 
@@ -493,10 +493,24 @@ ggplot(x, aes(x=factor(year), y=factor(age), fill=data)) +
 #' Kobe plot of biomass and fishing mortality over MSY
 #'
 #' 'Kobe' plot is the common name given to a phase plot that show the time series and
-#' current status of stock status using two metrics: fihsing mortality over FMSY and
+#' current status of stock status using two metrics: one for stock status on the 
+#' x-axis, generally SB/SBMSY, and one on exploitation level on the y-axis, F/FMSY.
+#' The plot is divided in four quadrants, each representing a different combination
+#' of stock status and exploitation level. The quadrants are usually coloured green 
+#' (healthy stock and exploitation), yellow (healthy stock, high exploitation), orange 
+#' (overfished stock, healthy exploitation) and red (overfished stock, high 
+#' exploitation).
+#'
+#' The function allows the user to define the metrics to be used on each axis, by using 
+#' a formula interface. For each axis, a formula specifies the name of the metric and 
+#' its computation, using available slots and metrics for the FLStock object, as well 
+#' as reference points provided in the `refpts` argument. See examples below on the 
+#' usage of the formula interface.
 #'
 #' @param x An object of class FLStock
-#' @param refpts A list of reference points.
+#' @param refpts Reference points, class FLPar or list.
+#' @param X Formula for x axis metric, defaults to SB/SB[MSY] ~ ssb/SBMSY.
+#' @param Y Formula for y axis metric, defaults to F/F[MSY] ~ fbar/FMSY.
 #'
 #' @return A ggplot object
 #'
@@ -504,12 +518,14 @@ ggplot(x, aes(x=factor(year), y=factor(age), fill=data)) +
 #' @rdname plotKobe
 #'
 #' @author Iago Mosqueira (WMR)
-#' @seealso [FLStock]
-#' @keywords classes
+#' @seealso [FLStock] [FLPar]
+#' @keywords hplot
 #' @examples
 #' data(ple4)
+#' # Plot with default MSY refpts
 #' plotKobe(ple4, refpts=FLPar(FMSY=0.28, SBMSY=555000))
-#' plotKobe(ple4, refpts=FLPar(FMSY=0.28, SBMSY=555000, SB0=8e5),X=SB/SB[0]~ssb/SB0)
+#' # Plot with custom metric on x axis
+#' plotKobe(ple4, refpts=FLPar(FMSY=0.28, SB0=8e5), X=SB/SB[0]~ssb/SB0)
 
 plotKobe <- function(x, refpts, X=SB/SB[MSY]~ssb/SBMSY, Y=F/F[MSY]~fbar/FMSY) {
 
@@ -578,40 +594,5 @@ phasePlot <- function(...) {
       panel.background = element_blank(), axis.line = element_blank())
 
   return(p)
-}
-# }}}
-
-# formula functions {{{
-
-.splitformula <- function(f) {
-
-  rhs <- if(length(f) > 2) f[[3L]] else f[[2L]]
-  lhs <- if(length(f) > 2) f[[2L]] else NULL
-
-  return(list(rhs=rhs, lhs=lhs))
-}
-
-
-.evalFormula <- function(f, x, p) {
-
-  # SPLIT formula
-  f <- .splitformula(f)
-
-  # EXTRACT elements and name
-  elems <- all.vars(f$rhs)
-  nam <- format(f$lhs)
-
-  # COERCE params into list
-  pl <- as(p, 'list')
-
-  # COMPUTE on x
-  ms <- lapply(setNames(nm=elems[!elems %in% names(pl)]), function(e)
-  do.call(e, list(x)))
-
-  res <- FLQuants(A=eval(f$rhs, c(ms, pl)))
-
-  names(res) <- nam
-
-  return(res)
 }
 # }}}
