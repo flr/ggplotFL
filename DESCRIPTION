@@ -12,15 +12,16 @@ X-schema.org-keywords: visualization, ggplot2, fisheries, flr, R
 License: GPL-2
 Depends:
   R(>= 4.0),
-  FLCore(>= 2.6.15),
-  ggplot2(>= 2.4.0)
-Imports:
   methods,
+  FLCore(>= 2.6.15),
+  ggplot2(>= 2.4.0),
+  ggrepel,
+  patchwork
+Imports:
   gridExtra,
   rlang,
   stats,
   scales,
-  ggrepel,
   cowplot,
   data.table
 Suggests:

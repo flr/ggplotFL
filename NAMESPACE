@@ -2,42 +2,53 @@ import("methods")
 import("ggplot2")
 import("FLCore")
 import("data.table")
+import("patchwork")
+
 importFrom("grDevices",
   "colorRampPalette",
   "dev.off",
   "png")
+
 importFrom("stats",
   "as.formula",
   "cor",
   "na.omit",
   "setNames",
   "reshape")
+
 importFrom("utils",
   "data")
+
 importFrom("rlang",
   ".data",
-  "as_name")
+  "as_name",
+  "quo_name")
+
 importFrom("grid",
   "grid.draw")
+
 importFrom("cowplot",
   "ggdraw",
   "draw_grob")
+
 importFrom("ggrepel",
   "geom_label_repel",
   "geom_text_repel",
   "GeomLabelRepel")
+
 importFrom("gridExtra",
   "arrangeGrob",
   "grid.arrange")
-importFrom("rlang",
-  "quo_name")
+
 importFrom("scales",
   "comma")
+
 exportMethods(
   "%+%",
   "ggplot",
   "cohcorrplot",
   "plot")
+
 export(
   "eqlabel",
   "flpalette",
@@ -61,4 +72,5 @@ export(
   "scale_fill_flr",
   "stat_flquantiles",
   "total")
-S3method("-",gg)
+
+S3method("-", gg)
