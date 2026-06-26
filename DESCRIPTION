@@ -14,11 +14,11 @@ Depends:
   R(>= 4.0),
   methods,
   FLCore(>= 2.6.15),
-  ggplot2(>= 2.4.0),
-  ggrepel,
-  patchwork
+  ggplot2(>= 2.4.0)
 Imports:
   gridExtra,
+  ggrepel,
+  patchwork,
   rlang,
   stats,
   scales,
