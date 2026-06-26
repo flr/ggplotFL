@@ -1,9 +1,8 @@
 import("methods")
-import("FLCore")
 import("data.table")
-import("patchwork")
-
 import("ggplot2")
+import("patchwork")
+import("FLCore")
 
 importFrom("grDevices",
   "colorRampPalette",

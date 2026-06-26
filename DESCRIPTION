@@ -41,6 +41,5 @@ Collate:
   'plot.R'
   'special.R'
 LazyLoad: Yes
-LazyData: Yes
 Encoding: UTF-8
 RoxygenNote: 7.3.3
