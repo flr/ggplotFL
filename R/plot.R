@@ -1068,10 +1068,19 @@ setMethod("plot", signature(x="FLIndex", y="missing"),
 #'  plot(ple4.indices) +
 #'    geom_smooth(formula=y ~ x, se=FALSE, method="loess", linewidth=0.2)
 setMethod("plot", signature(x="FLIndices", y="missing"),
-  function(x) {
+  function(x, mean=TRUE) {
 
-    fqs <- lapply(x, function(x)
-    (index(x) %-% yearMeans(index(x)) %/% sqrt(yearVars(index(x)))))
+    if(mean == 'start') {
+      fqs <- lapply(x, function(x) index(x) %/% index(x)[,1])
+      ylab <- "Relative abundance (relative to first year)"
+    } else if(isTRUE(mean)) {
+      fqs <- lapply(x, function(x)
+      (index(x) %-% yearMeans(index(x)) %/% sqrt(yearVars(index(x)))))
+      ylab <- "Mean-standardized relative abundance"
+    } else {
+      fqs <- lapply(x, index)
+      ylab <- "Relative abundance"
+    }
 
     # CHOOSE xvar = date if seasons
     if(dim(fqs[[1]])[4] > 1)
@@ -1082,7 +1091,7 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
     p <- ggplot(fqs, aes_(x=xvar, y=quote(data), group=quote(qname),
       colour=quote(qname), fill=flpalette_colours(quote(qname)))) +
       geom_flquantiles(alpha=0.3) +
-      ylab("Standardized relative abundance") + xlab("") +
+      ylab(ylab) + xlab("") +
       theme(legend.title=element_blank())
     
     if(all(unlist(lapply(x, is, "FLIndexBiomass")))) {
