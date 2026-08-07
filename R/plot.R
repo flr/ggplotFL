@@ -608,6 +608,28 @@ setMethod("plot", signature(x="FLStock", y="FLPar"),
 	}
 ) # }}}
 
+# plot(FLStock, FLQuants) {{{
+
+#' @aliases plot,FLStock,FLQuants-method
+#' @rdname plot
+
+setMethod("plot", signature(x="FLStock", y="FLQuants"),
+	function(x, y, metrics=list(Rec=rec, SSB=ssb, Catch=catch, F=fbar), ...) {
+	
+    # GET FLStock metrics
+    mes <- metrics(x, metrics=metrics)
+ 
+    # COPY empty FLQs
+    meq <- mes[setdiff(names(mes), names(y))]
+
+    # ASSIGN y elements
+    meq[names(y)] <- y
+
+    # PLOT
+    plotListFLQuants(list(A=mes, B=meq), ...)
+	}
+) # }}}
+
 # plot(FLStocks) {{{
 
 #' @aliases plot,FLStocks,missing-method
