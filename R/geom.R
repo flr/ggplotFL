@@ -243,10 +243,10 @@ geom_flpar <- function(mapping = NULL, data, ..., x, na.rm=FALSE) {
   data$label <- data$params
 
   # MAPPINGS from data: y, yintercept, label, linetype
-  mapping$y <- aes_string(y="y")$y
+  mapping$y <- aes(y=y)$y
   mapping$label <- aes(label=params)$label
-  mapping$yintercept <- aes_string(yintercept="yintercept")$yintercept
-  mapping$linetype <- aes_string(linetype="linetype")$linetype
+  mapping$yintercept <- aes(yintercept=yintercept)$yintercept
+  mapping$linetype <- aes(linetype=linetype)$linetype
 
   # ACCEPTED aesthetics by geom
   ahline <- c("alpha", "colour", "linetype", "linewidth", "yintercept")

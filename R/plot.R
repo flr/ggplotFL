@@ -801,10 +801,10 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
     names(df) <- gsub("data.", "", names(df))
 
 		# plot data vs. date + facet on qname +
-		p <- ggplot(data=na.omit(df), aes_string(x='date', y='`50%`', group='stock')) +
+		p <- ggplot(data=na.omit(df), aes(x=date, y=`50%`, group=stock)) +
 			facet_grid(qname~., scales="free") +
 			# line + xlab + ylab +
-			geom_line(aes_string(colour='stock'), na.rm=na.rm) + xlab("") + ylab("") +
+			geom_line(aes(colour=stock), na.rm=na.rm) + xlab("") + ylab("") +
 			# limits to include 0 +  no legend
 			expand_limits(y=0) + theme(legend.title = element_blank())
 		
@@ -812,8 +812,8 @@ setMethod("plot", signature(x="FLStocks", y="FLPar"),
 		if(any(unlist(lapply(x, function(y) dims(y)$iter)) > 1)) {
 				p <- p +
 			# 75% quantile ribbon in red, alpha=0.25
-			geom_ribbon(aes_string(x='date', ymin = '`10%`', ymax = '`90%`', group='stock',
-				colour='stock', fill='stock'), alpha = .20, linetype = 0, na.rm=na.rm)
+			geom_ribbon(aes(x=date, ymin=`10%`, ymax=`90%`, group=stock,
+				colour=stock, fill=stock), alpha = .20, linetype = 0, na.rm=na.rm)
 			# 90% quantile ribbon in red, aplha=0.10
 		}
 		return(p)
@@ -1128,7 +1128,7 @@ setMethod("plot", signature(x="FLIndices", y="missing"),
 plotListFLQuants <- function(x, probs=c(0.10, 0.33, 0.50, 0.66, 0.90),
   alpha=c(0.10, 0.40), worm=iter, iter=NULL, fages=NULL) {
 	
-	# CHECK names not repeated
+	# CHECK names not repeated or missing
 	dup <- duplicated(names(x))
 	if(any(dup)) {
 		names(x)[dup] <- paste(names(x)[dup], LETTERS[seq(sum(dup))], sep='_')
